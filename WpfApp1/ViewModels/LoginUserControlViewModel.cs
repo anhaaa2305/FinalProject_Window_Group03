@@ -1,10 +1,15 @@
-using System.Diagnostics;
+using System.Windows;
+using System.Windows.Navigation;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using WpfApp1.Services;
+using WpfApp1.Views;
+using WpfApp1.Views.UserControls;
 
 namespace WpfApp1.ViewModels;
 
-public class LoginPageViewModel : ObservableObject
+public class LoginUserControlViewModel : ObservableObject
 {
 	private string username = string.Empty;
 	private string password = string.Empty;
@@ -34,15 +39,16 @@ public class LoginPageViewModel : ObservableObject
 		}
 	}
 
-	public LoginPageViewModel()
+	private readonly INavigationService navigationService;
+	public LoginUserControlViewModel(INavigationService navigationService)
 	{
+		this.navigationService = navigationService;
 		LoginCommand = new RelayCommand(Login, CanLogin);
 	}
 
 	private void Login()
 	{
-		Debug.WriteLine(Username);
-		Debug.WriteLine(Password);
+		navigationService.Navigate<UserHomeUserControl>();
 	}
 
 	private bool CanLogin()

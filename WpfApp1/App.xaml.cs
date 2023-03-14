@@ -1,11 +1,9 @@
-﻿using System.Security.Permissions;
-using System.ServiceProcess;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views;
-using WpfApp1.Views.Pages;
+using WpfApp1.Views.UserControls;
 
 namespace WpfApp1
 {
@@ -21,12 +19,18 @@ namespace WpfApp1
 
 		private static IServiceProvider ConfigureServices()
 		{
-			var services = new ServiceCollection();
-			services.AddSingleton<MainWindow>();
-			services.AddSingleton<LoginPage>();
-			services.AddSingleton<LoginPageViewModel>();
+			return new ServiceCollection()
+				.AddSingleton<INavigationService, NavigationService>()
 
-			return services.BuildServiceProvider();
+				.AddSingleton<MainWindow>()
+				.AddSingleton<MainWindowViewModel>()
+
+				.AddSingleton<LoginUserControl>()
+				.AddSingleton<LoginUserControlViewModel>()
+
+				.AddSingleton<UserHomeUserControl>()
+
+				.BuildServiceProvider();
 		}
 
 		protected override void OnStartup(StartupEventArgs e)

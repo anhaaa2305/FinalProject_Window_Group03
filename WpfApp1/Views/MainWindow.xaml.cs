@@ -1,18 +1,17 @@
-﻿using System.Windows.Navigation;
-using WpfApp1.Views.Pages;
+﻿using System.Windows;
+using WpfApp1.Services;
+using WpfApp1.ViewModels;
+using WpfApp1.Views.UserControls;
 
 namespace WpfApp1.Views;
 
-public partial class MainWindow : NavigationWindow
+public partial class MainWindow : Window
 {
-	public MainWindow(LoginPage loginPage)
+	public MainWindow(MainWindowViewModel vm, INavigationService navigationService)
 	{
 		InitializeComponent();
 
-		Navigate(loginPage);
-	}
-
-	private void OnNavigated(object? sender, NavigationEventArgs e)
-	{
+		DataContext = vm;
+		navigationService.Navigate<LoginUserControl>();
 	}
 }
