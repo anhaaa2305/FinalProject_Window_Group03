@@ -1,0 +1,55 @@
+<Page
+    x:Class="WpfApp1.Views.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WpfApp1"
+    xmlns:utils="clr-namespace:WpfApp1.Utils"
+	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
+    mc:Ignorable="d">
+	<Page.Resources>
+		<ResourceDictionary Source="/Resources/Dictionaries/LoginStrings.xaml" />
+	</Page.Resources>
+	<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+		<StackPanel>
+			<Image
+			Source="/Resources/Images/AppLogo.png"
+			Stretch="Uniform"
+			MaxWidth="640" />
+			<TextBlock Text="{StaticResource Title}" HorizontalAlignment="Center" />
+			<Grid utils:MarginSetter.Margin="5" Margin="0,25,0,0" MaxWidth="320">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Label Grid.Row="0" Grid.Column="0"
+					Content="{StaticResource Label_Username}"
+					Target="{Binding ElementName=usernameTextBox}" />
+				<TextBox Grid.Row="0" Grid.Column="1"
+					Name="usernameTextBox"
+					VerticalContentAlignment="Center"
+					Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+	
+				<Label Grid.Row="1" Grid.Column="0"
+					Content="{StaticResource Label_Password}"
+					Target="{Binding ElementName=passwordTextBox}" />
+				<TextBox Grid.Row="1" Grid.Column="1"
+					Name="passwordTextBox"
+					VerticalContentAlignment="Center"
+					Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+	
+				<Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+					HorizontalAlignment="Center"
+					Padding="15,4"
+					Content="{StaticResource Button_Login}"
+					Command="{Binding LoginCommand}" />
+			</Grid>
+		</StackPanel>
+	</ScrollViewer>
+</Page>
