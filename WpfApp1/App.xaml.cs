@@ -25,10 +25,10 @@ namespace WpfApp1
 				.AddSingleton<MainWindow>()
 				.AddSingleton<MainWindowViewModel>()
 
-				.AddSingleton<LoginUserControl>()
-				.AddSingleton<LoginUserControlViewModel>()
+				.AddSingleton<LoginControl>()
+				.AddSingleton<LoginControlViewModel>()
 
-				.AddSingleton<UserHomeUserControl>()
+				.AddSingleton<UserHomeControl>()
 
 				.BuildServiceProvider();
 		}

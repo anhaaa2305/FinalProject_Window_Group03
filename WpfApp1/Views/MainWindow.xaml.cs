@@ -12,6 +12,6 @@ public partial class MainWindow : Window
 		InitializeComponent();
 
 		DataContext = vm;
-		navigationService.Navigate<LoginUserControl>();
+		navigationService.Navigate<LoginControl>();
 	}
 }

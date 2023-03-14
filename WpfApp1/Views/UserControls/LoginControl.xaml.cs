@@ -1,12 +1,11 @@
-using System.Windows;
 using System.Windows.Controls;
 using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views.UserControls;
 
-public partial class LoginUserControl : UserControl
+public partial class LoginControl : UserControl
 {
-	public LoginUserControl(LoginUserControlViewModel vm)
+	public LoginControl(LoginControlViewModel vm)
 	{
 		InitializeComponent();
 		DataContext = vm;

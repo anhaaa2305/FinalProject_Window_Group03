@@ -1,0 +1,20 @@
+<UserControl
+    x:Class="WpfApp1.Views.UserControls.UserHomeControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WpfApp1"
+    xmlns:utils="clr-namespace:WpfApp1.Utils"
+	xmlns:uc="clr-namespace:WpfApp1.Views.UserControls"
+	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
+    mc:Ignorable="d">
+	<DockPanel>
+		<uc:UserNavBarControl DockPanel.Dock="Top"
+			DataContext="{utils:ServiceResolver vm:MainWindowViewModel}"
+			MaxHeight="160"
+			Padding="12" />
+		<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12" Background="Red" />
+	</DockPanel>
+	
+</UserControl>
