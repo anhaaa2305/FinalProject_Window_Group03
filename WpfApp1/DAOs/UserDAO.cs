@@ -29,6 +29,7 @@ public class UserDAO : IUserDAO
 				create table Users(
 				Id int not null identity(1, 1) primary key,
 				NationalId varchar(16) not null,
+				Password varchar(61) not null,
 				FullName varchar(64) not null,
 				Phone varchar(16) not null,
 				Email varchar(128) null,
@@ -59,15 +60,19 @@ public class UserDAO : IUserDAO
 		{
 			return 0;
 		}
+
+		var hash = await Task.Run(() => BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password))
+			.ConfigureAwait(false);
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			insert into Users (NationalId, FullName, IsMale, DateOfBirth, Phone, Email)
+			insert into Users (NationalId, FullName, Password, IsMale, DateOfBirth, Phone, Email)
 			output Inserted.Id
-			values (@NationalId, @FullName, @IsMale, @DateOfBirth, @Phone, @Email)
+			values (@NationalId, @FullName, @Password, @IsMale, @DateOfBirth, @Phone, @Email)
 		";
 		cmd.Parameters.AddWithValue("@NationalId", model.NationalId);
 		cmd.Parameters.AddWithValue("@FullName", model.FullName);
+		cmd.Parameters.AddWithValue("@Password", hash);
 		cmd.Parameters.AddWithValue("@IsMale", model.IsMale);
 		cmd.Parameters.AddWithValue("@DateOfBirth", model.DateOfBirth ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@Phone", model.Phone);
@@ -162,7 +167,7 @@ public class UserDAO : IUserDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
-	private UserModel MapDataReaderToUserModel(DbDataReader reader)
+	private static UserModel MapDataReaderToUserModel(DbDataReader reader)
 	{
 		return new UserModel
 		{
