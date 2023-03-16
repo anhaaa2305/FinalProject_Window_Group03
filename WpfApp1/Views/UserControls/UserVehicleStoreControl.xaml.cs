@@ -3,9 +3,9 @@ using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views.UserControls;
 
-public partial class UserHomeControl : UserControl
+public partial class UserVehicleStoreControl : UserControl
 {
-	public UserHomeControl(UserHomeControlViewModel vm)
+	public UserVehicleStoreControl(UserVehicleStoreControlViewModel vm)
 	{
 		InitializeComponent();
 

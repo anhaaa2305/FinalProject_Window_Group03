@@ -9,12 +9,25 @@
 	xmlns:uc="clr-namespace:WpfApp1.Views.UserControls"
 	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
     mc:Ignorable="d">
+	<UserControl.Resources>
+		<ResourceDictionary Source="/Resources/Dictionaries/UserHomeNavBarItemStrings.xaml" />
+	</UserControl.Resources>
 	<DockPanel>
 		<uc:UserNavBarControl DockPanel.Dock="Top"
-			DataContext="{utils:ServiceResolver vm:MainWindowViewModel}"
 			MaxHeight="160"
-			Padding="12" />
-		<ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12" Background="Red" />
+			Margin="12,4">
+			<StackPanel Orientation="Horizontal">
+				<Button
+					Content="{StaticResource Item_VehicleStore}"
+					Command="{Binding VehicleStoreClickCommand}" />
+				<Button
+					Content="{StaticResource Item_VehicleRenting}"
+					Command="{Binding VehicleRentingClickCommand}" />
+				<Button
+					Content="{StaticResource Item_RentHistory}"
+					Command="{Binding RentHistoryClickCommand}" />
+			</StackPanel>
+		</uc:UserNavBarControl>
+		<ContentPresenter Content="{Binding CurrentView}" />
 	</DockPanel>
-	
 </UserControl>

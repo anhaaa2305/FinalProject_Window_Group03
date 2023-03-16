@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using WpfApp1.DAOs;
 using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views;
@@ -20,25 +22,36 @@ namespace WpfApp1
 		private static IServiceProvider ConfigureServices()
 		{
 			return new ServiceCollection()
-				.AddSingleton<INavigationService, NavigationService>()
-
-				.AddSingleton<MainWindow>()
-				.AddSingleton<MainWindowViewModel>()
-
-				.AddSingleton<LoginControl>()
-				.AddSingleton<LoginControlViewModel>()
-
-				.AddSingleton<UserHomeControl>()
-
+				.RegisterDAOs()
+				.RegisterServices()
+				.RegisterViews()
+				.RegisterViewModels()
 				.BuildServiceProvider();
 		}
 
-		protected override void OnStartup(StartupEventArgs e)
+		protected override async void OnStartup(StartupEventArgs e)
 		{
+			base.OnStartup(e);
+
+			var ok = await EnsureDatabase();
+			if (!ok)
+			{
+				MessageBox.Show("Database không đảm bảo.");
+				return;
+			}
+
 			var mainWindow = Services.GetRequiredService<MainWindow>();
 			mainWindow.Show();
+		}
 
-			base.OnStartup(e);
+		private async Task<bool> EnsureDatabase()
+		{
+			var oks = await Task.WhenAll
+			(
+				Services.GetRequiredService<IUserDAO>().EnsureTableAsync(),
+				Services.GetRequiredService<IVehicleDAO>().EnsureTableAsync()
+			);
+			return !oks.Any(ok => false);
 		}
 	}
 }

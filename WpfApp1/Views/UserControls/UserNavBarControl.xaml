@@ -6,38 +6,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/Resources/Dictionaries/UserNavBarStrings.xaml" />
-				<ResourceDictionary>
-					<Style TargetType="Button">
-						<Setter Property="Background" Value="Transparent" />
-						<Setter Property="BorderThickness" Value="0" />
-						<Setter Property="VerticalAlignment" Value="Center" />
-						<Setter Property="Padding" Value="10" />
-					</Style>
-				</ResourceDictionary>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
+		<Style TargetType="Button">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Padding" Value="10" />
+		</Style>
 	</UserControl.Resources>
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-		<Image Grid.Column="0"
-			Source="/Resources/Images/AppLogo.png"
-			Stretch="Uniform"
-			VerticalAlignment="Stretch" HorizontalAlignment="Left" />
-
-		<Button Grid.Column="1"
-			Content="{StaticResource Item1}" />
-		<Button Grid.Column="2"
-			Content="{StaticResource Item2}" />
-		<Button Grid.Column="3"
-			Content="{StaticResource Item3}" />
-	</Grid>
+	<UserControl.Template>
+		<ControlTemplate TargetType="{x:Type UserControl}">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Image Grid.Column="0"
+					Source="/Resources/Images/AppLogo.png"
+					Stretch="Uniform"
+					VerticalAlignment="Stretch" HorizontalAlignment="Left" />
+				<ContentPresenter Grid.Column="1" HorizontalAlignment="Right" />
+			</Grid>
+		</ControlTemplate>
+	</UserControl.Template>
 </UserControl>
