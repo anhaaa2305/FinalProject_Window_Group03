@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utils="clr-namespace:WpfApp1.Utils"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/LoginStrings.xaml" />
@@ -31,22 +32,26 @@
 					<RowDefinition />
 				</Grid.RowDefinitions>
 				<Label Grid.Row="0" Grid.Column="0"
+					VerticalContentAlignment="Center"
 					Content="{StaticResource Label_Username}"
 					Target="{Binding ElementName=usernameTextBox}" />
-				<TextBox Grid.Row="0" Grid.Column="1"
+				<ui:TextBox Grid.Row="0" Grid.Column="1"
 					Name="usernameTextBox"
+					PlaceholderText="Enter username"
 					VerticalContentAlignment="Center"
-					Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					Text="{Binding Username, Mode=TwoWay}" />
 	
 				<Label Grid.Row="1" Grid.Column="0"
+					VerticalContentAlignment="Center"
 					Content="{StaticResource Label_Password}"
 					Target="{Binding ElementName=passwordTextBox}" />
-				<TextBox Grid.Row="1" Grid.Column="1"
+				<ui:PasswordBox Grid.Row="1" Grid.Column="1"
 					Name="passwordTextBox"
+					PlaceholderText="Enter password"
 					VerticalContentAlignment="Center"
-					Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					Password="{Binding Password, Mode=TwoWay}" />
 	
-				<Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+				<ui:Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
 					HorizontalAlignment="Center"
 					Padding="15,4"
 					Content="{StaticResource Button_Login}"

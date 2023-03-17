@@ -26,6 +26,6 @@
 				</ui:NotifyIcon>
 			</ui:TitleBar.Tray>
 		</ui:TitleBar>
-		<ContentPresenter Content="{Binding CurrentView, Mode=OneWay}" />
+		<ContentPresenter x:Name="View" Content="{Binding CurrentView, Mode=OneWay}" />
 	</DockPanel>
 </ui:FluentWindow>

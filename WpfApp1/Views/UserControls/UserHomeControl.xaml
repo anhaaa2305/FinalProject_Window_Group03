@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WpfApp1"
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp1.Utils"
 	xmlns:uc="clr-namespace:WpfApp1.Views.UserControls"
 	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
@@ -17,13 +18,13 @@
 			MaxHeight="160"
 			Margin="12,4">
 			<StackPanel Orientation="Horizontal">
-				<Button
+				<ui:Button
 					Content="{StaticResource Item_VehicleStore}"
 					Command="{Binding VehicleStoreClickCommand}" />
-				<Button
+				<ui:Button
 					Content="{StaticResource Item_VehicleRenting}"
 					Command="{Binding VehicleRentingClickCommand}" />
-				<Button
+				<ui:Button
 					Content="{StaticResource Item_RentHistory}"
 					Command="{Binding RentHistoryClickCommand}" />
 			</StackPanel>
