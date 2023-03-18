@@ -3,4 +3,5 @@
 					xmlns:sys="clr-namespace:System;assembly=mscorlib">
 	<sys:String x:Key="LoadingText">Ứng dụng đang tải cửa hàng xe, vui lòng đợi.</sys:String>
 	<sys:String x:Key="EmptyText">Cửa hàng xe hiện đang trống.</sys:String>
+	<sys:String x:Key="RentButton_ToolTipText">Thuê xe</sys:String>
 </ResourceDictionary>
