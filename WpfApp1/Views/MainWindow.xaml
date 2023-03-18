@@ -14,8 +14,8 @@
 	WindowBackdropType="Mica"
 	WindowCornerPreference="Round"
 	WindowStartupLocation="CenterScreen"
-	FontSize="13"
-	FontFamily="Segoe UI">
+	FontSize="14"
+	FontFamily="Segoe UI Variable">
 	<DockPanel>
 		<ui:TitleBar DockPanel.Dock="Top"
 			Title="WpfApp">
@@ -26,6 +26,6 @@
 				</ui:NotifyIcon>
 			</ui:TitleBar.Tray>
 		</ui:TitleBar>
-		<ContentPresenter x:Name="View" Content="{Binding CurrentView, Mode=OneWay}" />
+		<ContentPresenter Content="{Binding CurrentView, Mode=OneWay}" />
 	</DockPanel>
 </ui:FluentWindow>
