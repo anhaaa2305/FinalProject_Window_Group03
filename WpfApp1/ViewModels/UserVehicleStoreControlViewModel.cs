@@ -43,6 +43,13 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 		Task.Run(async () =>
 		{
 			var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
+			foreach (var vehicle in vehicles)
+			{
+				if (string.IsNullOrEmpty(vehicle.ImageUrl))
+				{
+					vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
+				}
+			}
 			App.Current.Dispatcher.Invoke(() =>
 			{
 				Vehicles = new ObservableCollection<VehicleModel>(vehicles);
