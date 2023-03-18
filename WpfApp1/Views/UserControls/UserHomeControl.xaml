@@ -14,21 +14,26 @@
 		<ResourceDictionary Source="/Resources/Dictionaries/UserHomeNavBarItemStrings.xaml" />
 	</UserControl.Resources>
 	<DockPanel>
-		<uc:UserNavBarControl DockPanel.Dock="Top"
-			MaxHeight="160"
-			Margin="12,4">
-			<StackPanel Orientation="Horizontal">
-				<ui:Button
-					Content="{StaticResource Item_VehicleStore}"
-					Command="{Binding VehicleStoreClickCommand}" />
-				<ui:Button
-					Content="{StaticResource Item_VehicleRenting}"
-					Command="{Binding VehicleRentingClickCommand}" />
-				<ui:Button
-					Content="{StaticResource Item_RentHistory}"
-					Command="{Binding RentHistoryClickCommand}" />
-			</StackPanel>
-		</uc:UserNavBarControl>
-		<ContentPresenter Content="{Binding CurrentView}" />
+		<Border DockPanel.Dock="Top"
+			Background="{StaticResource SubtleFillColorSecondaryBrush}"
+			Padding="12,0">
+			<uc:UserNavBarControl>
+				<StackPanel Orientation="Horizontal">
+					<ui:Button
+						Content="{StaticResource Item_VehicleStore}"
+						Command="{Binding VehicleStoreClickCommand, Mode=OneWay}"
+						Icon="TextBulletListSquare20" />
+					<ui:Button
+						Content="{StaticResource Item_VehicleRenting}"
+						Command="{Binding VehicleRentingClickCommand, Mode=OneWay}"
+						Icon="TextBulletListSquareClock20" />
+					<ui:Button
+						Content="{StaticResource Item_RentHistory}"
+						Command="{Binding RentHistoryClickCommand, Mode=OneWay}"
+						Icon="TextBulletListSquareEdit20" />
+				</StackPanel>
+			</uc:UserNavBarControl>
+		</Border>
+		<ContentPresenter Content="{Binding CurrentView, Mode=OneWay}" />
 	</DockPanel>
 </UserControl>
