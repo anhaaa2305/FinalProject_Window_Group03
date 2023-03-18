@@ -10,7 +10,7 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 	private ObservableCollection<VehicleModel>? vehicles;
 	private bool showLoadingTemplate;
 	private bool showEmptyTemplate;
-	private bool showDataGridTemplate;
+	private bool showListViewTemplate;
 
 	public ObservableCollection<VehicleModel>? Vehicles
 	{
@@ -29,15 +29,15 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 		set => SetProperty(ref showEmptyTemplate, value);
 	}
 
-	public bool ShowDataGridTemplate
+	public bool ShowListViewTemplate
 	{
-		get => showDataGridTemplate;
-		set => SetProperty(ref showDataGridTemplate, value);
+		get => showListViewTemplate;
+		set => SetProperty(ref showListViewTemplate, value);
 	}
 
 	public UserVehicleStoreControlViewModel(IVehicleDAO vehicleDAO)
 	{
-		showDataGridTemplate = false;
+		showListViewTemplate = false;
 		showEmptyTemplate = false;
 		showLoadingTemplate = true;
 		Task.Run(async () =>
@@ -60,7 +60,7 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 				}
 				else
 				{
-					ShowDataGridTemplate = true;
+					ShowListViewTemplate = true;
 				}
 			});
 		});
