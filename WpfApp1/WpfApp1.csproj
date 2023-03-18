@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <SplashScreen Include="Resources\Images\AppLogo.png" />
+    <Resource Include="Resources\Images\scooter_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
