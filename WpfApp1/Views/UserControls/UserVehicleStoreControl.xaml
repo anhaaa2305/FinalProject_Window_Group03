@@ -5,9 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WpfApp1"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp1.Utils"
 	xmlns:uc="clr-namespace:WpfApp1.Views.UserControls"
 	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
+	xmlns:models="clr-namespace:WpfApp1.Models"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/UserVehicleStoreStrings.xaml" />
@@ -17,11 +19,14 @@
 		<ContentControl.Resources>
 			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 			<ControlTemplate x:Key="LoadingTemplate">
-				<TextBlock
-				Text="{StaticResource LoadingText}"
-				HorizontalAlignment="Center"
-				TextAlignment="Center"
-				VerticalAlignment="Center" />
+				<StackPanel
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+					<ui:ProgressRing IsIndeterminate="True" />
+					<TextBlock
+						Text="{StaticResource LoadingText}"
+						TextAlignment="Center"/>
+				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="EmptyTemplate">
 				<TextBlock
@@ -30,13 +35,64 @@
 				VerticalAlignment="Center" />
 			</ControlTemplate>
 			<ControlTemplate x:Key="DataGridTemplate">
-				<DataGrid
-				ItemsSource="{Binding Vehicles}"
-				AutoGenerateColumns="True"
-				IsSynchronizedWithCurrentItem="True"
-				ColumnWidth="*"
-				HorizontalScrollBarVisibility="Auto"
-				VerticalScrollBarVisibility="Auto" />
+				<Grid Grid.IsSharedSizeScope="True">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Grid ShowGridLines="True" utils:MarginSetter.Margin="12,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+						<TextBlock
+							Text="Image"
+							HorizontalAlignment="Center" />
+						<TextBlock Padding="0" Grid.Column="1"
+							Text="Id"
+							HorizontalAlignment="Left" />
+						<TextBlock Grid.Column="2"
+							Text="Name" />
+						<TextBlock Grid.Column="3"
+							Text="License Plate" />
+						<TextBlock Grid.Column="4"
+							Text="License Plate"/>
+					</Grid>
+					<ListView Grid.Row="1" ItemsSource="{Binding Vehicles}" Padding="0">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+									<Grid ShowGridLines="True" utils:MarginSetter.Margin="12,0">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="*" />
+										</Grid.ColumnDefinitions>
+										<ui:SymbolIcon Symbol="VehicleBicycle24" FontSize="50" HorizontalAlignment="Center" />
+										<TextBlock Grid.Column="1"
+											Text="{Binding Id}"
+											VerticalAlignment="Center"
+											HorizontalAlignment="Left" />
+										<TextBlock Grid.Column="2"
+											Text="{Binding Name}"
+											VerticalAlignment="Center" />
+										<TextBlock Grid.Column="3"
+											Text="{Binding LicensePlate}"
+											VerticalAlignment="Center" />
+										<ui:Button Grid.Column="4"
+											VerticalAlignment="Center"
+											Padding="3"
+											Icon="Key32"
+											FontSize="24" />
+									</Grid>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+				</Grid>
 			</ControlTemplate>
 		</ContentControl.Resources>
 		<ContentControl.Style>
