@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp1.DAOs;
@@ -40,36 +41,41 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 		set => SetProperty(ref showListViewTemplate, value);
 	}
 
+	private readonly IVehicleDAO vehicleDAO;
 	public UserVehicleStoreControlViewModel(IVehicleDAO vehicleDAO)
+	{
+		this.vehicleDAO = vehicleDAO;
+		RentCommand = new RelayCommand<VehicleModel>(Rent);
+		ViewItemDetailsCommand = new RelayCommand<VehicleModel>(ViewItemDetails);
+
+		FetchVehiclesAsync().SafeFireAndForget();
+	}
+
+	private async Task FetchVehiclesAsync()
 	{
 		showListViewTemplate = false;
 		showEmptyTemplate = false;
 		showLoadingTemplate = true;
-		RentCommand = new RelayCommand<VehicleModel>(Rent);
-		ViewItemDetailsCommand = new RelayCommand<VehicleModel>(ViewItemDetails);
-		Task.Run(async () =>
+		var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
+		foreach (var vehicle in vehicles)
 		{
-			var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
-			foreach (var vehicle in vehicles)
+			if (string.IsNullOrEmpty(vehicle.ImageUrl))
 			{
-				if (string.IsNullOrEmpty(vehicle.ImageUrl))
-				{
-					vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
-				}
+				vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
 			}
-			App.Current.Dispatcher.Invoke(() =>
+		}
+		App.Current.Dispatcher.Invoke(() =>
+		{
+			Vehicles = new ObservableCollection<VehicleModel>(vehicles);
+			ShowLoadingTemplate = false;
+			if (Vehicles.Count == 0)
 			{
-				Vehicles = new ObservableCollection<VehicleModel>(vehicles);
-				ShowLoadingTemplate = false;
-				if (Vehicles.Count == 0)
-				{
-					ShowEmptyTemplate = true;
-				}
-				else
-				{
-					ShowListViewTemplate = true;
-				}
-			});
+				ShowEmptyTemplate = true;
+			}
+			else
+			{
+				ShowListViewTemplate = true;
+			}
 		});
 	}
 
