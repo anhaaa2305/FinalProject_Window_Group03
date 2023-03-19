@@ -31,18 +31,18 @@ public static class ServiceCollectionExtensions
 				return options;
 			})
 			.AddSingleton<IDbService, DbService>()
-			.AddSingleton<INavigationService, NavigationService>();
+			.AddScoped<INavigationService, NavigationService>();
 	}
 
 	public static IServiceCollection RegisterViews(this IServiceCollection self)
 	{
 		return self
 			.AddSingleton<MainWindow>()
-			.AddSingleton<LoginControl>()
-			.AddSingleton<UserHomeControl>()
-			.AddSingleton<UserVehicleStoreControl>()
-			.AddSingleton<UserVehicleRentingControl>()
-			.AddSingleton<UserRentHistoryControl>();
+			.AddTransient<LoginControl>()
+			.AddTransient<UserHomeControl>()
+			.AddTransient<UserVehicleStoreControl>()
+			.AddTransient<UserVehicleRentingControl>()
+			.AddTransient<UserRentHistoryControl>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
@@ -51,6 +51,6 @@ public static class ServiceCollectionExtensions
 			.AddSingleton<MainWindowViewModel>()
 			.AddSingleton<LoginControlViewModel>()
 			.AddSingleton<UserHomeControlViewModel>()
-			.AddSingleton<UserVehicleStoreControlViewModel>();
+			.AddTransient<UserVehicleStoreControlViewModel>();
 	}
 }
