@@ -22,7 +22,7 @@
 					<ui:Button
 						Content="{StaticResource Item_VehicleStore}"
 						Command="{Binding VehicleStoreClickCommand, Mode=OneWay}"
-						Icon="TextBulletListSquare20" />
+						Icon="AppsListDetail24" />
 					<ui:Button
 						Content="{StaticResource Item_VehicleRenting}"
 						Command="{Binding VehicleRentingClickCommand, Mode=OneWay}"
@@ -30,7 +30,7 @@
 					<ui:Button
 						Content="{StaticResource Item_RentHistory}"
 						Command="{Binding RentHistoryClickCommand, Mode=OneWay}"
-						Icon="TextBulletListSquareEdit20" />
+						Icon="History24" />
 				</StackPanel>
 			</uc:UserNavBarControl>
 		</Border>
