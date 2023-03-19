@@ -30,10 +30,17 @@
 				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="EmptyTemplate">
-				<TextBlock
-				Text="{StaticResource EmptyText}"
-				TextAlignment="Center"
-				VerticalAlignment="Center" />
+				<StackPanel
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+					<ui:SymbolIcon
+						Symbol="EmojiSad24"
+						FontSize="50" />
+					<TextBlock
+						Text="{StaticResource EmptyText}"
+						TextAlignment="Center"
+						VerticalAlignment="Center" />
+				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="ListViewTemplate">
 				<ListView ItemsSource="{Binding Vehicles, Mode=OneWay}">
@@ -67,6 +74,7 @@
 										Icon="Key32"
 										FontSize="24"
 										ToolTipService.ToolTip="{StaticResource RentButton_ToolTipText}"
+										ToolTipService.InitialShowDelay="400"
 										Command="{Binding DataContext.RentCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
 										CommandParameter="{Binding}" />
 									<ui:Button
@@ -75,6 +83,7 @@
 										Icon="Info24"
 										FontSize="24"
 										ToolTipService.ToolTip="{StaticResource DetailsButton_ToolTipText}"
+										ToolTipService.InitialShowDelay="400"
 										Command="{Binding DataContext.ViewItemDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
 										CommandParameter="{Binding}" />
 								</StackPanel>
