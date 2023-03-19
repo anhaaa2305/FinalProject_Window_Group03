@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="WpfApp1.Views.UserControls.UserVehicleStoreControl"
+    x:Class="WpfApp1.Views.User.AvailableVehicleView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,12 +8,9 @@
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp1.Utils"
-	xmlns:uc="clr-namespace:WpfApp1.Views.UserControls"
-	xmlns:vm="clr-namespace:WpfApp1.ViewModels"
-	xmlns:models="clr-namespace:WpfApp1.Models"
     mc:Ignorable="d">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/UserVehicleStoreStrings.xaml" />
+		<ResourceDictionary Source="/Resources/Dictionaries/User/AvailableVehicleStrings.xaml" />
 	</UserControl.Resources>
 
 	<ContentControl>

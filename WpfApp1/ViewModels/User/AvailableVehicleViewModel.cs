@@ -8,7 +8,7 @@ using WpfApp1.Models;
 
 namespace WpfApp1.ViewModels;
 
-public class UserVehicleStoreControlViewModel : ObservableObject
+public class AvailableVehicleViewModel : ObservableObject
 {
 	private ObservableCollection<VehicleModel>? vehicles;
 	private bool showLoadingTemplate;
@@ -42,7 +42,7 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 	}
 
 	private readonly IVehicleDAO vehicleDAO;
-	public UserVehicleStoreControlViewModel(IVehicleDAO vehicleDAO)
+	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO)
 	{
 		this.vehicleDAO = vehicleDAO;
 		RentCommand = new RelayCommand<VehicleModel>(Rent);
@@ -67,7 +67,7 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 		App.Current.Dispatcher.Invoke(() =>
 		{
 			Vehicles = new ObservableCollection<VehicleModel>(vehicles);
-			ShowLoadingTemplate = false;
+			// ShowLoadingTemplate = false;
 			if (Vehicles.Count == 0)
 			{
 				ShowEmptyTemplate = true;

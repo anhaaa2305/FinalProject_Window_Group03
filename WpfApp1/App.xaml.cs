@@ -1,11 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.DAOs;
-using WpfApp1.Services;
-using WpfApp1.ViewModels;
 using WpfApp1.Views;
-using WpfApp1.Views.UserControls;
 
 namespace WpfApp1
 {

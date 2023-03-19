@@ -2,7 +2,7 @@ using WpfApp1.DAOs;
 using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views;
-using WpfApp1.Views.UserControls;
+using WpfApp1.Views.User;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -38,19 +38,19 @@ public static class ServiceCollectionExtensions
 	{
 		return self
 			.AddSingleton<MainWindow>()
-			.AddTransient<LoginControl>()
-			.AddTransient<UserHomeControl>()
-			.AddTransient<UserVehicleStoreControl>()
-			.AddTransient<UserVehicleRentingControl>()
-			.AddTransient<UserRentHistoryControl>();
+			.AddTransient<LoginView>()
+			.AddTransient<HomeView>()
+			.AddTransient<AvailableVehicleView>()
+			.AddTransient<RentedVehicleView>()
+			.AddTransient<RentalHistoryView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
 	{
 		return self
 			.AddSingleton<MainWindowViewModel>()
-			.AddSingleton<LoginControlViewModel>()
-			.AddSingleton<UserHomeControlViewModel>()
-			.AddTransient<UserVehicleStoreControlViewModel>();
+			.AddSingleton<LoginViewModel>()
+			.AddSingleton<HomeViewModel>()
+			.AddTransient<AvailableVehicleViewModel>();
 	}
 }

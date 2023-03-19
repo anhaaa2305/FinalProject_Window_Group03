@@ -1,11 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp1.Services;
-using WpfApp1.Views.UserControls;
+using WpfApp1.Views.User;
 
 namespace WpfApp1.ViewModels;
 
-public class LoginControlViewModel : ObservableObject
+public class LoginViewModel : ObservableObject
 {
 	private string username = string.Empty;
 	private string password = string.Empty;
@@ -36,7 +36,7 @@ public class LoginControlViewModel : ObservableObject
 	}
 
 	private readonly INavigationService navigationService;
-	public LoginControlViewModel(INavigationService navigationService)
+	public LoginViewModel(INavigationService navigationService)
 	{
 		this.navigationService = navigationService;
 		LoginCommand = new RelayCommand(Login, CanLogin);
@@ -44,7 +44,7 @@ public class LoginControlViewModel : ObservableObject
 
 	private void Login()
 	{
-		navigationService.Navigate<UserHomeControl>();
+		navigationService.Navigate<HomeView>();
 	}
 
 	private bool CanLogin()

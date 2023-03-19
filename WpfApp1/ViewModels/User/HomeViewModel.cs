@@ -3,16 +3,16 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.Services;
-using WpfApp1.Views.UserControls;
+using WpfApp1.Views.User;
 
 namespace WpfApp1.ViewModels;
 
-public class UserHomeControlViewModel : ObservableObject
+public class HomeViewModel : ObservableObject
 {
 	private readonly IServiceScope scope;
 	private readonly INavigationService navigator;
 	private UserControl? currentView;
-	public IRelayCommand VehicleStoreClickCommand { get; }
+	public IRelayCommand AvailableVehicleClickCommand { get; }
 	public IRelayCommand VehicleRentingClickCommand { get; }
 	public IRelayCommand RentHistoryClickCommand { get; }
 
@@ -23,22 +23,22 @@ public class UserHomeControlViewModel : ObservableObject
 			var changed = SetProperty(ref currentView, value);
 			if (changed)
 			{
-				VehicleStoreClickCommand.NotifyCanExecuteChanged();
+				AvailableVehicleClickCommand.NotifyCanExecuteChanged();
 				VehicleRentingClickCommand.NotifyCanExecuteChanged();
 				RentHistoryClickCommand.NotifyCanExecuteChanged();
 			}
 		}
 	}
 
-	public UserHomeControlViewModel(IServiceScopeFactory scopeFactory)
+	public HomeViewModel(IServiceScopeFactory scopeFactory)
 	{
 		scope = scopeFactory.CreateAsyncScope();
-		VehicleStoreClickCommand = new RelayCommand(ShowVehicleStoreView, CanShowVehicleStoreView);
+		AvailableVehicleClickCommand = new RelayCommand(ShowAvailableVehicleView, CanShowAvailableVehicleView);
 		VehicleRentingClickCommand = new RelayCommand(ShowVehicleRentingView, CanShowVehicleRentingView);
 		RentHistoryClickCommand = new RelayCommand(ShowRentHistoryView, CanShowRentHistoryView);
 		navigator = scope.ServiceProvider.GetRequiredService<INavigationService>();
 		navigator.Navigated += OnNavigated;
-		navigator.Navigate<UserVehicleStoreControl>();
+		navigator.Navigate<AvailableVehicleView>();
 	}
 
 	private void OnNavigated(UserControl control)
@@ -46,33 +46,33 @@ public class UserHomeControlViewModel : ObservableObject
 		CurrentView = control;
 	}
 
-	private void ShowVehicleStoreView()
+	private void ShowAvailableVehicleView()
 	{
-		navigator.Navigate<UserVehicleStoreControl>();
+		navigator.Navigate<AvailableVehicleView>();
 	}
 
-	private bool CanShowVehicleStoreView()
+	private bool CanShowAvailableVehicleView()
 	{
-		return CurrentView is not UserVehicleStoreControl;
+		return CurrentView is not AvailableVehicleView;
 	}
 
 	private void ShowVehicleRentingView()
 	{
-		navigator.Navigate<UserVehicleRentingControl>();
+		navigator.Navigate<RentedVehicleView>();
 	}
 
 	private bool CanShowVehicleRentingView()
 	{
-		return CurrentView is not UserVehicleRentingControl;
+		return CurrentView is not RentedVehicleView;
 	}
 
 	private void ShowRentHistoryView()
 	{
-		navigator.Navigate<UserRentHistoryControl>();
+		navigator.Navigate<RentalHistoryView>();
 	}
 
 	private bool CanShowRentHistoryView()
 	{
-		return CurrentView is not UserRentHistoryControl;
+		return CurrentView is not RentalHistoryView;
 	}
 }
