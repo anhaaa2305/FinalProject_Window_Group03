@@ -14,6 +14,8 @@
 	WindowBackdropType="Mica"
 	WindowCornerPreference="Round"
 	WindowStartupLocation="CenterScreen"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
 	FontSize="14"
 	FontFamily="Segoe UI Variable">
 	<DockPanel>
