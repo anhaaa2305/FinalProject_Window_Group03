@@ -109,7 +109,9 @@ public class VehicleDAO : IVehicleDAO
 		var models = new LinkedList<VehicleModel>();
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			models.AddLast(MapDataReaderToVehicleModel(reader));
+			var model = new VehicleModel();
+			PopulateData(model, reader);
+			models.AddLast(model);
 		}
 		return models;
 	}
@@ -131,7 +133,9 @@ public class VehicleDAO : IVehicleDAO
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			return MapDataReaderToVehicleModel(reader);
+			var m = new VehicleModel();
+			PopulateData(m, reader);
+			return m;
 		}
 		return default;
 	}
@@ -161,20 +165,77 @@ public class VehicleDAO : IVehicleDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
-	private static VehicleModel MapDataReaderToVehicleModel(DbDataReader reader)
+	public async Task<IReadOnlyCollection<VehicleModel>> GetAllRentedAsync()
 	{
-		return new VehicleModel
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
 		{
-			Id = reader.GetInt32("Id"),
-			LicensePlate = reader.GetString("LicensePlate"),
-			Name = reader.GetString("Name"),
-			PricePerDay = reader.GetInt32("PricePerDay"),
-			Color = reader.IsDBNull("Color")
-				? default
-				: reader.GetString("Color"),
-			ImageUrl = reader.IsDBNull("ImageUrl")
-				? default
-				: reader.GetString("ImageUrl"),
-		};
+			return Array.Empty<VehicleModel>();
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select * from RentedVehicles
+			inner join Vehicles on RentedVehicles.Id = Vehicles.Id
+		";
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+		var models = new LinkedList<VehicleModel>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var model = new RentedVehicleModel
+			{
+				UserId = reader.GetInt32("UserId"),
+				StartDate = reader.GetDateTime("StartDate"),
+				EndDate = reader.GetDateTime("EndDate"),
+			};
+			PopulateData(model, reader);
+			models.AddLast(model);
+		}
+		return models;
+	}
+
+	public async Task<IReadOnlyCollection<VehicleModel>> GetAllReservedAsync()
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return Array.Empty<VehicleModel>();
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select * from ReservedVehicles
+			inner join Vehicles on ReservedVehicles.Id = Vehicles.Id
+		";
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+		var models = new LinkedList<VehicleModel>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var model = new ReservedVehicleModel
+			{
+				UserId = reader.GetInt32("UserId"),
+				StartDate = reader.GetDateTime("StartDate"),
+				EndDate = reader.GetDateTime("EndDate"),
+			};
+			PopulateData(model, reader);
+			models.AddLast(model);
+		}
+		return models;
+	}
+
+	private static void PopulateData(VehicleModel model, DbDataReader reader)
+	{
+		model.Id = reader.GetInt32("Id");
+		model.LicensePlate = reader.GetString("LicensePlate");
+		model.Name = reader.GetString("Name");
+		model.PricePerDay = reader.GetInt32("PricePerDay");
+		model.Color = reader.IsDBNull("Color")
+			? default
+			: reader.GetString("Color");
+		model.ImageUrl = reader.IsDBNull("ImageUrl")
+			? default
+			: reader.GetString("ImageUrl");
 	}
 }
