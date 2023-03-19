@@ -25,7 +25,6 @@ public class VehicleDAO : IVehicleDAO
 				return false;
 			}
 
-
 			using var cmd = conn.CreateCommand();
 			cmd.CommandText =
 			@"
@@ -39,15 +38,15 @@ public class VehicleDAO : IVehicleDAO
 				ImageUrl varchar(256) null
 			)
 			";
-			for (var i = 0; i != 100; ++i)
-			{
-				await AddAsync(new VehicleModel
-				{
-					LicensePlate = $"86-B1-{35904 + i}",
-					Name = "Yamaha Sirius",
-					PricePerDay = 120_000,
-				});
-			}
+			// for (var i = 0; i != 100; ++i)
+			// {
+			// 	await AddAsync(new VehicleModel
+			// 	{
+			// 		LicensePlate = $"86-B1-{35904 + i}",
+			// 		Name = "Yamaha Sirius",
+			// 		PricePerDay = 120_000,
+			// 	});
+			// }
 			await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 		}
 		catch (Exception ex) { Debug.WriteLine(ex); }
@@ -162,7 +161,7 @@ public class VehicleDAO : IVehicleDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
-	private VehicleModel MapDataReaderToVehicleModel(DbDataReader reader)
+	private static VehicleModel MapDataReaderToVehicleModel(DbDataReader reader)
 	{
 		return new VehicleModel
 		{
