@@ -1,8 +1,7 @@
-using System.Windows;
 using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WpfApp1.DAOs;
+using Microsoft.Extensions.DependencyInjection;
 using WpfApp1.Services;
 using WpfApp1.Views.UserControls;
 
@@ -10,12 +9,14 @@ namespace WpfApp1.ViewModels;
 
 public class UserHomeControlViewModel : ObservableObject
 {
-	private UserControl currentView;
+	private readonly IServiceScope scope;
+	private readonly INavigationService navigator;
+	private UserControl? currentView;
 	public IRelayCommand VehicleStoreClickCommand { get; }
 	public IRelayCommand VehicleRentingClickCommand { get; }
 	public IRelayCommand RentHistoryClickCommand { get; }
 
-	public UserControl CurrentView
+	public UserControl? CurrentView
 	{
 		get => currentView; set
 		{
@@ -29,51 +30,49 @@ public class UserHomeControlViewModel : ObservableObject
 		}
 	}
 
-	private readonly UserVehicleStoreControl vehicleStoreControl;
-	private readonly UserVehicleRentingControl vehicleRentingControl;
-	private readonly UserRentHistoryControl rentHistoryControl;
-	public UserHomeControlViewModel(UserVehicleStoreControl vehicleStoreControl, UserVehicleRentingControl vehicleRentingControl, UserRentHistoryControl rentHistoryControl, IUserDAO userDAO)
+	public UserHomeControlViewModel(IServiceScopeFactory scopeFactory)
 	{
-		this.vehicleStoreControl = vehicleStoreControl;
-		this.vehicleRentingControl = vehicleRentingControl;
-		this.rentHistoryControl = rentHistoryControl;
-		Task.Run(async () =>
-		{
-			await userDAO.EnsureTableAsync();
-		});
-		currentView = vehicleStoreControl;
+		scope = scopeFactory.CreateAsyncScope();
 		VehicleStoreClickCommand = new RelayCommand(ShowVehicleStoreView, CanShowVehicleStoreView);
 		VehicleRentingClickCommand = new RelayCommand(ShowVehicleRentingView, CanShowVehicleRentingView);
 		RentHistoryClickCommand = new RelayCommand(ShowRentHistoryView, CanShowRentHistoryView);
+		navigator = scope.ServiceProvider.GetRequiredService<INavigationService>();
+		navigator.Navigated += OnNavigated;
+		navigator.Navigate<UserVehicleStoreControl>();
+	}
+
+	private void OnNavigated(UserControl control)
+	{
+		CurrentView = control;
 	}
 
 	private void ShowVehicleStoreView()
 	{
-		CurrentView = vehicleStoreControl;
+		navigator.Navigate<UserVehicleStoreControl>();
 	}
 
 	private bool CanShowVehicleStoreView()
 	{
-		return CurrentView != vehicleStoreControl;
+		return CurrentView is not UserVehicleStoreControl;
 	}
 
 	private void ShowVehicleRentingView()
 	{
-		CurrentView = vehicleRentingControl;
+		navigator.Navigate<UserVehicleRentingControl>();
 	}
 
 	private bool CanShowVehicleRentingView()
 	{
-		return CurrentView != vehicleRentingControl;
+		return CurrentView is not UserVehicleRentingControl;
 	}
 
 	private void ShowRentHistoryView()
 	{
-		CurrentView = rentHistoryControl;
+		navigator.Navigate<UserRentHistoryControl>();
 	}
 
 	private bool CanShowRentHistoryView()
 	{
-		return CurrentView != rentHistoryControl;
+		return CurrentView is not UserRentHistoryControl;
 	}
 }
