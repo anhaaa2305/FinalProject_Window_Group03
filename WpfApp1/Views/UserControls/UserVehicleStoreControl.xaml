@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WpfApp1"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -38,35 +39,49 @@
 				<ListView ItemsSource="{Binding Vehicles, Mode=OneWay}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
-								<Grid utils:MarginSetter.Margin="12,0">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="Auto" />
-									</Grid.ColumnDefinitions>
-									<Image
-										Source="{Binding ImageUrl, Mode=OneWay}"
-										MaxWidth="172"
-										Stretch="UniformToFill"
-										HorizontalAlignment="Center"
-										RenderOptions.BitmapScalingMode="Fant" />
-									<StackPanel Grid.Column="1"
-										VerticalAlignment="Center">
-										<TextBlock
-											Text="{Binding Name, Mode=OneWay}"
-											FontWeight="Bold"/>
-										<TextBlock Text="{Binding LicensePlate}"/>
-									</StackPanel>
-									<ui:Button Grid.Column="2"
+							<Grid utils:MarginSetter.Margin="12,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Image
+									Source="{Binding ImageUrl, Mode=OneWay}"
+									MaxWidth="172"
+									Stretch="UniformToFill"
+									HorizontalAlignment="Center"
+									RenderOptions.BitmapScalingMode="Fant" />
+								<StackPanel Grid.Column="1"
+									VerticalAlignment="Center">
+									<TextBlock
+										Text="{Binding Name, Mode=OneWay}"
+										FontWeight="Bold"/>
+									<TextBlock Text="{Binding LicensePlate}"/>
+								</StackPanel>
+								<StackPanel Grid.Column="2"
+									utils:MarginSetter.Margin="6,0"
+									Orientation="Horizontal">
+									<ui:Button
 										VerticalAlignment="Center"
 										Padding="3"
 										Icon="Key32"
 										FontSize="24"
-										ToolTipService.ToolTip="{StaticResource RentButton_ToolTipText}" />
-								</Grid>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
+										ToolTipService.ToolTip="{StaticResource RentButton_ToolTipText}"
+										Command="{Binding DataContext.RentCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
+										CommandParameter="{Binding}" />
+									<ui:Button
+										VerticalAlignment="Center"
+										Padding="3"
+										Icon="Info24"
+										FontSize="24"
+										ToolTipService.ToolTip="{StaticResource DetailsButton_ToolTipText}"
+										Command="{Binding DataContext.ViewItemDetailsCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
+										CommandParameter="{Binding}" />
+								</StackPanel>
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
 			</ControlTemplate>
 		</ContentControl.Resources>
 		<ContentControl.Style>

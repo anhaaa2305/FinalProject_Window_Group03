@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using WpfApp1.DAOs;
 using WpfApp1.Models;
 
@@ -11,6 +13,9 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 	private bool showLoadingTemplate;
 	private bool showEmptyTemplate;
 	private bool showListViewTemplate;
+
+	public IRelayCommand<VehicleModel> RentCommand { get; }
+	public IRelayCommand<VehicleModel> ViewItemDetailsCommand { get; }
 
 	public ObservableCollection<VehicleModel>? Vehicles
 	{
@@ -40,6 +45,8 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 		showListViewTemplate = false;
 		showEmptyTemplate = false;
 		showLoadingTemplate = true;
+		RentCommand = new RelayCommand<VehicleModel>(Rent);
+		ViewItemDetailsCommand = new RelayCommand<VehicleModel>(ViewItemDetails);
 		Task.Run(async () =>
 		{
 			var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
@@ -64,5 +71,21 @@ public class UserVehicleStoreControlViewModel : ObservableObject
 				}
 			});
 		});
+	}
+
+	private void Rent(VehicleModel? model)
+	{
+		if (Vehicles is null || model is null)
+		{
+			return;
+		}
+	}
+
+	private void ViewItemDetails(VehicleModel? model)
+	{
+		if (Vehicles is null || model is null)
+		{
+			return;
+		}
 	}
 }
