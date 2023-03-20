@@ -51,6 +51,7 @@ public static class ServiceCollectionExtensions
 			.AddSingleton<MainWindowViewModel>()
 			.AddSingleton<LoginViewModel>()
 			.AddSingleton<HomeViewModel>()
-			.AddTransient<AvailableVehicleViewModel>();
+			.AddTransient<AvailableVehicleViewModel>()
+			.AddTransient<RentedVehicleViewModel>();
 	}
 }

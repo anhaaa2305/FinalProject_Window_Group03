@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="BusyText">Ứng dụng đang tải danh sách xe đang thuê, vui lòng đợi.</sys:String>
+	<sys:String x:Key="EmptyText">Danh sách xe đang thuê hiện đang trống.</sys:String>
+	<sys:String x:Key="DetailsButton_ToolTipText">Chi tiết xe</sys:String>
+</ResourceDictionary>
