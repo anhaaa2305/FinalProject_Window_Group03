@@ -33,6 +33,7 @@ namespace WpfApp1
 			if (!ok)
 			{
 				MessageBox.Show("Database không đảm bảo.");
+				Shutdown(1);
 				return;
 			}
 
@@ -47,7 +48,7 @@ namespace WpfApp1
 				Services.GetRequiredService<IUserDAO>().EnsureTableAsync(),
 				Services.GetRequiredService<IVehicleDAO>().EnsureTableAsync()
 			);
-			return !oks.Any(ok => false);
+			return oks.All(ok => ok);
 		}
 	}
 }
