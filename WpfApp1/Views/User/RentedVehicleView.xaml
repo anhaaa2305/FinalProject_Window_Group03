@@ -60,6 +60,18 @@
 										Text="{Binding Name, Mode=OneWay}"
 										FontWeight="Bold"/>
 									<TextBlock Text="{Binding LicensePlate}"/>
+									<StackPanel
+										VerticalAlignment="Center"
+										Orientation="Horizontal"
+										utils:SpacingSetter.Spacing="6,0">
+										<TextBlock
+											Text="{Binding StartDate, Mode=OneWay, StringFormat={StaticResource StartDate_Format}}"
+											FontWeight="Bold" />
+										<TextBlock Text="-" />
+										<TextBlock
+											Text="{Binding EndDate, Mode=OneWay, StringFormat={StaticResource EndDate_Format}}"
+											FontWeight="Bold" />
+									</StackPanel>
 								</StackPanel>
 								<StackPanel Grid.Column="2"
 									utils:MarginSetter.Margin="6,0"
