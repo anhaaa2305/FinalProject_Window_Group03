@@ -11,7 +11,7 @@
     xmlns:data="clr-namespace:WpfApp1.Data"
     mc:Ignorable="d">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/User/RentalHistoryStrings.xaml" />
+		<ResourceDictionary Source="/Resources/Dictionaries/User/RentingLogStrings.xaml" />
 	</UserControl.Resources>
 	<ContentControl>
 		<ContentControl.Resources>

@@ -39,7 +39,7 @@ public class RentingLogViewModel : ObservableObject
 	private async Task GetRentingLogsAsync()
 	{
 		State = ViewState.Busy;
-		var records = await userDAO.GetAllRentingLogsAsync(new UserModel { }).ConfigureAwait(false);
+		var records = await userDAO.GetAllRentingLogsAsync(new UserModel { Id = 1101 }).ConfigureAwait(false);
 		App.Current.Dispatcher.Invoke(() =>
 		{
 			Records = new ObservableCollection<UserRentingLogModel>(records);
