@@ -5,25 +5,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:WpfApp1"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp1.Utils"
+    xmlns:controls="clr-namespace:WpfApp1.Views.Controls"
+    xmlns:data="clr-namespace:WpfApp1.Data"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/AvailableVehicleStrings.xaml" />
 	</UserControl.Resources>
-
 	<ContentControl>
 		<ContentControl.Resources>
-			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-			<ControlTemplate x:Key="LoadingTemplate">
+			<ControlTemplate x:Key="BusyTemplate">
 				<StackPanel
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center">
 					<ui:ProgressRing IsIndeterminate="True" />
 					<TextBlock
 						Text="{StaticResource LoadingText}"
-						TextAlignment="Center"/>
+						TextAlignment="Center" />
 				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="EmptyTemplate">
@@ -39,7 +38,7 @@
 						VerticalAlignment="Center" />
 				</StackPanel>
 			</ControlTemplate>
-			<ControlTemplate x:Key="ListViewTemplate">
+			<ControlTemplate x:Key="MainTemplate">
 				<ListView ItemsSource="{Binding Vehicles, Mode=OneWay}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
@@ -93,13 +92,13 @@
 		<ContentControl.Style>
 			<Style TargetType="ContentControl">
 				<Style.Triggers>
-					<DataTrigger Binding="{Binding ShowListViewTemplate, Mode=OneWay}" Value="True">
-						<Setter Property="Template" Value="{StaticResource ListViewTemplate}" />
+					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Present}">
+						<Setter Property="Template" Value="{StaticResource MainTemplate}" />
 					</DataTrigger>
-						<DataTrigger Binding="{Binding ShowLoadingTemplate, Mode=OneWay}" Value="True">
-						<Setter Property="Template" Value="{StaticResource LoadingTemplate}" />
+					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Busy}">
+						<Setter Property="Template" Value="{StaticResource BusyTemplate}" />
 					</DataTrigger>
-					<DataTrigger Binding="{Binding ShowEmptyTemplate, Mode=OneWay}" Value="True">
+					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Empty}">
 						<Setter Property="Template" Value="{StaticResource EmptyTemplate}" />
 					</DataTrigger>
 				</Style.Triggers>

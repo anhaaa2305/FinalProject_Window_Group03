@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WpfApp1.DAOs;
+using WpfApp1.Data;
 using WpfApp1.Models;
 
 namespace WpfApp1.ViewModels;
@@ -11,9 +11,7 @@ namespace WpfApp1.ViewModels;
 public class AvailableVehicleViewModel : ObservableObject
 {
 	private ObservableCollection<VehicleModel>? vehicles;
-	private bool showLoadingTemplate;
-	private bool showEmptyTemplate;
-	private bool showListViewTemplate;
+	private ViewState state;
 
 	public IRelayCommand<VehicleModel> RentCommand { get; }
 	public IRelayCommand<VehicleModel> ViewItemDetailsCommand { get; }
@@ -23,22 +21,10 @@ public class AvailableVehicleViewModel : ObservableObject
 		get => vehicles; set => SetProperty(ref vehicles, value);
 	}
 
-	public bool ShowLoadingTemplate
+	public ViewState State
 	{
-		get => showLoadingTemplate;
-		set => SetProperty(ref showLoadingTemplate, value);
-	}
-
-	public bool ShowEmptyTemplate
-	{
-		get => showEmptyTemplate;
-		set => SetProperty(ref showEmptyTemplate, value);
-	}
-
-	public bool ShowListViewTemplate
-	{
-		get => showListViewTemplate;
-		set => SetProperty(ref showListViewTemplate, value);
+		get => state;
+		set => SetProperty(ref state, value);
 	}
 
 	private readonly IVehicleDAO vehicleDAO;
@@ -53,9 +39,7 @@ public class AvailableVehicleViewModel : ObservableObject
 
 	private async Task FetchVehiclesAsync()
 	{
-		showListViewTemplate = false;
-		showEmptyTemplate = false;
-		showLoadingTemplate = true;
+		State = ViewState.Busy;
 		var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{
@@ -67,14 +51,13 @@ public class AvailableVehicleViewModel : ObservableObject
 		App.Current.Dispatcher.Invoke(() =>
 		{
 			Vehicles = new ObservableCollection<VehicleModel>(vehicles);
-			// ShowLoadingTemplate = false;
 			if (Vehicles.Count == 0)
 			{
-				ShowEmptyTemplate = true;
+				State = ViewState.Empty;
 			}
 			else
 			{
-				ShowListViewTemplate = true;
+				State = ViewState.Present;
 			}
 		});
 	}

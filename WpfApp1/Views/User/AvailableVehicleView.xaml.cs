@@ -8,7 +8,6 @@ public partial class AvailableVehicleView : UserControl
 	public AvailableVehicleView(AvailableVehicleViewModel vm)
 	{
 		InitializeComponent();
-
 		DataContext = vm;
 	}
 }
