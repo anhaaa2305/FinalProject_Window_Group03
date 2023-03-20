@@ -1,7 +1,8 @@
-using System.Data;
-using System.Data.Common;
+using System.Diagnostics;
+using Microsoft.Data.SqlClient;
 using WpfApp1.Models;
 using WpfApp1.Services;
+using WpfApp1.Utils;
 
 namespace WpfApp1.DAOs;
 
@@ -15,6 +16,24 @@ public class UserDAO : IUserDAO
 	}
 
 	public async Task<bool> EnsureTableAsync()
+	{
+		try
+		{
+			var oks = await Task.WhenAll
+			(
+				EnsureUsersTableAsync(),
+				EnsureRentingLogsTableAsync()
+			);
+			return oks.All(ok => ok);
+		}
+		catch (Exception ex)
+		{
+			Debug.WriteLine(ex.Message);
+			return false;
+		}
+	}
+
+	private async Task<bool> EnsureUsersTableAsync()
 	{
 		await using var conn = await db.OpenAsync().ConfigureAwait(false);
 		if (conn is null)
@@ -50,6 +69,34 @@ public class UserDAO : IUserDAO
 		// 		Email = Random.Shared.Next(1000) > 500 ? null : $"user{i}@gmail.com"
 		// 	});
 		// }
+		return true;
+	}
+
+	private async Task<bool> EnsureRentingLogsTableAsync()
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return false;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			if not exists (select * from sysobjects where name='UserRentingLogs' and xtype='U')
+				create table UserRentingLogs(
+				Id int not null,
+				VehicleId int not null,
+				LicensePlate varchar(16) not null,
+				Name varchar(64) not null,
+				PricePerDay int not null,
+				Color varchar(32) null,
+				ImageUrl varchar(256) null,
+				StartDate datetime not null,
+				EndDate datetime not null
+			)
+		";
+		await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 		return true;
 	}
 
@@ -114,7 +161,7 @@ public class UserDAO : IUserDAO
 		var models = new LinkedList<UserModel>();
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			models.AddLast(MapDataReaderToUserModel(reader));
+			models.AddLast(DbHelper.Read(new UserModel(), reader));
 		}
 		return models;
 	}
@@ -136,7 +183,7 @@ public class UserDAO : IUserDAO
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			return MapDataReaderToUserModel(reader);
+			return DbHelper.Read(new UserModel(), reader);
 		}
 		return default;
 	}
@@ -167,21 +214,40 @@ public class UserDAO : IUserDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
-	private static UserModel MapDataReaderToUserModel(DbDataReader reader)
+	public Task<IReadOnlyCollection<UserRentingLogModel>> GetAllRentingLogsAsync()
 	{
-		return new UserModel
+		return GetAllRentalRecordsAsync(
+		@"
+			select * from UserRentingLogs
+		");
+	}
+
+	public Task<IReadOnlyCollection<UserRentingLogModel>> GetAllRentingLogsAsync(UserModel model)
+	{
+		return GetAllRentalRecordsAsync(
+		@"
+			select * from UserRentingLogs
+			where Id = @Id
+		", new SqlParameter("@Id", model.Id));
+	}
+
+	private async Task<IReadOnlyCollection<UserRentingLogModel>> GetAllRentalRecordsAsync(string commandText, params SqlParameter[] parameters)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
 		{
-			Id = reader.GetInt32("Id"),
-			NationalId = reader.GetString("NationalId"),
-			FullName = reader.GetString("FullName"),
-			IsMale = reader.GetBoolean("IsMale"),
-			DateOfBirth = reader.IsDBNull("DateOfBirth")
-				? default
-				: reader.GetDateTime("DateOfBirth"),
-			Phone = reader.GetString("Phone"),
-			Email = reader.IsDBNull("Email")
-				? default
-				: reader.GetString("Email"),
-		};
+			return Array.Empty<UserRentingLogModel>();
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText = commandText;
+		cmd.Parameters.AddRange(parameters);
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+		var models = new LinkedList<UserRentingLogModel>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			models.AddLast(DbHelper.Read(new UserRentingLogModel(), reader));
+		}
+		return models;
 	}
 }

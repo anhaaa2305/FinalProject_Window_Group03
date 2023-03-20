@@ -1,10 +1,9 @@
-using System.Data;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Windows;
 using Microsoft.Data.SqlClient;
 using WpfApp1.Models;
 using WpfApp1.Services;
+using WpfApp1.Utils;
 
 namespace WpfApp1.DAOs;
 
@@ -91,7 +90,7 @@ public class VehicleDAO : IVehicleDAO
 				constraint FK_RentedVehicles_Vehicles foreign key (Id) references Vehicles(Id) on update cascade on delete cascade,
 				constraint FK_RentedVehicles_Users foreign key (UserId) references Users(Id) on update cascade on delete cascade
 			)
-			";
+		";
 		await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 		return true;
 	}
@@ -177,9 +176,7 @@ public class VehicleDAO : IVehicleDAO
 		var models = new LinkedList<VehicleModel>();
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			var model = new VehicleModel();
-			PopulateData(model, reader);
-			models.AddLast(model);
+			models.AddLast(DbHelper.Read(new VehicleModel(), reader));
 		}
 		return models;
 	}
@@ -201,9 +198,7 @@ public class VehicleDAO : IVehicleDAO
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			var m = new VehicleModel();
-			PopulateData(m, reader);
-			return m;
+			return DbHelper.Read(new VehicleModel(), reader);
 		}
 		return default;
 	}
@@ -286,14 +281,7 @@ public class VehicleDAO : IVehicleDAO
 		var models = new LinkedList<VehicleModel>();
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			var model = new ReservedVehicleModel
-			{
-				UserId = reader.GetInt32("UserId"),
-				StartDate = reader.GetDateTime("StartDate"),
-				EndDate = reader.GetDateTime("EndDate"),
-			};
-			PopulateData(model, reader);
-			models.AddLast(model);
+			models.AddLast(DbHelper.Read(new ReservedVehicleModel(), reader));
 		}
 		return models;
 	}
@@ -313,29 +301,8 @@ public class VehicleDAO : IVehicleDAO
 		var models = new LinkedList<VehicleModel>();
 		while (await reader.ReadAsync().ConfigureAwait(false))
 		{
-			var model = new RentedVehicleModel
-			{
-				UserId = reader.GetInt32("UserId"),
-				StartDate = reader.GetDateTime("StartDate"),
-				EndDate = reader.GetDateTime("EndDate"),
-			};
-			PopulateData(model, reader);
-			models.AddLast(model);
+			models.AddLast(DbHelper.Read(new RentedVehicleModel(), reader));
 		}
 		return models;
-	}
-
-	private static void PopulateData(VehicleModel model, DbDataReader reader)
-	{
-		model.Id = reader.GetInt32("Id");
-		model.LicensePlate = reader.GetString("LicensePlate");
-		model.Name = reader.GetString("Name");
-		model.PricePerDay = reader.GetInt32("PricePerDay");
-		model.Color = reader.IsDBNull("Color")
-			? default
-			: reader.GetString("Color");
-		model.ImageUrl = reader.IsDBNull("ImageUrl")
-			? default
-			: reader.GetString("ImageUrl");
 	}
 }

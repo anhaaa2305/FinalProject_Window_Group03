@@ -42,16 +42,17 @@ public static class ServiceCollectionExtensions
 			.AddTransient<HomeView>()
 			.AddTransient<AvailableVehicleView>()
 			.AddTransient<RentedVehicleView>()
-			.AddTransient<RentalHistoryView>();
+			.AddTransient<RentingLogView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
 	{
 		return self
 			.AddSingleton<MainWindowViewModel>()
-			.AddSingleton<LoginViewModel>()
-			.AddSingleton<HomeViewModel>()
+			.AddTransient<LoginViewModel>()
+			.AddTransient<HomeViewModel>()
 			.AddTransient<AvailableVehicleViewModel>()
-			.AddTransient<RentedVehicleViewModel>();
+			.AddTransient<RentedVehicleViewModel>()
+			.AddTransient<RentingLogViewModel>();
 	}
 }
