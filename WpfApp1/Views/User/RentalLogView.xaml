@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="WpfApp1.Views.User.RentingLogView"
+    x:Class="WpfApp1.Views.User.RentalLogView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,7 +11,7 @@
     xmlns:data="clr-namespace:WpfApp1.Data"
     mc:Ignorable="d">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/User/RentingLogStrings.xaml" />
+		<ResourceDictionary Source="/Resources/Dictionaries/User/RentalLogStrings.xaml" />
 	</UserControl.Resources>
 	<ContentControl>
 		<ContentControl.Resources>
@@ -39,7 +39,7 @@
 				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="MainTemplate">
-				<ListView ItemsSource="{Binding Records, Mode=OneWay}">
+				<ListView ItemsSource="{Binding Logs, Mode=OneWay}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<Grid utils:MarginSetter.Margin="12,0">
@@ -49,7 +49,7 @@
 									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
 								<Image
-									Source="{Binding ImageUrl, Mode=OneWay}"
+									Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
 									MaxWidth="172"
 									Stretch="UniformToFill"
 									HorizontalAlignment="Center"
@@ -57,7 +57,7 @@
 								<StackPanel Grid.Column="1"
 									VerticalAlignment="Center">
 									<TextBlock
-										Text="{Binding Name, Mode=OneWay}"
+										Text="{Binding Vehicle.Name, Mode=OneWay}"
 										FontWeight="Bold"/>
 									<TextBlock Text="{Binding LicensePlate}"/>
 								</StackPanel>

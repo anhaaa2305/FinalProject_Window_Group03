@@ -3,9 +3,9 @@ using WpfApp1.ViewModels;
 
 namespace WpfApp1.Views.User;
 
-public partial class RentingLogView : UserControl
+public partial class RentalLogView : UserControl
 {
-	public RentingLogView(RentingLogViewModel vm)
+	public RentalLogView(RentalLogViewModel vm)
 	{
 		InitializeComponent();
 

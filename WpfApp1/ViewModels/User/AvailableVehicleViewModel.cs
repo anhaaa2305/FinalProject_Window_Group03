@@ -2,21 +2,23 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WpfApp1.DAOs;
+using Microsoft.EntityFrameworkCore;
 using WpfApp1.Data;
-using WpfApp1.Models;
+using WpfApp1.Data.Context;
+using WpfApp1.Data.Models;
 
 namespace WpfApp1.ViewModels;
 
 public class AvailableVehicleViewModel : ObservableObject
 {
-	private ObservableCollection<VehicleModel>? vehicles;
+	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private ObservableCollection<Vehicle>? vehicles;
 	private ViewState state;
 
-	public IRelayCommand<VehicleModel> RentCommand { get; }
-	public IRelayCommand<VehicleModel> ViewItemDetailsCommand { get; }
+	public IRelayCommand<Vehicle> RentCommand { get; }
+	public IRelayCommand<Vehicle> ViewItemDetailsCommand { get; }
 
-	public ObservableCollection<VehicleModel>? Vehicles
+	public ObservableCollection<Vehicle>? Vehicles
 	{
 		get => vehicles; set => SetProperty(ref vehicles, value);
 	}
@@ -27,12 +29,11 @@ public class AvailableVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	private readonly IVehicleDAO vehicleDAO;
-	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO)
+	public AvailableVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
 	{
-		this.vehicleDAO = vehicleDAO;
-		RentCommand = new RelayCommand<VehicleModel>(Rent);
-		ViewItemDetailsCommand = new RelayCommand<VehicleModel>(ViewItemDetails);
+		this.dbContextFactory = dbContextFactory;
+		RentCommand = new RelayCommand<Vehicle>(Rent);
+		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
 		FetchVehiclesAsync().SafeFireAndForget();
 	}
@@ -40,7 +41,11 @@ public class AvailableVehicleViewModel : ObservableObject
 	private async Task FetchVehiclesAsync()
 	{
 		State = ViewState.Busy;
-		var vehicles = await vehicleDAO.GetAllAsync().ConfigureAwait(false);
+
+		using var ctx = dbContextFactory.CreateDbContext();
+		var vehicles = await ctx.Vehicles
+			.ToArrayAsync()
+			.ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{
 			if (string.IsNullOrEmpty(vehicle.ImageUrl))
@@ -50,7 +55,7 @@ public class AvailableVehicleViewModel : ObservableObject
 		}
 		App.Current.Dispatcher.Invoke(() =>
 		{
-			Vehicles = new ObservableCollection<VehicleModel>(vehicles);
+			Vehicles = new ObservableCollection<Vehicle>(vehicles);
 			if (Vehicles.Count == 0)
 			{
 				State = ViewState.Empty;
@@ -62,7 +67,7 @@ public class AvailableVehicleViewModel : ObservableObject
 		});
 	}
 
-	private void Rent(VehicleModel? model)
+	private void Rent(Vehicle? model)
 	{
 		if (Vehicles is null || model is null)
 		{
@@ -70,7 +75,7 @@ public class AvailableVehicleViewModel : ObservableObject
 		}
 	}
 
-	private void ViewItemDetails(VehicleModel? model)
+	private void ViewItemDetails(Vehicle? model)
 	{
 		if (Vehicles is null || model is null)
 		{

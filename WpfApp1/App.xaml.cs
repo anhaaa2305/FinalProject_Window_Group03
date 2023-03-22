@@ -1,54 +1,53 @@
 ﻿using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using WpfApp1.DAOs;
+using WpfApp1.Data.Context;
 using WpfApp1.Views;
 
-namespace WpfApp1
+namespace WpfApp1;
+
+public partial class App : Application
 {
-	public partial class App : Application
+	public new static App Current => (App)Application.Current;
+	public IServiceProvider Services { get; }
+
+	public App()
 	{
-		public new static App Current => (App)Application.Current;
-		public IServiceProvider Services { get; }
+		Services = ConfigureServices();
+	}
 
-		public App()
+	private static IServiceProvider ConfigureServices()
+	{
+		return new ServiceCollection()
+			.RegisterServices()
+			.RegisterViews()
+			.RegisterViewModels()
+			.RegisterAppData()
+			.BuildServiceProvider();
+	}
+
+	protected override void OnStartup(StartupEventArgs e)
+	{
+		base.OnStartup(e);
+
+		if (!EnsureDatabase())
 		{
-			Services = ConfigureServices();
+			MessageBox.Show("Database không đảm bảo.");
+			Shutdown(1);
+			return;
 		}
 
-		private static IServiceProvider ConfigureServices()
-		{
-			return new ServiceCollection()
-				.RegisterDAOs()
-				.RegisterServices()
-				.RegisterViews()
-				.RegisterViewModels()
-				.BuildServiceProvider();
-		}
+		var mainWindow = Services.GetRequiredService<MainWindow>();
+		mainWindow.Show();
+	}
 
-		protected override async void OnStartup(StartupEventArgs e)
-		{
-			base.OnStartup(e);
-
-			var ok = await EnsureDatabase();
-			if (!ok)
-			{
-				MessageBox.Show("Database không đảm bảo.");
-				Shutdown(1);
-				return;
-			}
-
-			var mainWindow = Services.GetRequiredService<MainWindow>();
-			mainWindow.Show();
-		}
-
-		private async Task<bool> EnsureDatabase()
-		{
-			var oks = await Task.WhenAll
-			(
-				Services.GetRequiredService<IUserDAO>().EnsureTableAsync(),
-				Services.GetRequiredService<IVehicleDAO>().EnsureTableAsync()
-			);
-			return oks.All(ok => ok);
-		}
+	private bool EnsureDatabase()
+	{
+		var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
+		using var ctx = factory.CreateDbContext();
+		var ok = ctx.Database.CanConnect();
+		// ctx.Database.EnsureDeleted();
+		ctx.Database.EnsureCreated();
+		return ok;
 	}
 }

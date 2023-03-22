@@ -49,7 +49,7 @@
 									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
 								<Image
-									Source="{Binding ImageUrl, Mode=OneWay}"
+									Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
 									MaxWidth="172"
 									Stretch="UniformToFill"
 									HorizontalAlignment="Center"
@@ -57,9 +57,9 @@
 								<StackPanel Grid.Column="1"
 									VerticalAlignment="Center">
 									<TextBlock
-										Text="{Binding Name, Mode=OneWay}"
+										Text="{Binding Vehicle.Name, Mode=OneWay}"
 										FontWeight="Bold"/>
-									<TextBlock Text="{Binding LicensePlate}"/>
+									<TextBlock Text="{Binding Vehicle.LicensePlate}"/>
 									<StackPanel
 										VerticalAlignment="Center"
 										Orientation="Horizontal"

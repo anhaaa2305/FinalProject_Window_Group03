@@ -1,4 +1,3 @@
-using WpfApp1.DAOs;
 using WpfApp1.Services;
 using WpfApp1.ViewModels;
 using WpfApp1.Views;
@@ -8,13 +7,6 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection RegisterDAOs(this IServiceCollection self)
-	{
-		return self
-			.AddSingleton<IUserDAO, UserDAO>()
-			.AddSingleton<IVehicleDAO, VehicleDAO>();
-	}
-
 	public static IServiceCollection RegisterServices(this IServiceCollection self)
 	{
 		return self
@@ -42,7 +34,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<HomeView>()
 			.AddTransient<AvailableVehicleView>()
 			.AddTransient<RentedVehicleView>()
-			.AddTransient<RentingLogView>();
+			.AddTransient<RentalLogView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
@@ -53,6 +45,6 @@ public static class ServiceCollectionExtensions
 			.AddTransient<HomeViewModel>()
 			.AddTransient<AvailableVehicleViewModel>()
 			.AddTransient<RentedVehicleViewModel>()
-			.AddTransient<RentingLogViewModel>();
+			.AddTransient<RentalLogViewModel>();
 	}
 }

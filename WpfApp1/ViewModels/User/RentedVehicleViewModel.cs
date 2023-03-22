@@ -2,20 +2,22 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WpfApp1.DAOs;
+using Microsoft.EntityFrameworkCore;
 using WpfApp1.Data;
-using WpfApp1.Models;
+using WpfApp1.Data.Context;
+using WpfApp1.Data.Models;
 
 namespace WpfApp1.ViewModels;
 
 public class RentedVehicleViewModel : ObservableObject
 {
-	private ObservableCollection<VehicleModel>? vehicles;
+	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private ObservableCollection<RentedVehicle>? vehicles;
 	private ViewState state;
 
-	public IRelayCommand<VehicleModel> ViewItemDetailsCommand { get; }
+	public IRelayCommand<RentedVehicle> ViewItemDetailsCommand { get; }
 
-	public ObservableCollection<VehicleModel>? Vehicles
+	public ObservableCollection<RentedVehicle>? Vehicles
 	{
 		get => vehicles; set => SetProperty(ref vehicles, value);
 	}
@@ -26,11 +28,10 @@ public class RentedVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	private readonly IVehicleDAO vehicleDAO;
-	public RentedVehicleViewModel(IVehicleDAO vehicleDAO)
+	public RentedVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
 	{
-		this.vehicleDAO = vehicleDAO;
-		ViewItemDetailsCommand = new RelayCommand<VehicleModel>(ViewItemDetails);
+		this.dbContextFactory = dbContextFactory;
+		ViewItemDetailsCommand = new RelayCommand<RentedVehicle>(ViewItemDetails);
 
 		FetchVehiclesAsync().SafeFireAndForget();
 	}
@@ -38,17 +39,22 @@ public class RentedVehicleViewModel : ObservableObject
 	private async Task FetchVehiclesAsync()
 	{
 		State = ViewState.Busy;
-		var vehicles = await vehicleDAO.GetAllRentedAsync().ConfigureAwait(false);
+
+		using var ctx = dbContextFactory.CreateDbContext();
+		var vehicles = await ctx.RentedVehicles
+			.Include(e => e.Vehicle)
+			.ToArrayAsync()
+			.ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{
-			if (string.IsNullOrEmpty(vehicle.ImageUrl))
+			if (string.IsNullOrEmpty(vehicle.Vehicle.ImageUrl))
 			{
-				vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
+				vehicle.Vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
 			}
 		}
 		App.Current.Dispatcher.Invoke(() =>
 		{
-			Vehicles = new ObservableCollection<VehicleModel>(vehicles);
+			Vehicles = new ObservableCollection<RentedVehicle>(vehicles);
 			if (Vehicles.Count == 0)
 			{
 				State = ViewState.Empty;
@@ -60,7 +66,7 @@ public class RentedVehicleViewModel : ObservableObject
 		});
 	}
 
-	private void ViewItemDetails(VehicleModel? model)
+	private void ViewItemDetails(RentedVehicle? model)
 	{
 		if (Vehicles is null || model is null)
 		{

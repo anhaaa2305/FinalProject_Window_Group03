@@ -68,11 +68,11 @@ public class HomeViewModel : ObservableObject
 
 	private void ShowRentHistoryView()
 	{
-		navigator.Navigate<RentingLogView>();
+		navigator.Navigate<RentalLogView>();
 	}
 
 	private bool CanShowRentHistoryView()
 	{
-		return CurrentView is not RentingLogView;
+		return CurrentView is not RentalLogView;
 	}
 }
