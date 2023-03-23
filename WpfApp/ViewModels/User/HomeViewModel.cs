@@ -2,6 +2,7 @@ using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using WpfApp.Middlewares;
 using WpfApp.Services;
 using WpfApp.Views.User;
 
@@ -30,13 +31,15 @@ public class HomeViewModel : ObservableObject
 		}
 	}
 
-	public HomeViewModel(IServiceScopeFactory scopeFactory)
+	public HomeViewModel(IServiceScopeFactory scopeFactory, SessionMiddleware sessionMiddleware)
 	{
 		scope = scopeFactory.CreateAsyncScope();
 		AvailableVehicleClickCommand = new RelayCommand(ShowAvailableVehicleView, CanShowAvailableVehicleView);
 		VehicleRentingClickCommand = new RelayCommand(ShowVehicleRentingView, CanShowVehicleRentingView);
 		RentHistoryClickCommand = new RelayCommand(ShowRentHistoryView, CanShowRentHistoryView);
+
 		navigator = scope.ServiceProvider.GetRequiredService<INavigationService>();
+		navigator.AddMiddleware(sessionMiddleware);
 		navigator.Navigated += OnNavigated;
 		navigator.Navigate<AvailableVehicleView>();
 	}
