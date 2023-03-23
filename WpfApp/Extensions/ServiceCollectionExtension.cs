@@ -23,7 +23,8 @@ public static class ServiceCollectionExtensions
 				return options;
 			})
 			.AddSingleton<IDbService, DbService>()
-			.AddScoped<INavigationService, NavigationService>();
+			.AddScoped<INavigationService, NavigationService>()
+			.AddSingleton<ISessionService, SessionService>();
 	}
 
 	public static IServiceCollection RegisterViews(this IServiceCollection self)
