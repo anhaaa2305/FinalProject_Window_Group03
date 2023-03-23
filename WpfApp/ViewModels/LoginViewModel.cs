@@ -73,7 +73,10 @@ public class LoginViewModel : ObservableObject
 
 		user.Password = string.Empty;
 		await sessionService.LogInAsync(user).ConfigureAwait(false);
-		navigationService.Navigate<HomeView>();
+		App.Current.Dispatcher.Invoke(() =>
+		{
+			navigationService.Navigate<HomeView>();
+		});
 	}
 
 	private bool CanLogin()
