@@ -13,6 +13,7 @@ public static class ModelBuilderExtensions
 			entity.Property(e => e.NationalId).IsRequired().HasMaxLength(16);
 			entity.Property(e => e.Password).IsRequired().HasMaxLength(61);
 			entity.Property(e => e.FullName).IsRequired().HasMaxLength(64);
+			entity.Property(e => e.IsMale).IsRequired();
 			entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(16);
 			entity.Property(e => e.Address).HasMaxLength(128);
 			entity.Property(e => e.Email).HasMaxLength(128);

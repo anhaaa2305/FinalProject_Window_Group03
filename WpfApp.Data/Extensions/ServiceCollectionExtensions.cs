@@ -1,22 +1,54 @@
-using System.Diagnostics;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using WpfApp.Data.Context;
+using WpfApp.Data.DAOs;
+using WpfApp.Data.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-	public static IServiceCollection RegisterAppData(this IServiceCollection self)
+	public static IServiceCollection RegisterSql(this IServiceCollection self)
 	{
-		var envDict = Env
+		return self
+			.RegisterServices()
+			.AddSingleton<IDbServiceOptions>(provider => new DbServiceOptions(GetSqlConnectionStringBuilder()))
+			.AddSingleton<IDbService, DbService>()
+			.AddSingleton<IUserDAO, SqlUserDAO>()
+			.AddSingleton<IVehicleDAO, SqlVehicleDAO>();
+	}
+
+	public static IServiceCollection RegisterEntityFramework(this IServiceCollection self)
+	{
+		return self
+			.RegisterServices()
+			.AddPooledDbContextFactory<AppDbContext>(options =>
+		{
+			options
+				.UseSqlServer(GetSqlConnectionStringBuilder().ToString())
+				.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+				.EnableDetailedErrors()
+#if DEBUG
+				.EnableSensitiveDataLogging()
+#endif
+				;
+		});
+	}
+
+	private static IServiceCollection RegisterServices(this IServiceCollection self)
+	{
+		return self
+			.AddSingleton<IFluentDbReaderFactory, FluentDbReaderFactory>();
+	}
+
+	private static SqlConnectionStringBuilder GetSqlConnectionStringBuilder()
+	{
+		Env
 			.NoClobber()
-			.Load()
-			.ToDictionary();
+			.Load();
 
-
-		var builder = new SqlConnectionStringBuilder
+		return new SqlConnectionStringBuilder
 		{
 			DataSource = Environment.GetEnvironmentVariable("WPFAPP_DATA_SOURCE") ?? string.Empty,
 			InitialCatalog = Environment.GetEnvironmentVariable("WPFAPP_INITIAL_CATALOG") ?? string.Empty,
@@ -26,18 +58,5 @@ public static class ServiceCollectionExtensions
 			Pooling = false,
 			TrustServerCertificate = true
 		};
-
-		Debug.WriteLine(builder.ToString());
-		return self.AddPooledDbContextFactory<AppDbContext>(options =>
-		{
-			options
-				.UseSqlServer(builder.ToString())
-				.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-				.EnableDetailedErrors()
-#if DEBUG
-				.EnableSensitiveDataLogging()
-#endif
-				;
-		});
 	}
 }
