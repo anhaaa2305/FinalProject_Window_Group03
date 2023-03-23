@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
 using WpfApp.Data.Context;
 using WpfApp.Data.Models;
+using WpfApp.Services;
 
 namespace WpfApp.ViewModels;
 
 public class RentedVehicleViewModel : ObservableObject
 {
 	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private readonly ISessionService sessionService;
 	private ObservableCollection<RentedVehicle>? vehicles;
 	private ViewState state;
 
@@ -28,9 +30,10 @@ public class RentedVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentedVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
+	public RentedVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory, ISessionService sessionService)
 	{
 		this.dbContextFactory = dbContextFactory;
+		this.sessionService = sessionService;
 		ViewItemDetailsCommand = new RelayCommand<RentedVehicle>(ViewItemDetails);
 
 		FetchVehiclesAsync().SafeFireAndForget();
@@ -42,6 +45,7 @@ public class RentedVehicleViewModel : ObservableObject
 
 		using var ctx = dbContextFactory.CreateDbContext();
 		var vehicles = await ctx.RentedVehicles
+			.Where(e => e.User.Id == sessionService.User!.Id)
 			.Include(e => e.Vehicle)
 			.ToArrayAsync()
 			.ConfigureAwait(false);

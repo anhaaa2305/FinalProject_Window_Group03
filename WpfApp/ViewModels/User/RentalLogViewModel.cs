@@ -6,12 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
 using WpfApp.Data.Context;
 using WpfApp.Data.Models;
+using WpfApp.Services;
 
 namespace WpfApp.ViewModels;
 
 public class RentalLogViewModel : ObservableObject
 {
 	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private readonly ISessionService sessionService;
 	private ObservableCollection<VehicleRentalLog>? logs;
 	private ViewState state;
 
@@ -29,9 +31,10 @@ public class RentalLogViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentalLogViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
+	public RentalLogViewModel(IDbContextFactory<AppDbContext> dbContextFactory, ISessionService sessionService)
 	{
 		this.dbContextFactory = dbContextFactory;
+		this.sessionService = sessionService;
 		ViewItemDetailsCommand = new RelayCommand<VehicleRentalLog>(ViewItemDetails);
 
 		GetRentalLogsAsync().SafeFireAndForget();
@@ -43,7 +46,7 @@ public class RentalLogViewModel : ObservableObject
 
 		using var ctx = dbContextFactory.CreateDbContext();
 		var logs = await ctx.VehicleRentalLogs
-			.Where(e => e.User != null && e.User.Id == 1)
+			.Where(e => e.User != null && e.User.Id == sessionService.User!.Id)
 			.Include(e => e.Vehicle)
 			.ToArrayAsync()
 			.ConfigureAwait(false);
