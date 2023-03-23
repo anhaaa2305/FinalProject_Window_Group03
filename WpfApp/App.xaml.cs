@@ -20,6 +20,7 @@ public partial class App : Application
 	{
 		return new ServiceCollection()
 			.RegisterAppData()
+			.RegisterMiddlewares()
 			.RegisterServices()
 			.RegisterViews()
 			.RegisterViewModels()
