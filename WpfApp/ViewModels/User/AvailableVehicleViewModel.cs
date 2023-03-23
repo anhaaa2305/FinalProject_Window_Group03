@@ -5,13 +5,14 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
 using WpfApp.Data.Context;
+using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 
 namespace WpfApp.ViewModels;
 
 public class AvailableVehicleViewModel : ObservableObject
 {
-	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private readonly IVehicleDAO vehicleDAO;
 	private ObservableCollection<Vehicle>? vehicles;
 	private ViewState state;
 
@@ -29,9 +30,9 @@ public class AvailableVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public AvailableVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory)
+	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO)
 	{
-		this.dbContextFactory = dbContextFactory;
+		this.vehicleDAO = vehicleDAO;
 		RentCommand = new RelayCommand<Vehicle>(Rent);
 		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
@@ -42,9 +43,8 @@ public class AvailableVehicleViewModel : ObservableObject
 	{
 		State = ViewState.Busy;
 
-		using var ctx = dbContextFactory.CreateDbContext();
-		var vehicles = await ctx.Vehicles
-			.ToArrayAsync()
+		var vehicles = await vehicleDAO
+			.GetAllAsync()
 			.ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{

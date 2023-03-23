@@ -8,13 +8,14 @@ using WpfApp.Views.User;
 namespace WpfApp.ViewModels;
 
 using BCrypt.Net;
+using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 
 public class LoginViewModel : ObservableObject
 {
 	private readonly INavigationService navigationService;
-	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
 	private readonly ISessionService sessionService;
+	private readonly IUserDAO userDAO;
 	private string username = string.Empty;
 	private string password = string.Empty;
 	public IAsyncRelayCommand LoginCommand { get; }
@@ -43,23 +44,17 @@ public class LoginViewModel : ObservableObject
 		}
 	}
 
-	public LoginViewModel(INavigationService navigationService, IDbContextFactory<AppDbContext> dbContextFactory, ISessionService sessionService)
+	public LoginViewModel(INavigationService navigationService, ISessionService sessionService, IUserDAO userDAO)
 	{
 		this.navigationService = navigationService;
-		this.dbContextFactory = dbContextFactory;
 		this.sessionService = sessionService;
+		this.userDAO = userDAO;
 		LoginCommand = new AsyncRelayCommand(LoginAsync, CanLogin);
 	}
 
 	private async Task LoginAsync()
 	{
-		using var ctx = dbContextFactory.CreateDbContext();
-		var user = await ctx.Users
-			.Where(e => e.FullName == Username)
-			.Select(e => new User { Id = e.Id, FullName = e.FullName, Password = e.Password })
-			.FirstOrDefaultAsync()
-			.ConfigureAwait(false);
-
+		var user = await userDAO.GetByFullNameAsync(Username).ConfigureAwait(false);
 		if (user is null)
 		{
 			return;

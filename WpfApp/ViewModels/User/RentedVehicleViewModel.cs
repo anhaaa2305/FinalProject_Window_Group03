@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
 using WpfApp.Data.Context;
+using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Services;
 
@@ -12,7 +13,7 @@ namespace WpfApp.ViewModels;
 
 public class RentedVehicleViewModel : ObservableObject
 {
-	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private readonly IVehicleDAO vehicleDAO;
 	private readonly ISessionService sessionService;
 	private ObservableCollection<RentedVehicle>? vehicles;
 	private ViewState state;
@@ -30,24 +31,21 @@ public class RentedVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentedVehicleViewModel(IDbContextFactory<AppDbContext> dbContextFactory, ISessionService sessionService)
+	public RentedVehicleViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
 	{
-		this.dbContextFactory = dbContextFactory;
+		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
 		ViewItemDetailsCommand = new RelayCommand<RentedVehicle>(ViewItemDetails);
 
-		FetchVehiclesAsync().SafeFireAndForget();
+		GetRentedVehiclesAsync().SafeFireAndForget();
 	}
 
-	private async Task FetchVehiclesAsync()
+	private async Task GetRentedVehiclesAsync()
 	{
 		State = ViewState.Busy;
 
-		using var ctx = dbContextFactory.CreateDbContext();
-		var vehicles = await ctx.RentedVehicles
-			.Where(e => e.User.Id == sessionService.User!.Id)
-			.Include(e => e.Vehicle)
-			.ToArrayAsync()
+		var vehicles = await vehicleDAO
+			.GetRentedByUserIdAsync(sessionService.User!.Id)
 			.ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{

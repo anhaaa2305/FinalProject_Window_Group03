@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
 using WpfApp.Data.Context;
+using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Services;
 
@@ -12,7 +13,7 @@ namespace WpfApp.ViewModels;
 
 public class RentalLogViewModel : ObservableObject
 {
-	private readonly IDbContextFactory<AppDbContext> dbContextFactory;
+	private readonly IVehicleDAO vehicleDAO;
 	private readonly ISessionService sessionService;
 	private ObservableCollection<VehicleRentalLog>? logs;
 	private ViewState state;
@@ -31,9 +32,9 @@ public class RentalLogViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentalLogViewModel(IDbContextFactory<AppDbContext> dbContextFactory, ISessionService sessionService)
+	public RentalLogViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
 	{
-		this.dbContextFactory = dbContextFactory;
+		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
 		ViewItemDetailsCommand = new RelayCommand<VehicleRentalLog>(ViewItemDetails);
 
@@ -44,11 +45,8 @@ public class RentalLogViewModel : ObservableObject
 	{
 		State = ViewState.Busy;
 
-		using var ctx = dbContextFactory.CreateDbContext();
-		var logs = await ctx.VehicleRentalLogs
-			.Where(e => e.User != null && e.User.Id == sessionService.User!.Id)
-			.Include(e => e.Vehicle)
-			.ToArrayAsync()
+		var logs = await vehicleDAO
+			.GetRentalLogsByUserIdAsync(sessionService.User!.Id)
 			.ConfigureAwait(false);
 		App.Current.Dispatcher.Invoke(() =>
 		{
