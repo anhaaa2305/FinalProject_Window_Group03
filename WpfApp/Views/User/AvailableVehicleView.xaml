@@ -69,9 +69,9 @@
 										Padding="3"
 										Icon="Key32"
 										FontSize="24"
-										ToolTipService.ToolTip="{StaticResource RentButton_ToolTipText}"
+										ToolTipService.ToolTip="{StaticResource ReserveButton_ToolTipText}"
 										ToolTipService.InitialShowDelay="400"
-										Command="{Binding DataContext.RentCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
+										Command="{Binding DataContext.ReserveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
 										CommandParameter="{Binding}" />
 									<ui:Button
 										VerticalAlignment="Center"

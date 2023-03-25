@@ -14,7 +14,7 @@ public class AvailableVehicleViewModel : ObservableObject
 	private ObservableCollection<Vehicle>? vehicles;
 	private ViewState state;
 
-	public IRelayCommand<Vehicle> RentCommand { get; }
+	public IRelayCommand<Vehicle> ReserveCommand { get; }
 	public IRelayCommand<Vehicle> ViewItemDetailsCommand { get; }
 
 	public ObservableCollection<Vehicle>? Vehicles
@@ -31,7 +31,7 @@ public class AvailableVehicleViewModel : ObservableObject
 	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO)
 	{
 		this.vehicleDAO = vehicleDAO;
-		RentCommand = new RelayCommand<Vehicle>(Rent);
+		ReserveCommand = new RelayCommand<Vehicle>(Reserve);
 		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
 		GetAvailableVehiclesAsync().SafeFireAndForget();
@@ -65,7 +65,7 @@ public class AvailableVehicleViewModel : ObservableObject
 		});
 	}
 
-	private void Rent(Vehicle? model)
+	private void Reserve(Vehicle? model)
 	{
 		if (Vehicles is null || model is null)
 		{
