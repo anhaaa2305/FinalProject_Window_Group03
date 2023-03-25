@@ -9,31 +9,36 @@
     xmlns:utils="clr-namespace:WpfApp.Utils"
 	xmlns:uc="clr-namespace:WpfApp.Views.Controls"
 	xmlns:vm="clr-namespace:WpfApp.ViewModels"
+	xmlns:userViews="clr-namespace:WpfApp.Views.User"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/HomeStrings.xaml" />
 	</UserControl.Resources>
-	<DockPanel>
-		<Border DockPanel.Dock="Top"
-			Background="{DynamicResource SubtleFillColorSecondaryBrush}"
-			Padding="12,0">
-			<uc:MenuBarControl>
-				<StackPanel Orientation="Horizontal">
-					<ui:Button
-						Content="{StaticResource Item_AvailableVehicle}"
-						Command="{Binding AvailableVehicleClickCommand, Mode=OneWay}"
-						Icon="AppsListDetail24" />
-					<ui:Button
-						Content="{StaticResource Item_VehicleRenting}"
-						Command="{Binding VehicleRentingClickCommand, Mode=OneWay}"
-						Icon="TextBulletListSquareClock20" />
-					<ui:Button
-						Content="{StaticResource Item_RentHistory}"
-						Command="{Binding RentHistoryClickCommand, Mode=OneWay}"
-						Icon="History24" />
-				</StackPanel>
-			</uc:MenuBarControl>
-		</Border>
-		<ContentPresenter Content="{Binding CurrentView, Mode=OneWay}" />
-	</DockPanel>
+	<ui:NavigationView
+		x:Name="navigationView"
+		PaneDisplayMode="LeftFluent">
+		<ui:NavigationView.MenuItems>
+			<ui:NavigationViewItem
+				Content="{StaticResource Item_AvailableVehicle}"
+				TargetPageType="{x:Type userViews:AvailableVehicleView}">
+				<ui:NavigationViewItem.Icon>
+					<ui:SymbolIcon Symbol="AppsListDetail24" />
+				</ui:NavigationViewItem.Icon>
+			</ui:NavigationViewItem>
+			<ui:NavigationViewItem
+				Content="{StaticResource Item_VehicleRenting}"
+				TargetPageType="{x:Type userViews:RentedVehicleView}">
+				<ui:NavigationViewItem.Icon>
+					<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
+				</ui:NavigationViewItem.Icon>
+			</ui:NavigationViewItem>
+			<ui:NavigationViewItem
+				Content="{StaticResource Item_RentHistory}"
+				TargetPageType="{x:Type userViews:RentalLogView}">
+				<ui:NavigationViewItem.Icon>
+					<ui:SymbolIcon Symbol="History24" />
+				</ui:NavigationViewItem.Icon>
+			</ui:NavigationViewItem>
+		</ui:NavigationView.MenuItems>
+	</ui:NavigationView>
 </UserControl>

@@ -5,14 +5,13 @@ using WpfApp.Views.User;
 
 namespace WpfApp.ViewModels;
 
-using System.Resources;
 using System.Windows;
 using BCrypt.Net;
 using WpfApp.Data.DAOs;
 
 public class LoginViewModel : ObservableObject
 {
-	private readonly INavigationService navigationService;
+	private readonly IAppNavigationService navigator;
 	private readonly ISessionService sessionService;
 	private readonly IUserDAO userDAO;
 	private string username = string.Empty;
@@ -55,9 +54,9 @@ public class LoginViewModel : ObservableObject
 		get => helpText; set => SetProperty(ref helpText, value);
 	}
 
-	public LoginViewModel(INavigationService navigationService, ISessionService sessionService, IUserDAO userDAO)
+	public LoginViewModel(IAppNavigationService navigator, ISessionService sessionService, IUserDAO userDAO)
 	{
-		this.navigationService = navigationService;
+		this.navigator = navigator;
 		this.sessionService = sessionService;
 		this.userDAO = userDAO;
 		LoginCommand = new AsyncRelayCommand(LoginAsync, CanLogin);
@@ -89,7 +88,7 @@ public class LoginViewModel : ObservableObject
 		await sessionService.LogInAsync(user).ConfigureAwait(false);
 		App.Current.Dispatcher.Invoke(() =>
 		{
-			navigationService.Navigate<HomeView>();
+			navigator.Navigate<HomeView>();
 		});
 	}
 

@@ -1,10 +1,10 @@
-using System.ComponentModel;
 using System.Windows.Controls;
+using Wpf.Ui.Contracts;
 using WpfApp.Middlewares;
 
 namespace WpfApp.Services;
 
-public interface INavigationService
+public interface IAppNavigationService : INavigationService
 {
 	event Action<UserControl>? Navigated;
 	bool Navigate<T>() where T : UserControl;

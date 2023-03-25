@@ -21,7 +21,10 @@
 			Source="/Resources/Images/AppLogo.png"
 			Stretch="Uniform"
 			MaxWidth="640" />
-			<TextBlock Text="{StaticResource Title}" HorizontalAlignment="Center" />
+			<TextBlock
+				Text="{StaticResource Title}"
+				HorizontalAlignment="Center"
+				Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
 			<StackPanel
 				utils:SpacingSetter.Spacing="0,15"
 				Margin="0,25,0,0"
