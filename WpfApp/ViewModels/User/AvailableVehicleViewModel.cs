@@ -2,9 +2,7 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using WpfApp.Data;
-using WpfApp.Data.Context;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 
@@ -36,15 +34,15 @@ public class AvailableVehicleViewModel : ObservableObject
 		RentCommand = new RelayCommand<Vehicle>(Rent);
 		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
-		FetchVehiclesAsync().SafeFireAndForget();
+		GetAvailableVehiclesAsync().SafeFireAndForget();
 	}
 
-	private async Task FetchVehiclesAsync()
+	private async Task GetAvailableVehiclesAsync()
 	{
 		State = ViewState.Busy;
 
 		var vehicles = await vehicleDAO
-			.GetAllAsync()
+			.GetAvailableVehicles()
 			.ConfigureAwait(false);
 		foreach (var vehicle in vehicles)
 		{
