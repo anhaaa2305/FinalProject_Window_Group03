@@ -4,8 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utils="clr-namespace:WpfApp.Utils"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:utils="clr-namespace:WpfApp.Utils"
+    xmlns:data="clr-namespace:WpfApp.Data"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/LoginStrings.xaml" />
@@ -21,42 +22,66 @@
 			Stretch="Uniform"
 			MaxWidth="640" />
 			<TextBlock Text="{StaticResource Title}" HorizontalAlignment="Center" />
-			<Grid utils:MarginSetter.Margin="5" Margin="0,25,0,0" MaxWidth="320">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-				<Label Grid.Row="0" Grid.Column="0"
-					VerticalContentAlignment="Center"
-					Content="{StaticResource Label_Username}"
-					Target="{Binding ElementName=usernameTextBox}" />
-				<ui:TextBox Grid.Row="0" Grid.Column="1"
-					Name="usernameTextBox"
-					PlaceholderText="Enter username"
-					VerticalContentAlignment="Center"
-					Text="{Binding Username, Mode=TwoWay}" />
+			<StackPanel
+				utils:SpacingSetter.Spacing="0,15"
+				Margin="0,25,0,0"
+				MaxWidth="320">
+				<StackPanel
+					utils:SpacingSetter.Spacing="0,2">
+					<Label
+						Grid.Row="0"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						VerticalAlignment="Center"
+						VerticalContentAlignment="Center"
+						Content="{StaticResource Label_Username}"
+						Target="{Binding ElementName=usernameTextBox}" />
+					<ui:TextBox
+						Grid.Row="1"
+						Grid.Column="0"
+						Grid.ColumnSpan="2"
+						Name="usernameTextBox"
+						PlaceholderText="{StaticResource Username_Placeholder}"
+						VerticalContentAlignment="Center"
+						Text="{Binding Username, Mode=TwoWay}" />
+				</StackPanel>
 	
-				<Label Grid.Row="1" Grid.Column="0"
-					VerticalContentAlignment="Center"
-					Content="{StaticResource Label_Password}"
-					Target="{Binding ElementName=passwordTextBox}" />
-				<ui:PasswordBox Grid.Row="1" Grid.Column="1"
-					Name="passwordTextBox"
-					PlaceholderText="Enter password"
-					VerticalContentAlignment="Center"
-					Password="{Binding Password, Mode=TwoWay}" />
-	
-				<ui:Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-					HorizontalAlignment="Center"
-					Padding="15,4"
-					Content="{StaticResource Button_Login}"
-					Command="{Binding LoginCommand}" />
-			</Grid>
+				<StackPanel
+					utils:SpacingSetter.Spacing="0,2">
+					<Label
+						VerticalContentAlignment="Center"
+						Content="{StaticResource Label_Password}"
+						Target="{Binding ElementName=passwordTextBox}" />
+					<ui:PasswordBox
+						Name="passwordTextBox"
+						PlaceholderText="{StaticResource Password_Placeholder}"
+						VerticalContentAlignment="Center"
+						Password="{Binding Password, Mode=TwoWay}" />
+				</StackPanel>
+
+				<Grid utils:SpacingSetter.Spacing="15,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<ui:Button
+						Grid.Column="0"
+						Padding="15,4"
+						Content="{StaticResource Button_Login}"
+						Command="{Binding LoginCommand}"
+						IsDefault="True"
+						Appearance="Primary" />
+						
+					<TextBlock
+						Grid.Column="1"
+						TextWrapping="Wrap"
+						Text="{Binding HelpText}"
+						Visibility="{Binding HelpVisibility}"
+						Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+						FontWeight="Bold"
+						FontSize="12" />
+				</Grid>
+			</StackPanel>
 		</StackPanel>
 	</ScrollViewer>
 </UserControl>

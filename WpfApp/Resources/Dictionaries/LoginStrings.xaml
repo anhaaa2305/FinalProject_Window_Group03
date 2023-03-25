@@ -3,6 +3,10 @@
 					xmlns:sys="clr-namespace:System;assembly=mscorlib">
 	<sys:String x:Key="Title">Ứng dụng thuê xe</sys:String>
 	<sys:String x:Key="Label_Username">Tên đăng nhập</sys:String>
+	<sys:String x:Key="Username_Placeholder">Nhập tên đăng nhập</sys:String>
 	<sys:String x:Key="Label_Password">Mật khẩu</sys:String>
+	<sys:String x:Key="Password_Placeholder">Nhập mật khẩu</sys:String>
 	<sys:String x:Key="Button_Login">Đăng nhập</sys:String>
+	<sys:String x:Key="LoginError_Title">Lỗi đăng nhập</sys:String>
+	<sys:String x:Key="LoginError_Text">Tên đăng nhập hoặc mật khẩu không chính xác.</sys:String>
 </ResourceDictionary>

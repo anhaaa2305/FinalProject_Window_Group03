@@ -15,7 +15,7 @@
 	</UserControl.Resources>
 	<DockPanel>
 		<Border DockPanel.Dock="Top"
-			Background="{StaticResource SubtleFillColorSecondaryBrush}"
+			Background="{DynamicResource SubtleFillColorSecondaryBrush}"
 			Padding="12,0">
 			<uc:MenuBarControl>
 				<StackPanel Orientation="Horizontal">
