@@ -133,6 +133,34 @@ public class SqlVehicleDAO : IVehicleDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
+	public async Task<IReadOnlyCollection<Vehicle>> GetAvailableVehicles()
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return Array.Empty<Vehicle>();
+		}
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select * from Vehicles
+			where Id not in
+				(select VehicleId from RentedVehicles
+				union
+				select VehicleId from ReservedVehicles)
+		";
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+
+		var vehicles = new LinkedList<Vehicle>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var vehicle = new Vehicle();
+			readerFactory.Create(reader).Read(vehicle);
+			vehicles.AddLast(vehicle);
+		}
+		return vehicles;
+	}
+
 	public Task<IReadOnlyCollection<RentedVehicle>> GetRentedByUserIdAsync(int userId)
 	{
 		return GetAllRentedAsync(
