@@ -114,6 +114,6 @@ public class LoginViewModel : ObservableObject
 			return;
 		}
 		HelpVisibility = Visibility.Visible;
-		HelpText = (string)dict[text];
+		HelpText = (string?)dict[text] ?? string.Empty;
 	}
 }
