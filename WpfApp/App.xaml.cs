@@ -22,6 +22,7 @@ public partial class App : Application
 			.RegisterSql()
 			.RegisterEntityFramework()
 			.RegisterMiddlewares()
+			.RegisterModels()
 			.RegisterServices()
 			.RegisterViews()
 			.RegisterViewModels()

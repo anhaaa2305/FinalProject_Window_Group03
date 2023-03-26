@@ -7,13 +7,13 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp.Utils"
     xmlns:data="clr-namespace:WpfApp.Data"
+	Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/LoginStrings.xaml" />
 	</UserControl.Resources>
-	<ScrollViewer
-		VerticalScrollBarVisibility="Auto"
-		Padding="12">
+	<ui:DynamicScrollViewer
+		Padding="15">
 		<StackPanel 
 		VerticalAlignment="Center"
 		HorizontalAlignment="Center">
@@ -23,8 +23,7 @@
 			MaxWidth="640" />
 			<TextBlock
 				Text="{StaticResource Title}"
-				HorizontalAlignment="Center"
-				Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+				HorizontalAlignment="Center" />
 			<StackPanel
 				utils:SpacingSetter.Spacing="0,15"
 				Margin="0,25,0,0"
@@ -86,5 +85,5 @@
 				</Grid>
 			</StackPanel>
 		</StackPanel>
-	</ScrollViewer>
+	</ui:DynamicScrollViewer>
 </UserControl>

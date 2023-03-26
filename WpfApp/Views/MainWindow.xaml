@@ -13,12 +13,11 @@
 	Width="680"
 	Height="680"
 	ExtendsContentIntoTitleBar="True"
+	Foreground="{DynamicResource TextFillColorPrimaryBrush}"
 	Background="{DynamicResource ApplicationBackgroundBrush}"
 	WindowBackdropType="Mica"
 	WindowCornerPreference="Round"
 	WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Ideal"
-	TextOptions.TextRenderingMode="Auto"
 	FontSize="14"
 	FontFamily="Segoe UI Variable">
 	<DockPanel>
@@ -36,7 +35,7 @@
 			PaneDisplayMode="LeftFluent"
 			IsPaneVisible="False"
 			ItemTemplate="{x:Null}"
-			Margin="-6,0,0,0">
+			Margin="-10,0,0,0">
 			<ui:NavigationView.MenuItems>
 				<ui:NavigationViewItem TargetPageType="{x:Type views:LoginView}" />
 				<ui:NavigationViewItem TargetPageType="{x:Type userViews:HomeView}" />

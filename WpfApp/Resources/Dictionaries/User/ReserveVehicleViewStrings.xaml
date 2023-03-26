@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="LoadingText">Ứng dụng đang tải thông tin xe, vui lòng đợi.</sys:String>
+	<sys:String x:Key="EmptyText">Không có dữ liệu về xe.</sys:String>
+	<sys:String x:Key="ReserveButton_Content">Đặt xe</sys:String>
+	<sys:String x:Key="BackButton_ToolTipText">Quay lại cửa hàng</sys:String>
+	<sys:String x:Key="Brand_Text">Thương hiệu:</sys:String>
+	<sys:String x:Key="LicensePlate_Text">Biển số xe:</sys:String>
+	<sys:String x:Key="Price_Text">Giá tiền:</sys:String>
+	<sys:String x:Key="PerDay_Text">/ngày</sys:String>
+	<sys:String x:Key="StartDate_Label_Content">Ngày lấy xe</sys:String>
+	<sys:String x:Key="EndDate_Label_Content">Ngày trả xe</sys:String>
+</ResourceDictionary>

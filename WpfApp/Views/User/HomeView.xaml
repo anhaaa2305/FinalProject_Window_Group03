@@ -14,31 +14,46 @@
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/HomeStrings.xaml" />
 	</UserControl.Resources>
-	<ui:NavigationView
-		x:Name="navigationView"
-		PaneDisplayMode="LeftFluent">
-		<ui:NavigationView.MenuItems>
-			<ui:NavigationViewItem
-				Content="{StaticResource Item_AvailableVehicle}"
-				TargetPageType="{x:Type userViews:AvailableVehicleView}">
-				<ui:NavigationViewItem.Icon>
-					<ui:SymbolIcon Symbol="AppsListDetail24" />
-				</ui:NavigationViewItem.Icon>
-			</ui:NavigationViewItem>
-			<ui:NavigationViewItem
-				Content="{StaticResource Item_VehicleRenting}"
-				TargetPageType="{x:Type userViews:RentedVehicleView}">
-				<ui:NavigationViewItem.Icon>
-					<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
-				</ui:NavigationViewItem.Icon>
-			</ui:NavigationViewItem>
-			<ui:NavigationViewItem
-				Content="{StaticResource Item_RentHistory}"
-				TargetPageType="{x:Type userViews:RentalLogView}">
-				<ui:NavigationViewItem.Icon>
-					<ui:SymbolIcon Symbol="History24" />
-				</ui:NavigationViewItem.Icon>
-			</ui:NavigationViewItem>
-		</ui:NavigationView.MenuItems>
-	</ui:NavigationView>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<ui:NavigationView
+			x:Name="navigationView"
+			IsBackButtonVisible="Collapsed"
+			IsPaneToggleVisible="False"
+			PaneDisplayMode="LeftFluent">
+			<ui:NavigationView.MenuItems>
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_AvailableVehicle}"
+					TargetPageType="{x:Type userViews:AvailableVehicleView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="AppsListDetail24" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_VehicleRenting}"
+					TargetPageType="{x:Type userViews:RentedVehicleView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_RentHistory}"
+					TargetPageType="{x:Type userViews:RentalLogView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="History24" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
+					Visibility="Collapsed"
+					TargetPageType="{x:Type userViews:ReserveVehicleView}" />
+			</ui:NavigationView.MenuItems>
+			<ui:NavigationView.ContentOverlay>
+                <Grid>
+                    <ui:Snackbar x:Name="RootSnackbar" />
+                </Grid>
+            </ui:NavigationView.ContentOverlay>
+		</ui:NavigationView>
+	</Grid>
 </UserControl>

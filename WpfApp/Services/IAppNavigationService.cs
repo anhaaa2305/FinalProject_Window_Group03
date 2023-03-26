@@ -7,6 +7,6 @@ namespace WpfApp.Services;
 public interface IAppNavigationService : INavigationService
 {
 	event Action<UserControl>? Navigated;
-	bool Navigate<T>() where T : UserControl;
+	bool Navigate<T>();
 	void AddMiddleware(INavigationMiddleware middleware);
 }

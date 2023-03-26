@@ -13,7 +13,7 @@ public class AppNavigationService : NavigationService, IAppNavigationService
 
 	public AppNavigationService(IServiceProvider provider) : base(provider) { }
 
-	public bool Navigate<T>() where T : UserControl
+	public bool Navigate<T>()
 	{
 		if (middlewares.Count != 0)
 		{

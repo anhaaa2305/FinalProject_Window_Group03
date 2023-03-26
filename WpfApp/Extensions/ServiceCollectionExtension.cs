@@ -1,5 +1,6 @@
 using Wpf.Ui.Contracts;
 using WpfApp.Middlewares;
+using WpfApp.Models;
 using WpfApp.Services;
 using WpfApp.ViewModels;
 using WpfApp.Views;
@@ -13,6 +14,12 @@ public static class ServiceCollectionExtensions
 	{
 		return self
 			.AddSingleton<SessionMiddleware>();
+	}
+
+	public static IServiceCollection RegisterModels(this IServiceCollection self)
+	{
+		return self
+			.AddScoped<ReserveVehicleModel>();
 	}
 
 	public static IServiceCollection RegisterServices(this IServiceCollection self)
@@ -31,7 +38,8 @@ public static class ServiceCollectionExtensions
 			.AddTransient<HomeView>()
 			.AddTransient<AvailableVehicleView>()
 			.AddTransient<RentedVehicleView>()
-			.AddTransient<RentalLogView>();
+			.AddTransient<RentalLogView>()
+			.AddTransient<ReserveVehicleView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
@@ -42,6 +50,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<HomeViewModel>()
 			.AddTransient<AvailableVehicleViewModel>()
 			.AddTransient<RentedVehicleViewModel>()
-			.AddTransient<RentalLogViewModel>();
+			.AddTransient<RentalLogViewModel>()
+			.AddTransient<ReserveVehicleViewModel>();
 	}
 }

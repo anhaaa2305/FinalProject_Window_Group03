@@ -2,9 +2,13 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Wpf.Ui.Controls.Navigation;
 using WpfApp.Data;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
+using WpfApp.Models;
+using WpfApp.Services;
+using WpfApp.Views.User;
 
 namespace WpfApp.ViewModels;
 
@@ -28,9 +32,13 @@ public class AvailableVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO)
+	private readonly IAppNavigationService navigator;
+	private readonly ReserveVehicleModel reserveVehicleModel;
+	public AvailableVehicleViewModel(IVehicleDAO vehicleDAO, IAppNavigationService navigator, ReserveVehicleModel reserveVehicleModel)
 	{
 		this.vehicleDAO = vehicleDAO;
+		this.navigator = navigator;
+		this.reserveVehicleModel = reserveVehicleModel;
 		ReserveCommand = new RelayCommand<Vehicle>(Reserve);
 		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
@@ -71,6 +79,9 @@ public class AvailableVehicleViewModel : ObservableObject
 		{
 			return;
 		}
+
+		reserveVehicleModel.Vehicle = model;
+		navigator.Navigate<ReserveVehicleView>();
 	}
 
 	private void ViewItemDetails(Vehicle? model)
