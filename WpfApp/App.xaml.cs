@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp.Data.Context;
@@ -13,7 +17,25 @@ public partial class App : Application
 
 	public App()
 	{
+		ConfigureApp();
 		Services = ConfigureServices();
+	}
+
+	private static void ConfigureApp()
+	{
+		Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("vi-VN");
+		Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+		FrameworkElement.LanguageProperty.OverrideMetadata
+		(
+			typeof(FrameworkElement),
+			new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag))
+		);
+		TextElement.FontSizeProperty.OverrideMetadata(
+			typeof(TextElement),
+			new FrameworkPropertyMetadata(14.0));
+		TextBlock.FontSizeProperty.OverrideMetadata(
+			typeof(TextBlock),
+			new FrameworkPropertyMetadata(14.0));
 	}
 
 	private static IServiceProvider ConfigureServices()
@@ -40,8 +62,7 @@ public partial class App : Application
 			return;
 		}
 
-		var mainWindow = Services.GetRequiredService<MainWindow>();
-		mainWindow.Show();
+		Services.GetRequiredService<MainWindow>().Show();
 	}
 
 	private bool EnsureDatabase()
