@@ -2,9 +2,8 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using WpfApp.Data;
-using WpfApp.Data.Context;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Services;
@@ -33,7 +32,7 @@ public class RentalLogViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentalLogViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService, IAppNavigationService navigator)
+	public RentalLogViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
 	{
 		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
@@ -41,7 +40,7 @@ public class RentalLogViewModel : ObservableObject
 
 		if (sessionService.User is null)
 		{
-			navigator.Navigate<LoginView>();
+			App.Current.Services.GetRequiredService<IAppNavigationService>().Navigate<LoginView>();
 			return;
 		}
 		GetRentalLogsAsync().SafeFireAndForget();

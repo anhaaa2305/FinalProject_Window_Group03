@@ -85,7 +85,7 @@ public class LoginViewModel : ObservableObject
 		}
 
 		user.Password = string.Empty;
-		// await sessionService.LogInAsync(user).ConfigureAwait(false);
+		await sessionService.LogInAsync(user).ConfigureAwait(false);
 		App.Current.Dispatcher.Invoke(() =>
 		{
 			navigator.Navigate<HomeView>();
