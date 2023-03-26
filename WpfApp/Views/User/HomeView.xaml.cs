@@ -1,4 +1,3 @@
-using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui.Contracts;
@@ -19,5 +18,9 @@ public partial class HomeView : UserControl
 		navigationView.SetPageService(provider.GetRequiredService<IPageService>());
 		navigator.SetNavigationControl(navigationView);
 		DataContext = provider.GetRequiredService<HomeViewModel>();
+		Unloaded += (_, _) =>
+		{
+			scope.Dispose();
+		};
 	}
 }
