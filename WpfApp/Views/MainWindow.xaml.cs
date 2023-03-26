@@ -2,6 +2,8 @@
 using Wpf.Ui.Contracts;
 using Wpf.Ui.Controls.Navigation;
 using Wpf.Ui.Controls.Window;
+using WpfApp.Data.DAOs;
+using WpfApp.Data.Models;
 using WpfApp.Services;
 using WpfApp.ViewModels;
 
@@ -9,7 +11,7 @@ namespace WpfApp.Views;
 
 public partial class MainWindow : INavigationWindow
 {
-	public MainWindow(MainWindowViewModel vm, IPageService pageService, IAppNavigationService navigationService)
+	public MainWindow(MainWindowViewModel vm, IPageService pageService, IAppNavigationService navigationService, IVehicleDAO vehicleDAO, IUserDAO userDAO)
 	{
 		InitializeComponent();
 
@@ -18,6 +20,26 @@ public partial class MainWindow : INavigationWindow
 		navigationService.SetNavigationControl(RootNavigation);
 
 		Loaded += OnLoad;
+
+		Task.Run(async () =>
+		{
+			await userDAO.AddAsync(new Data.Models.User
+			{
+				FullName = "user",
+				Password = "user"
+			});
+			for (var i = 0; i != 50; ++i)
+			{
+				await vehicleDAO.AddAsync(new Vehicle
+				{
+					Brand = "Yamaha",
+					Name = "Yamaha Sirius",
+					LicensePlate = "86-B1-" + (35904 + i),
+					PricePerDay = 100_000 + (int)Random.Shared.NextInt64(300_000),
+					ImageUrl = "http://yamaha-motor.com.vn/wp/wp-content/uploads/2017/05/500x400-Si-RC-trang-den-04.png"
+				});
+			}
+		});
 	}
 
 	public void CloseWindow()

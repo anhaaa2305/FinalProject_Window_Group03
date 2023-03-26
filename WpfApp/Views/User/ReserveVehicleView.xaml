@@ -16,129 +16,152 @@
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/ReserveVehicleViewStrings.xaml" />
 	</UserControl.Resources>
-	<ContentControl>
-		<ContentControl.Resources>
-			<ControlTemplate x:Key="BusyTemplate">
-				<StackPanel utils:SpacingSetter.Spacing="0,15">
-					<ui:ProgressRing IsIndeterminate="True" />
-					<TextBlock
-						Text="{StaticResource LoadingText}"
-						TextAlignment="Center" />
-				</StackPanel>
-			</ControlTemplate>
-			<ControlTemplate x:Key="EmptyTemplate">
-				<StackPanel utils:SpacingSetter.Spacing="0,15">
-					<ui:SymbolIcon
-						Symbol="EmojiSad24"
-						FontSize="50" />
-					<TextBlock
-						Text="{StaticResource EmptyText}"
-						TextAlignment="Center"
-						VerticalAlignment="Center" />
-				</StackPanel>
-			</ControlTemplate>
-			<ControlTemplate x:Key="PresentTemplate">
-				<ui:DynamicScrollViewer Padding="15">
-					<StackPanel
-						HorizontalAlignment="Center"
-						utils:SpacingSetter.Spacing="0,15">
-						<Grid
-							utils:SpacingSetter.Spacing="15,0">
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition />
-								<ColumnDefinition />
-							</Grid.ColumnDefinitions>
-							<StackPanel
-								utils:SpacingSetter.Spacing="0,15">
-								<ui:Card
-									Background="{DynamicResource StripedBackgroundBrush}"
-									Padding="4"
-									VerticalAlignment="Center">
-									<Image
-										Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
-										MaxWidth="420"
-										Stretch="UniformToFill"
-										RenderOptions.BitmapScalingMode="Fant" />
-								</ui:Card>
-								<ui:Card>
-									<StackPanel
-										utils:SpacingSetter.Spacing="0,15">
-										<StackPanel
-											utils:SpacingSetter.Spacing="0,7">
-											<Label
-												Target="startDatePicker"
-												Content="{StaticResource StartDate_Label_Content}" />
-											<DatePicker x:Name="startDatePicker" />
-										</StackPanel>
-										<StackPanel
-											utils:SpacingSetter.Spacing="0,7">
-											<Label
-												Target="endDatePicker"
-												Content="{StaticResource EndDate_Label_Content}" />
-											<DatePicker x:Name="endDatePicker" />
-										</StackPanel>
-										<ui:Button
-											Content="{StaticResource ReserveButton_Content}"
-											IsDefault="True"
-											Appearance="Primary" />
-									</StackPanel>
-								</ui:Card>
-							</StackPanel>
-							<Border
-								Grid.Column="1"
-								Background="Transparent"
-								CornerRadius="4"
-								BorderBrush="{DynamicResource ControlElevationBorderBrush}"
-								BorderThickness="{StaticResource CardBorderThemeThickness}"
-								Padding="15">
-								<StackPanel
-									utils:SpacingSetter.Spacing="0,7">
-									<TextBlock
-										Text="{Binding Vehicle.Name, Mode=OneWay}"
-										FontWeight="Bold" />
-									<TextBlock>
-										<Run Text="{StaticResource Brand_Text}" />
-										<Run
-											FontWeight="Bold"
-											Text="{Binding Vehicle.Brand}" />.
-									</TextBlock>
-									<TextBlock>
-										<Run Text="{StaticResource LicensePlate_Text}" />
-										<Run
-											FontWeight="Bold"
-											Text="{Binding Vehicle.LicensePlate}" />.
-									</TextBlock>
-									<TextBlock>
-										<Run Text="{StaticResource Price_Text}" />
-											<Run
-											FontWeight="Bold"
-											Text="{Binding Vehicle.PricePerDay, Mode=OneWay, StringFormat=C, ConverterCulture=vi-VN}" />
-											<Run Text="{StaticResource PerDay_Text}" />.
-									</TextBlock>
-									<TextBlock
-										Text="{Binding Vehicle.Description, Mode=OneWay}"
-										Visibility="{Binding Vehicle.Description, Converter={StaticResource StringToVisibilityConverter}}" />
-								</StackPanel>
-							</Border>
-						</Grid>
+	<Grid>
+		<ContentControl
+			IsTabStop="False"
+			Focusable="False">
+			<ContentControl.Resources>
+				<ControlTemplate x:Key="BusyTemplate">
+					<StackPanel utils:SpacingSetter.Spacing="0,15">
+						<ui:ProgressRing IsIndeterminate="True" />
+						<TextBlock
+							Text="{StaticResource LoadingText}"
+							TextAlignment="Center" />
 					</StackPanel>
-				</ui:DynamicScrollViewer>
-			</ControlTemplate>
-		</ContentControl.Resources>
-		<ContentControl.Style>
-			<Style TargetType="ContentControl">
-				<Style.Triggers>
-					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Present}">
-						<Setter Property="Template" Value="{StaticResource PresentTemplate}" />
-					</DataTrigger>
-					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Busy}">
-						<Setter Property="Template" Value="{StaticResource BusyTemplate}" />
-					</DataTrigger>
-					<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Empty}">
-						<Setter Property="Template" Value="{StaticResource EmptyTemplate}" />
-					</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</ContentControl.Style>
-	</ContentControl>
+				</ControlTemplate>
+				<ControlTemplate x:Key="EmptyTemplate">
+					<StackPanel utils:SpacingSetter.Spacing="0,15">
+						<ui:SymbolIcon
+							Symbol="EmojiSad24"
+							FontSize="50" />
+						<TextBlock
+							Text="{StaticResource EmptyText}"
+							TextAlignment="Center"
+							VerticalAlignment="Center" />
+					</StackPanel>
+				</ControlTemplate>
+				<ControlTemplate x:Key="PresentTemplate">
+					<ui:DynamicScrollViewer Padding="15">
+						<StackPanel
+							HorizontalAlignment="Center"
+							utils:SpacingSetter.Spacing="0,15">
+							<Grid
+								utils:SpacingSetter.Spacing="15,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition />
+									<ColumnDefinition />
+								</Grid.ColumnDefinitions>
+								<StackPanel
+									utils:SpacingSetter.Spacing="0,15">
+									<ui:Card
+										Background="{DynamicResource StripedBackgroundBrush}"
+										Padding="4"
+										VerticalAlignment="Center">
+										<Image
+											Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
+											MaxWidth="420"
+											Stretch="UniformToFill"
+											RenderOptions.BitmapScalingMode="Fant" />
+									</ui:Card>
+									<ui:Card>
+										<StackPanel
+											utils:SpacingSetter.Spacing="0,15">
+											<StackPanel
+												utils:SpacingSetter.Spacing="0,7">
+												<Label
+													Target="startDatePicker"
+													Content="{StaticResource StartDate_Label_Content}" />
+												<DatePicker
+													x:Name="startDatePicker"
+													SelectedDate="{Binding StartDate, Mode=TwoWay}" />
+											</StackPanel>
+											<StackPanel
+												utils:SpacingSetter.Spacing="0,7">
+												<Label
+													Target="endDatePicker"
+													Content="{StaticResource EndDate_Label_Content}" />
+												<DatePicker
+													x:Name="endDatePicker"
+													SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+											</StackPanel>
+											<TextBlock>
+												<Run Text="{StaticResource RentalTimeSpan_Text}" />:
+												<Run
+													Text="{Binding RentalTimeSpan, Mode=OneWay, StringFormat={StaticResource RentalTimeSpan_Format}}"
+													FontWeight="Bold" />.
+											</TextBlock>
+											<TextBlock>
+												<Run Text="{StaticResource TotalPrice_Text}" />:
+												<Run
+													Text="{Binding TotalPrice, Mode=OneWay, StringFormat=C}"
+													FontWeight="Bold" />.
+											</TextBlock>
+											<ui:Button
+												Content="{StaticResource ReserveButton_Content}"
+												IsDefault="True"
+												Appearance="Primary"
+												Command="{Binding ReserveCommand, Mode=OneWay}" />
+										</StackPanel>
+									</ui:Card>
+								</StackPanel>
+								<Border
+									Grid.Column="1"
+									Background="Transparent"
+									CornerRadius="4"
+									BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+									BorderThickness="{StaticResource CardBorderThemeThickness}"
+									Padding="15">
+									<StackPanel
+										utils:SpacingSetter.Spacing="0,7">
+										<TextBlock
+											Text="{Binding Vehicle.Name, Mode=OneWay}"
+											FontWeight="Bold" />
+										<TextBlock>
+											<Run Text="{StaticResource Brand_Text}" />:
+											<Run
+												FontWeight="Bold"
+												Text="{Binding Vehicle.Brand}" />.
+										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource LicensePlate_Text}" />:
+											<Run
+												FontWeight="Bold"
+												Text="{Binding Vehicle.LicensePlate}" />.
+										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource Price_Text}" />:
+												<Run
+												FontWeight="Bold"
+												Text="{Binding Vehicle.PricePerDay, Mode=OneWay, StringFormat=C}" />
+												<Run Text="{StaticResource PerDay_Text}" />.
+										</TextBlock>
+										<TextBlock
+											Text="{Binding Vehicle.Description, Mode=OneWay}"
+											Visibility="{Binding Vehicle.Description, Converter={StaticResource StringToVisibilityConverter}}" />
+									</StackPanel>
+								</Border>
+							</Grid>
+						</StackPanel>
+					</ui:DynamicScrollViewer>
+				</ControlTemplate>
+			</ContentControl.Resources>
+			<ContentControl.Style>
+				<Style TargetType="ContentControl">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Present}">
+							<Setter Property="Template" Value="{StaticResource PresentTemplate}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Busy}">
+							<Setter Property="Template" Value="{StaticResource BusyTemplate}" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Empty}">
+							<Setter Property="Template" Value="{StaticResource EmptyTemplate}" />
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ContentControl.Style>
+		</ContentControl>
+		
+		<ui:Dialog x:Name="reserveDialog" />
+	</Grid>
 </UserControl>

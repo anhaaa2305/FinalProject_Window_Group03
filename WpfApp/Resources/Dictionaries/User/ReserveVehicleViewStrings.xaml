@@ -5,10 +5,17 @@
 	<sys:String x:Key="EmptyText">Không có dữ liệu về xe.</sys:String>
 	<sys:String x:Key="ReserveButton_Content">Đặt xe</sys:String>
 	<sys:String x:Key="BackButton_ToolTipText">Quay lại cửa hàng</sys:String>
-	<sys:String x:Key="Brand_Text">Thương hiệu:</sys:String>
-	<sys:String x:Key="LicensePlate_Text">Biển số xe:</sys:String>
-	<sys:String x:Key="Price_Text">Giá tiền:</sys:String>
+	<sys:String x:Key="Brand_Text">Thương hiệu</sys:String>
+	<sys:String x:Key="LicensePlate_Text">Biển số xe</sys:String>
+	<sys:String x:Key="Price_Text">Giá tiền</sys:String>
 	<sys:String x:Key="PerDay_Text">/ngày</sys:String>
 	<sys:String x:Key="StartDate_Label_Content">Ngày lấy xe</sys:String>
 	<sys:String x:Key="EndDate_Label_Content">Ngày trả xe</sys:String>
+	<sys:String x:Key="RentalTimeSpan_Text">Số ngày thuê</sys:String>
+	<sys:String x:Key="RentalTimeSpan_Format">{0:%d} ngày</sys:String>
+	<sys:String x:Key="TotalPrice_Text">Thành tiền</sys:String>
+	<sys:String x:Key="ReserveDialog_Title">Xác nhận đặt xe</sys:String>
+	<sys:String x:Key="ReserveDialog_Content">Khách hàng có đồng ý đặt xe {0} trong {1} ngày với giá tiền {2:C}?</sys:String>
+	<sys:String x:Key="ReserveDialog_LeftButton">Đồng ý</sys:String>
+	<sys:String x:Key="ReserveDialog_RightButton">Hủy</sys:String>
 </ResourceDictionary>

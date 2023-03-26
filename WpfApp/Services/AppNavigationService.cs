@@ -9,8 +9,6 @@ public class AppNavigationService : NavigationService, IAppNavigationService
 {
 	private readonly LinkedList<INavigationMiddleware> middlewares = new();
 
-	public event Action<UserControl>? Navigated;
-
 	public AppNavigationService(IServiceProvider provider) : base(provider) { }
 
 	public bool Navigate<T>()

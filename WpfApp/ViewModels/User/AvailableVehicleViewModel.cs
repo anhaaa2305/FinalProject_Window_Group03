@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Wpf.Ui.Controls.Navigation;
 using WpfApp.Data;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;

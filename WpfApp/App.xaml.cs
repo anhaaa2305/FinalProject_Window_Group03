@@ -70,7 +70,7 @@ public partial class App : Application
 		var factory = Services.GetRequiredService<IDbContextFactory<AppDbContext>>();
 		using var ctx = factory.CreateDbContext();
 		var ok = ctx.Database.CanConnect();
-		// ctx.Database.EnsureDeleted();
+		ctx.Database.EnsureDeleted();
 		ctx.Database.EnsureCreated();
 		return ok;
 	}

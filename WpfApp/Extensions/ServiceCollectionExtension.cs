@@ -1,4 +1,5 @@
 using Wpf.Ui.Contracts;
+using Wpf.Ui.Services;
 using WpfApp.Middlewares;
 using WpfApp.Models;
 using WpfApp.Services;
@@ -27,7 +28,8 @@ public static class ServiceCollectionExtensions
 		return self
 			.AddScoped<IPageService, PageService>()
 			.AddScoped<IAppNavigationService, AppNavigationService>()
-			.AddSingleton<ISessionService, SessionService>();
+			.AddSingleton<ISessionService, SessionService>()
+			.AddScoped<IDialogService, DialogService>();
 	}
 
 	public static IServiceCollection RegisterViews(this IServiceCollection self)

@@ -17,9 +17,7 @@
 	Background="{DynamicResource ApplicationBackgroundBrush}"
 	WindowBackdropType="Mica"
 	WindowCornerPreference="Round"
-	WindowStartupLocation="CenterScreen"
-	FontSize="14"
-	FontFamily="Segoe UI Variable">
+	WindowStartupLocation="CenterScreen">
 	<DockPanel>
 		<ui:TitleBar DockPanel.Dock="Top"
 			Title="WpfApp">

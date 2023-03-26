@@ -15,9 +15,9 @@ public partial class HomeView : UserControl
 
 		var scope = scopeFactory.CreateScope();
 		var provider = scope.ServiceProvider;
-		var navigationService = provider.GetRequiredService<IAppNavigationService>();
-		DataContext = provider.GetRequiredService<HomeViewModel>();
+		var navigator = provider.GetRequiredService<IAppNavigationService>();
 		navigationView.SetPageService(provider.GetRequiredService<IPageService>());
-		navigationService.SetNavigationControl(navigationView);
+		navigator.SetNavigationControl(navigationView);
+		DataContext = provider.GetRequiredService<HomeViewModel>();
 	}
 }
