@@ -8,6 +8,7 @@ using WpfApp.Data.Context;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Services;
+using WpfApp.Views;
 
 namespace WpfApp.ViewModels;
 
@@ -31,12 +32,17 @@ public class RentedVehicleViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentedVehicleViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
+	public RentedVehicleViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService, IAppNavigationService navigator)
 	{
 		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
 		ViewItemDetailsCommand = new RelayCommand<RentedVehicle>(ViewItemDetails);
 
+		if (sessionService.User is null)
+		{
+			navigator.Navigate<LoginView>();
+			return;
+		}
 		GetRentedVehiclesAsync().SafeFireAndForget();
 	}
 
