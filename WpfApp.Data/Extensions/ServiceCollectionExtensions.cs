@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -24,16 +25,19 @@ public static class ServiceCollectionExtensions
 		return self
 			.RegisterServices()
 			.AddPooledDbContextFactory<AppDbContext>(options =>
-		{
-			options
-				.UseSqlServer(GetSqlConnectionStringBuilder().ToString())
-				.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-				.EnableDetailedErrors()
+			{
+				options
+					.UseSqlServer(GetSqlConnectionStringBuilder().ToString())
+					.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+					.EnableDetailedErrors()
 #if DEBUG
-				.EnableSensitiveDataLogging()
+					.EnableSensitiveDataLogging()
+					.LogTo(msg => Debug.WriteLine(msg))
 #endif
-				;
-		});
+					;
+			})
+			.AddSingleton<IUserDAO, EFUserDAO>()
+			.AddSingleton<IVehicleDAO, EFVehicleDAO>();
 	}
 
 	private static IServiceCollection RegisterServices(this IServiceCollection self)

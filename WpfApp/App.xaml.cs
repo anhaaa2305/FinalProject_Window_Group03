@@ -1,9 +1,7 @@
 ﻿using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Wpf.Ui.Contracts;
 using WpfApp.Data.Context;
-using WpfApp.Services;
 using WpfApp.Views;
 
 namespace WpfApp;
@@ -21,8 +19,8 @@ public partial class App : Application
 	private static IServiceProvider ConfigureServices()
 	{
 		return new ServiceCollection()
-			.RegisterEntityFramework()
 			.RegisterSql()
+			.RegisterEntityFramework()
 			.RegisterMiddlewares()
 			.RegisterServices()
 			.RegisterViews()

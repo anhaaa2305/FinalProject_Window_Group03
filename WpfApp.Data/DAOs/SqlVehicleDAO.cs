@@ -183,14 +183,6 @@ public class SqlVehicleDAO : IVehicleDAO
 		", new SqlParameter("@UserId", userId));
 	}
 
-	public Task<IReadOnlyCollection<VehicleRentalLog>> GetAllRentingLogsAsync()
-	{
-		return GetAllRentalRecordsAsync(
-		@"
-			select * from VehicleRentalLogs
-		");
-	}
-
 	public Task<IReadOnlyCollection<VehicleRentalLog>> GetRentalLogsByUserIdAsync(int userId)
 	{
 		return GetAllRentalRecordsAsync(
