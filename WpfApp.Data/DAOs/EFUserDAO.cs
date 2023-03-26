@@ -16,6 +16,7 @@ public class EFUserDAO : IUserDAO
 	public async Task<int> AddAsync(User model)
 	{
 		using var ctx = dbContextFactory.CreateDbContext();
+		model.Password = await Task.Run(() => BCrypt.Net.BCrypt.EnhancedHashPassword(model.Password)).ConfigureAwait(false);
 		ctx.Users.Add(model);
 		await ctx.SaveChangesAsync().ConfigureAwait(false);
 		return model.Id;

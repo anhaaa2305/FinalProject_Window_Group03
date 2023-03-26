@@ -1,9 +1,7 @@
 using System.Data;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using WpfApp.Data.Context;
 using WpfApp.Data.Models;
-using WpfApp.Data.Services;
 
 namespace WpfApp.Data.DAOs;
 
@@ -34,6 +32,24 @@ public class EFVehicleDAO : IVehicleDAO
 	{
 		using var ctx = dbContextFactory.CreateDbContext();
 		ctx.Vehicles.Update(model);
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> AddReservedVehicleAsync(ReservedVehicle reservedVehicle)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		ctx.Users.Entry(reservedVehicle.User).State = EntityState.Unchanged;
+		ctx.Vehicles.Entry(reservedVehicle.Vehicle).State = EntityState.Unchanged;
+		ctx.ReservedVehicles.Add(reservedVehicle);
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> AddRentedVehicleAsync(RentedVehicle rentedVehicle)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		ctx.Users.Entry(rentedVehicle.User).State = EntityState.Unchanged;
+		ctx.Vehicles.Entry(rentedVehicle.Vehicle).State = EntityState.Unchanged;
+		ctx.RentedVehicles.Add(rentedVehicle);
 		return await ctx.SaveChangesAsync().ConfigureAwait(false);
 	}
 

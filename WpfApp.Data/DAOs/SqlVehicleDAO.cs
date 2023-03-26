@@ -92,6 +92,48 @@ public class SqlVehicleDAO : IVehicleDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
+	public async Task<int> AddReservedVehicleAsync(ReservedVehicle reservedVehicle)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			insert into ReservedVehicles (UserId, VehicleId, StartDate, EndDate)
+			values (@UserId, @VehicleId, @StartDate, @EndDate)
+		";
+		cmd.Parameters.AddWithValue("@UserId", reservedVehicle.User.Id);
+		cmd.Parameters.AddWithValue("@VehicleId", reservedVehicle.Vehicle.Id);
+		cmd.Parameters.AddWithValue("@StartDate", reservedVehicle.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", reservedVehicle.EndDate);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> AddRentedVehicleAsync(RentedVehicle rentedVehicle)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			insert into ReservedVehicles (UserId, VehicleId, StartDate, EndDate)
+			values (@UserId, @VehicleId, @StartDate, @EndDate)
+		";
+		cmd.Parameters.AddWithValue("@UserId", rentedVehicle.User.Id);
+		cmd.Parameters.AddWithValue("@VehicleId", rentedVehicle.Vehicle.Id);
+		cmd.Parameters.AddWithValue("@StartDate", rentedVehicle.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", rentedVehicle.EndDate);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
+
 	public async Task<Vehicle?> GetByIdAsync(int id)
 	{
 		await using var conn = await db.OpenAsync().ConfigureAwait(false);

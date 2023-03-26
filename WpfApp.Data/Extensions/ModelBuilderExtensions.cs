@@ -96,22 +96,22 @@ public static class ModelBuilderExtensions
 	{
 		return self.Entity<ReservedVehicle>(entity =>
 		{
-			entity.Property<int>("UserId").IsRequired();
-			entity.Property<int>("VehicleId").IsRequired();
+			entity.Property<int>("UserId").ValueGeneratedNever();
+			entity.Property<int>("VehicleId").ValueGeneratedNever();
 			entity.HasKey("VehicleId");
 			entity
 				.HasOne(e => e.User)
-				.WithOne()
-				.HasForeignKey<ReservedVehicle>("UserId")
-				.OnDelete(DeleteBehavior.Cascade);
-			entity
-				.Navigation(e => e.User)
-				.UsePropertyAccessMode(PropertyAccessMode.Property);
+				.WithMany()
+				.HasForeignKey("UserId")
+				.IsRequired();
 			entity
 				.HasOne(e => e.Vehicle)
 				.WithOne()
 				.HasForeignKey<ReservedVehicle>("VehicleId")
-				.OnDelete(DeleteBehavior.Cascade);
+				.IsRequired();
+			entity
+				.Navigation(e => e.User)
+				.UsePropertyAccessMode(PropertyAccessMode.Property);
 			entity
 				.Navigation(e => e.Vehicle)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
