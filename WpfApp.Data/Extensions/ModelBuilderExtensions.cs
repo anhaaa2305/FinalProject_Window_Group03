@@ -125,7 +125,7 @@ public static class ModelBuilderExtensions
 		return self.Entity<Role>(entity =>
 		{
 			entity.HasKey(e => e.Id);
-			entity.Property(e => e.Id).UseIdentityColumn();
+			entity.Property(e => e.Id);
 			entity.Property(e => e.Name).IsRequired();
 		});
 	}
