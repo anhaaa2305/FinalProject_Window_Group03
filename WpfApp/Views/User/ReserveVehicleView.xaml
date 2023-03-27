@@ -10,8 +10,8 @@
     xmlns:controls="clr-namespace:WpfApp.Views.Controls"
     xmlns:data="clr-namespace:WpfApp.Data"
     mc:Ignorable="d"
-	VerticalAlignment="Center"
-	HorizontalAlignment="Center"
+	VerticalAlignment="Stretch"
+	HorizontalAlignment="Stretch"
 	Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/ReserveVehicleViewStrings.xaml" />
@@ -22,7 +22,11 @@
 			Focusable="False">
 			<ContentControl.Resources>
 				<ControlTemplate x:Key="BusyTemplate">
-					<StackPanel utils:SpacingSetter.Spacing="0,15">
+					<StackPanel
+						utils:SpacingSetter.Spacing="0,15"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Margin="15">
 						<ui:ProgressRing IsIndeterminate="True" />
 						<TextBlock
 							Text="{StaticResource LoadingText}"
@@ -30,7 +34,11 @@
 					</StackPanel>
 				</ControlTemplate>
 				<ControlTemplate x:Key="EmptyTemplate">
-					<StackPanel utils:SpacingSetter.Spacing="0,15">
+					<StackPanel
+						utils:SpacingSetter.Spacing="0,15"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Margin="15">
 						<ui:SymbolIcon
 							Symbol="EmojiSad24"
 							FontSize="50" />
@@ -43,8 +51,9 @@
 				<ControlTemplate x:Key="PresentTemplate">
 					<ui:DynamicScrollViewer Padding="15">
 						<StackPanel
+							utils:SpacingSetter.Spacing="0,15"
 							HorizontalAlignment="Center"
-							utils:SpacingSetter.Spacing="0,15">
+							VerticalAlignment="Center">
 							<Grid
 								utils:SpacingSetter.Spacing="15,0">
 								<Grid.ColumnDefinitions>
