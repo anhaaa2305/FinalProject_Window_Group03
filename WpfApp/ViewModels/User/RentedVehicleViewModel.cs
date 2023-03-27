@@ -1,11 +1,9 @@
-using System.Collections.ObjectModel;
+using System.Windows;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using WpfApp.Data;
-using WpfApp.Data.Context;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Services;
@@ -17,12 +15,12 @@ public class RentedVehicleViewModel : ObservableObject
 {
 	private readonly IVehicleDAO vehicleDAO;
 	private readonly ISessionService sessionService;
-	private ObservableCollection<RentedVehicle>? vehicles;
+	private IReadOnlyCollection<object>? vehicles;
 	private ViewState state;
 
-	public IRelayCommand<RentedVehicle> ViewItemDetailsCommand { get; }
+	public IRelayCommand<object> ViewItemDetailsCommand { get; }
 
-	public ObservableCollection<RentedVehicle>? Vehicles
+	public IReadOnlyCollection<object>? Vehicles
 	{
 		get => vehicles; set => SetProperty(ref vehicles, value);
 	}
@@ -37,33 +35,38 @@ public class RentedVehicleViewModel : ObservableObject
 	{
 		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
-		ViewItemDetailsCommand = new RelayCommand<RentedVehicle>(ViewItemDetails);
+		ViewItemDetailsCommand = new RelayCommand<object>(ViewItemDetails);
 
 		if (sessionService.User is null)
 		{
 			App.Current.Services.GetRequiredService<IAppNavigationService>().Navigate<LoginView>();
 			return;
 		}
-		GetRentedVehiclesAsync().SafeFireAndForget();
+		GetVehiclesAsync().SafeFireAndForget();
 	}
 
-	private async Task GetRentedVehiclesAsync()
+	private async Task GetVehiclesAsync()
 	{
 		State = ViewState.Busy;
 
-		var vehicles = await vehicleDAO
-			.GetRentedByUserIdAsync(sessionService.User!.Id)
-			.ConfigureAwait(false);
+		var rentedVehiclesTask = vehicleDAO.GetRentedByUserIdAsync(sessionService.User!.Id);
+		var reservedVehiclesTask = vehicleDAO.GetReservedByUserIdAsync(sessionService.User!.Id);
+		await Task.WhenAll(rentedVehiclesTask, reservedVehiclesTask).ConfigureAwait(false);
+		var vehicles = (await rentedVehiclesTask.ConfigureAwait(false)).Cast<object>().Concat(await reservedVehiclesTask.ConfigureAwait(false)).ToArray();
 		foreach (var vehicle in vehicles)
 		{
-			if (string.IsNullOrEmpty(vehicle.Vehicle.ImageUrl))
+			if (vehicle is RentedVehicle rented && string.IsNullOrEmpty(rented.Vehicle.ImageUrl))
 			{
-				vehicle.Vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
+				rented.Vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
+			}
+			else if (vehicle is ReservedVehicle reserved && string.IsNullOrEmpty(reserved.Vehicle.ImageUrl))
+			{
+				reserved.Vehicle.ImageUrl = "/Resources/Images/scooter_icon.png";
 			}
 		}
 		App.Current.Dispatcher.Invoke(() =>
 		{
-			Vehicles = new ObservableCollection<RentedVehicle>(vehicles);
+			Vehicles = vehicles;
 			if (Vehicles.Count == 0)
 			{
 				State = ViewState.Empty;
@@ -75,7 +78,7 @@ public class RentedVehicleViewModel : ObservableObject
 		});
 	}
 
-	private void ViewItemDetails(RentedVehicle? model)
+	private void ViewItemDetails(object? model)
 	{
 		if (Vehicles is null || model is null)
 		{
