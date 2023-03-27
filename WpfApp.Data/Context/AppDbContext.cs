@@ -20,6 +20,8 @@ public class AppDbContext : DbContext
 			.BuildVehicle()
 			.BuildRentedVehicle()
 			.BuildReservedVehicle()
-			.BuildVehicleRentalLog();
+			.BuildVehicleRentalLog()
+			.BuildRole()
+			.BuildUserRole();
 	}
 }

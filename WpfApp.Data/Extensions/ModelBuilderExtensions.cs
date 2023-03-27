@@ -119,4 +119,38 @@ public static class ModelBuilderExtensions
 			entity.Property(e => e.EndDate).IsRequired();
 		});
 	}
+
+	public static ModelBuilder BuildRole(this ModelBuilder self)
+	{
+		return self.Entity<Role>(entity =>
+		{
+			entity.HasKey(e => e.Id);
+			entity.Property(e => e.Id).UseIdentityColumn();
+			entity.Property(e => e.Name).IsRequired();
+		});
+	}
+
+	public static ModelBuilder BuildUserRole(this ModelBuilder self)
+	{
+		return self.Entity<UserRole>(entity =>
+		{
+			entity.Property<int>("UserId").ValueGeneratedNever();
+			entity.Property<int>("RoleId").ValueGeneratedNever();
+			entity.HasKey("UserId");
+			entity
+				.HasOne(e => e.User)
+				.WithOne()
+				.HasForeignKey<UserRole>("UserId");
+			entity
+				.HasOne(e => e.Role)
+				.WithMany()
+				.HasForeignKey("RoleId");
+			entity
+				.Navigation(e => e.User)
+				.UsePropertyAccessMode(PropertyAccessMode.Property);
+			entity
+				.Navigation(e => e.Role)
+				.UsePropertyAccessMode(PropertyAccessMode.Property);
+		});
+	}
 }
