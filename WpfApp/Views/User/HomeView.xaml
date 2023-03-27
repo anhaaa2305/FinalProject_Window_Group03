@@ -9,6 +9,7 @@
     xmlns:utils="clr-namespace:WpfApp.Utils"
 	xmlns:uc="clr-namespace:WpfApp.Views.Controls"
 	xmlns:vm="clr-namespace:WpfApp.ViewModels"
+	xmlns:views="clr-namespace:WpfApp.Views"
 	xmlns:userViews="clr-namespace:WpfApp.Views.User"
     mc:Ignorable="d">
 	<UserControl.Resources>
@@ -49,6 +50,22 @@
 					Visibility="Collapsed"
 					TargetPageType="{x:Type userViews:ReserveVehicleView}" />
 			</ui:NavigationView.MenuItems>
+			<ui:NavigationView.FooterMenuItems>
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_Account}"
+					TargetPageType="{x:Type userViews:AvailableVehicleView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="Person24" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_SignOut}"
+					TargetPageType="{x:Type views:SignOutView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="ArrowExit20" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+			</ui:NavigationView.FooterMenuItems>
 		</ui:NavigationView>
 	</Grid>
 </UserControl>

@@ -4,4 +4,6 @@
 	<sys:String x:Key="Item_AvailableVehicle">Cửa hàng</sys:String>
 	<sys:String x:Key="Item_VehicleRenting">Xe đang thuê</sys:String>
 	<sys:String x:Key="Item_RentHistory">Lịch sử thuê</sys:String>
+	<sys:String x:Key="Item_Account">Tài khoản</sys:String>
+	<sys:String x:Key="Item_SignOut">Đăng xuất</sys:String>
 </ResourceDictionary>

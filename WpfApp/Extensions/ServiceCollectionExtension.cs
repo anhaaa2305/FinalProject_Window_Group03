@@ -41,7 +41,9 @@ public static class ServiceCollectionExtensions
 			.AddTransient<AvailableVehicleView>()
 			.AddTransient<RentedVehicleView>()
 			.AddTransient<RentalLogView>()
-			.AddTransient<ReserveVehicleView>();
+			.AddTransient<ReserveVehicleView>()
+			.AddTransient<SignOutView>()
+			.AddTransient<AccountView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
@@ -53,6 +55,8 @@ public static class ServiceCollectionExtensions
 			.AddTransient<AvailableVehicleViewModel>()
 			.AddTransient<RentedVehicleViewModel>()
 			.AddTransient<RentalLogViewModel>()
-			.AddTransient<ReserveVehicleViewModel>();
+			.AddTransient<ReserveVehicleViewModel>()
+			.AddTransient<SignOutViewModel>()
+			.AddTransient<AccountViewModel>();
 	}
 }
