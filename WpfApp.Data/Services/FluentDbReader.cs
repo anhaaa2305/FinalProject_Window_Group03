@@ -65,10 +65,17 @@ public class FluentDbReader : IFluentDbReader
 		return this;
 	}
 
+	public IFluentDbReader Read(Role role)
+	{
+		role.Id = reader.GetInt32(ordinal++);
+		role.Name = reader.GetString(ordinal++);
+		return this;
+	}
+
 	private T? GetOrDefault<T>()
 	{
 		var value = reader.IsDBNull(ordinal) ? default : (T)reader.GetValue(ordinal);
-		++this.ordinal;
+		++ordinal;
 		return value;
 	}
 }
