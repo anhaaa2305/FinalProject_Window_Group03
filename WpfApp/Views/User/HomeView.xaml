@@ -49,11 +49,6 @@
 					Visibility="Collapsed"
 					TargetPageType="{x:Type userViews:ReserveVehicleView}" />
 			</ui:NavigationView.MenuItems>
-			<ui:NavigationView.ContentOverlay>
-                <Grid>
-                    <ui:Snackbar x:Name="RootSnackbar" />
-                </Grid>
-            </ui:NavigationView.ContentOverlay>
 		</ui:NavigationView>
 	</Grid>
 </UserControl>

@@ -9,7 +9,8 @@
     xmlns:utils="clr-namespace:WpfApp.Utils"
     xmlns:controls="clr-namespace:WpfApp.Views.Controls"
     xmlns:data="clr-namespace:WpfApp.Data"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+	Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/RentalLogStrings.xaml" />
 	</UserControl.Resources>
@@ -48,18 +49,25 @@
 									<ColumnDefinition Width="*" />
 									<ColumnDefinition Width="Auto" />
 								</Grid.ColumnDefinitions>
-								<Image
-									Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
-									MaxWidth="172"
-									Stretch="UniformToFill"
-									HorizontalAlignment="Center"
-									RenderOptions.BitmapScalingMode="Fant" />
+								<ui:Card
+									Background="{DynamicResource StripedBackgroundBrush}"
+									Padding="4"
+									VerticalAlignment="Center">
+									<Image
+										Source="{Binding Vehicle.ImageUrl, Mode=OneWay}"
+										MaxWidth="172"
+										Stretch="UniformToFill"
+										HorizontalAlignment="Center"
+										RenderOptions.BitmapScalingMode="Fant" />
+								</ui:Card>
 								<StackPanel Grid.Column="1"
 									VerticalAlignment="Center">
 									<TextBlock
 										Text="{Binding Vehicle.Name, Mode=OneWay}"
 										FontWeight="Bold"/>
-									<TextBlock Text="{Binding LicensePlate}"/>
+									<TextBlock>
+										<Run Text="{Binding LicensePlate}" />.
+									</TextBlock>
 								</StackPanel>
 								<StackPanel Grid.Column="2"
 									utils:MarginSetter.Margin="6,0"
