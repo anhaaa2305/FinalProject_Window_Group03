@@ -7,4 +7,5 @@ public interface IUserDAO : IDAO<User>
 	Task<User?> GetByIdAsync(int id);
 	Task<User?> GetByFullNameAsync(string fullName);
 	Task<int> DeleteByIdAsync(int id);
+	Task<Role?> GetRoleByIdAsync(int id);
 }

@@ -62,4 +62,14 @@ public class EFUserDAO : IUserDAO
 			.ExecuteDeleteAsync()
 			.ConfigureAwait(false);
 	}
+
+	public async Task<Role?> GetRoleByIdAsync(int id)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.UserRoles
+			.Where(e => e.User.Id == id)
+			.Select(e => e.Role)
+			.FirstOrDefaultAsync()
+			.ConfigureAwait(false);
+	}
 }

@@ -112,6 +112,33 @@ public class SqlUserDAO : IUserDAO
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
+	public async Task<Role?> GetRoleByIdAsync(int id)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select top 1 Roles.* from UserRoles
+				inner join Users on Users.Id = UserRoles.UserId
+				inner join Roles on Roles.Id = UserRoles.RoleId
+			where UserId = @UserId
+		";
+		cmd.Parameters.AddWithValue("@UserId", id);
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var role = new Role();
+			readerFactory.Create(reader).Read(role);
+			return role;
+		}
+		return default;
+	}
+
 	private async Task<IReadOnlyCollection<User>> Get(string commandText, params SqlParameter[] parameters)
 	{
 		await using var conn = await db.OpenAsync().ConfigureAwait(false);
