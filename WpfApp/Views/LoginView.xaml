@@ -7,6 +7,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp.Utils"
     xmlns:data="clr-namespace:WpfApp.Data"
+	xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
 	Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     mc:Ignorable="d">
 	<UserControl.Resources>
@@ -45,7 +46,11 @@
 						Name="usernameTextBox"
 						PlaceholderText="{StaticResource Username_Placeholder}"
 						VerticalContentAlignment="Center"
-						Text="{Binding Username, Mode=TwoWay}" />
+						Text="{Binding Username, Mode=TwoWay}">
+						<dxmvvm:Interaction.Behaviors>
+							<dxmvvm:FocusBehavior />
+						</dxmvvm:Interaction.Behaviors>
+					</ui:TextBox>
 				</StackPanel>
 	
 				<StackPanel
