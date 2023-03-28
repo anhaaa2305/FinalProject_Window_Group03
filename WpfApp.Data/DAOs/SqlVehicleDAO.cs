@@ -75,11 +75,11 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			update Vehicles set
+			update top 1 Vehicles set
 				LicensePlate = @LicensePlate, Brand = @Brand, Name = @Name,
 				PricePerDay = @PricePerDay, Color = @Color, ImageUrl = @ImageUrl,
 				Description = @Description
-			where Id = @Id limit 1
+			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@LicensePlate", model.LicensePlate);
 		cmd.Parameters.AddWithValue("@Brand", model.Brand);
@@ -145,7 +145,7 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			select * from Vehicles where Id = @Id limit 1
+			select top 1 * from Vehicles where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@Id", id);
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
@@ -168,8 +168,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			delete from Vehicles
-			where Id = @Id limit 1
+			delete top 1 from Vehicles
+			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@Id", id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
@@ -219,8 +219,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		return GetAllReservedAsync(
 		@"
 			select * from ReservedVehicles
-				inner join Users on Users.Id = RentedVehicles.UserId
-				inner join Vehicles on Vehicles.Id = RentedVehicles.VehicleId
+				inner join Users on Users.Id = ReservedVehicles.UserId
+				inner join Vehicles on Vehicles.Id = ReservedVehicles.VehicleId
 			where UserId = @UserId
 		", new SqlParameter("@UserId", userId));
 	}
