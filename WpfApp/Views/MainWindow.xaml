@@ -8,6 +8,7 @@
 	xmlns:local="clr-namespace:WpfApp"
 	xmlns:views="clr-namespace:WpfApp.Views"
 	xmlns:userViews="clr-namespace:WpfApp.Views.User"
+	xmlns:staffViews="clr-namespace:WpfApp.Views.StaffViews"
 	mc:Ignorable="d"
 	Title="WpfApp"
 	Width="680"
@@ -37,6 +38,7 @@
 			<ui:NavigationView.MenuItems>
 				<ui:NavigationViewItem TargetPageType="{x:Type views:LoginView}" />
 				<ui:NavigationViewItem TargetPageType="{x:Type userViews:HomeView}" />
+				<ui:NavigationViewItem TargetPageType="{x:Type staffViews:HomeView}" />
 			</ui:NavigationView.MenuItems>
 		</ui:NavigationView>
 	</DockPanel>
