@@ -6,6 +6,7 @@ using WpfApp.Services;
 using WpfApp.ViewModels;
 using WpfApp.Views;
 using WpfApp.Views.User;
+using StaffViews = WpfApp.Views.StaffViews;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -43,7 +44,8 @@ public static class ServiceCollectionExtensions
 			.AddTransient<RentalLogView>()
 			.AddTransient<ReserveVehicleView>()
 			.AddTransient<SignOutView>()
-			.AddTransient<AccountView>();
+			.AddTransient<AccountView>()
+			.AddTransient<StaffViews.HomeView>();
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
