@@ -17,7 +17,8 @@ public static class ServiceCollectionExtensions
 			.AddSingleton<IDbServiceOptions>(provider => new DbServiceOptions(GetSqlConnectionStringBuilder()))
 			.AddSingleton<IDbService, DbService>()
 			.AddSingleton<IUserDAO, SqlUserDAO>()
-			.AddSingleton<IVehicleDAO, SqlVehicleDAO>();
+			.AddSingleton<IVehicleDAO, SqlVehicleDAO>()
+			.AddSingleton<IRoleDAO, SqlRoleDAO>();
 	}
 
 	public static IServiceCollection RegisterEntityFramework(this IServiceCollection self)
@@ -37,7 +38,8 @@ public static class ServiceCollectionExtensions
 					;
 			})
 			.AddSingleton<IUserDAO, EFUserDAO>()
-			.AddSingleton<IVehicleDAO, EFVehicleDAO>();
+			.AddSingleton<IVehicleDAO, EFVehicleDAO>()
+			.AddSingleton<IRoleDAO, EFRoleDAO>();
 	}
 
 	private static IServiceCollection RegisterServices(this IServiceCollection self)

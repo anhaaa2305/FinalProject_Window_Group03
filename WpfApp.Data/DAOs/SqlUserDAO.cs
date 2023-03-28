@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using WpfApp.Data.Constants;
 using WpfApp.Data.Models;
 using WpfApp.Data.Services;
 
@@ -59,11 +60,11 @@ public class SqlUserDAO : IUserDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			update Users set
+			update top 1 Users set
 				NationalId = @NationalId, Password = @Password, FullName = @FullName,
 				PhoneNumber = @PhoneNumber, IsMale = @IsMale, Address = @Address,
 				Email = @Email, DateOfBirth = @DateOfBirth
-			where Id = @Id limit 1
+			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@NationalId", model.NationalId);
 		cmd.Parameters.AddWithValue("@Password", model.Password);
@@ -81,7 +82,7 @@ public class SqlUserDAO : IUserDAO
 	{
 		return (await Get
 		(
-			"select * from Users where Id = @Id limit 1",
+			"select top 1 * from Users where Id = @Id",
 			new SqlParameter("@Id", id)
 		).ConfigureAwait(false)).FirstOrDefault();
 	}
@@ -105,8 +106,8 @@ public class SqlUserDAO : IUserDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			delete from Users
-			where Id = @Id limit 1
+			delete top 1 from Users
+			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@Id", id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
@@ -125,7 +126,7 @@ public class SqlUserDAO : IUserDAO
 		@"
 			select top 1 Roles.* from UserRoles
 				inner join Users on Users.Id = UserRoles.UserId
-				inner join Roles on Roles.Id = UserRoles.RoleId
+				inner join Roles on Roles.Flag = UserRoles.RoleFlag
 			where UserId = @UserId
 		";
 		cmd.Parameters.AddWithValue("@UserId", id);
@@ -159,5 +160,24 @@ public class SqlUserDAO : IUserDAO
 			users.AddLast(user);
 		}
 		return users;
+	}
+
+	public async Task<int> AddUserRoleAsync(int id, RoleFlag flag)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			insert into UserRoles (UserId, RoleFlag)
+			values (@UserId, @RoleFlag)
+		";
+		cmd.Parameters.AddWithValue("@UserId", id);
+		cmd.Parameters.AddWithValue("@RoleFlag", flag);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 }

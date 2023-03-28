@@ -1,3 +1,4 @@
+using WpfApp.Data.Constants;
 using WpfApp.Data.Models;
 
 namespace Microsoft.EntityFrameworkCore;
@@ -124,8 +125,10 @@ public static class ModelBuilderExtensions
 	{
 		return self.Entity<Role>(entity =>
 		{
-			entity.HasKey(e => e.Id);
-			entity.Property(e => e.Id);
+			entity.HasKey(e => e.Flag);
+			entity.Property(e => e.Flag).HasConversion(
+				v => (int)v,
+				v => (RoleFlag)v);
 			entity.Property(e => e.Name).IsRequired();
 		});
 	}
@@ -135,7 +138,9 @@ public static class ModelBuilderExtensions
 		return self.Entity<UserRole>(entity =>
 		{
 			entity.Property<int>("UserId").ValueGeneratedNever();
-			entity.Property<int>("RoleId").ValueGeneratedNever();
+			entity.Property<RoleFlag>("RoleFlag")
+				.ValueGeneratedNever()
+				.HasConversion(v => (int)v, v => (RoleFlag)v);
 			entity.HasKey("UserId");
 			entity
 				.HasOne(e => e.User)
@@ -144,7 +149,7 @@ public static class ModelBuilderExtensions
 			entity
 				.HasOne(e => e.Role)
 				.WithMany()
-				.HasForeignKey("RoleId");
+				.HasForeignKey("RoleFlag");
 			entity
 				.Navigation(e => e.User)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);

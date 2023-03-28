@@ -11,7 +11,7 @@ public class AppDbContext : DbContext
 	public DbSet<ReservedVehicle> ReservedVehicles => Set<ReservedVehicle>();
 	public DbSet<VehicleRentalLog> VehicleRentalLogs => Set<VehicleRentalLog>();
 	public DbSet<UserRole> UserRoles => Set<UserRole>();
-	public DbSet<UserRole> Roles => Set<Role>();
+	public DbSet<Role> Roles => Set<Role>();
 
 	public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

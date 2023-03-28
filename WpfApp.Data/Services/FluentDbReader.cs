@@ -1,4 +1,5 @@
 using System.Data.Common;
+using WpfApp.Data.Constants;
 using WpfApp.Data.Models;
 
 namespace WpfApp.Data.Services;
@@ -67,7 +68,7 @@ public class FluentDbReader : IFluentDbReader
 
 	public IFluentDbReader Read(Role role)
 	{
-		role.Id = reader.GetInt32(ordinal++);
+		role.Flag = (RoleFlag)reader.GetInt32(ordinal++);
 		role.Name = reader.GetString(ordinal++);
 		return this;
 	}

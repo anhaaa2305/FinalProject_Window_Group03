@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WpfApp.Data.Constants;
 using WpfApp.Data.Context;
 using WpfApp.Data.Models;
 
@@ -71,5 +72,16 @@ public class EFUserDAO : IUserDAO
 			.Select(e => e.Role)
 			.FirstOrDefaultAsync()
 			.ConfigureAwait(false);
+	}
+
+	public async Task<int> AddUserRoleAsync(int id, RoleFlag flag)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		var user = new User { Id = id };
+		var role = new Role { Flag = flag };
+		ctx.Users.Entry(user).State = EntityState.Unchanged;
+		ctx.Roles.Entry(role).State = EntityState.Unchanged;
+		ctx.UserRoles.Add(new UserRole { User = user, Role = role });
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
 	}
 }
