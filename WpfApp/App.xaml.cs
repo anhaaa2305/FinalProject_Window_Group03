@@ -41,8 +41,8 @@ public partial class App : Application
 	private static IServiceProvider ConfigureServices()
 	{
 		return new ServiceCollection()
-			.RegisterSql()
 			.RegisterEntityFramework()
+			.RegisterSql()
 			.RegisterMiddlewares()
 			.RegisterModels()
 			.RegisterServices()

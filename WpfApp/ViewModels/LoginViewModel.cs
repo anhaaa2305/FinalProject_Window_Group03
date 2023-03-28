@@ -1,13 +1,15 @@
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WpfApp.Data.Constants;
+using WpfApp.Data.DAOs;
 using WpfApp.Services;
 using WpfApp.Views.User;
+using StaffViews = WpfApp.Views.StaffViews;
 
 namespace WpfApp.ViewModels;
 
-using System.Windows;
 using BCrypt.Net;
-using WpfApp.Data.DAOs;
 
 public class LoginViewModel : ObservableObject
 {
@@ -86,10 +88,24 @@ public class LoginViewModel : ObservableObject
 
 		user.Password = string.Empty;
 		await sessionService.LogInAsync(user).ConfigureAwait(false);
-		App.Current.Dispatcher.Invoke(() =>
+
+		var role = await userDAO.GetRoleByIdAsync(user.Id).ConfigureAwait(false);
+		if (role is null)
 		{
-			navigator.Navigate<HomeView>();
-		});
+			App.Current.Dispatcher.Invoke(() =>
+			{
+				navigator.Navigate<HomeView>();
+			});
+			return;
+		}
+		if ((role.Flag & RoleFlag.Staff) == RoleFlag.Staff)
+		{
+			App.Current.Dispatcher.Invoke(() =>
+			{
+				navigator.Navigate<StaffViews.HomeView>();
+			});
+			return;
+		}
 	}
 
 	private bool CanLogin()
