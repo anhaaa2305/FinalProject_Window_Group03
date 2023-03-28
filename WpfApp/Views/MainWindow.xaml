@@ -7,7 +7,7 @@
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 	xmlns:local="clr-namespace:WpfApp"
 	xmlns:views="clr-namespace:WpfApp.Views"
-	xmlns:userViews="clr-namespace:WpfApp.Views.User"
+	xmlns:userViews="clr-namespace:WpfApp.Views.UserViews"
 	xmlns:staffViews="clr-namespace:WpfApp.Views.StaffViews"
 	mc:Ignorable="d"
 	Title="WpfApp"

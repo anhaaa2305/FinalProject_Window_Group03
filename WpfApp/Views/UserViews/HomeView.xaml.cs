@@ -2,9 +2,9 @@ using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using Wpf.Ui.Contracts;
 using WpfApp.Services;
-using WpfApp.ViewModels;
+using WpfApp.ViewModels.UserViewModels;
 
-namespace WpfApp.Views.User;
+namespace WpfApp.Views.UserViews;
 
 public partial class HomeView : UserControl
 {

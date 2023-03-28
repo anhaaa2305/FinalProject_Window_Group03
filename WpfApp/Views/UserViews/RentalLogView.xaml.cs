@@ -1,7 +1,7 @@
 using System.Windows.Controls;
-using WpfApp.ViewModels;
+using WpfApp.ViewModels.UserViewModels;
 
-namespace WpfApp.Views.User;
+namespace WpfApp.Views.UserViews;
 
 public partial class RentalLogView : UserControl
 {

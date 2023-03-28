@@ -9,7 +9,7 @@ using WpfApp.Data.Models;
 using WpfApp.Services;
 using WpfApp.Views;
 
-namespace WpfApp.ViewModels;
+namespace WpfApp.ViewModels.UserViewModels;
 
 public class RentedVehicleViewModel : ObservableObject
 {

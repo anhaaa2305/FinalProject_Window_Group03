@@ -1,7 +1,7 @@
 using WpfApp.Middlewares;
 using WpfApp.Services;
 
-namespace WpfApp.ViewModels;
+namespace WpfApp.ViewModels.UserViewModels;
 
 public class HomeViewModel
 {

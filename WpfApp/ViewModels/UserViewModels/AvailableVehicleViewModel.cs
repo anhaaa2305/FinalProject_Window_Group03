@@ -7,9 +7,9 @@ using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
 using WpfApp.Models;
 using WpfApp.Services;
-using WpfApp.Views.User;
+using WpfApp.Views.UserViews;
 
-namespace WpfApp.ViewModels;
+namespace WpfApp.ViewModels.UserViewModels;
 
 public class AvailableVehicleViewModel : ObservableObject
 {

@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using WpfApp.Data.Constants;
 using WpfApp.Data.DAOs;
 using WpfApp.Services;
-using WpfApp.Views.User;
+using WpfApp.Views.UserViews;
 using StaffViews = WpfApp.Views.StaffViews;
 
 namespace WpfApp.ViewModels;

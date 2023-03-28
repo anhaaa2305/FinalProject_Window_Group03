@@ -8,9 +8,8 @@
 	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:utils="clr-namespace:WpfApp.Utils"
 	xmlns:uc="clr-namespace:WpfApp.Views.Controls"
-	xmlns:vm="clr-namespace:WpfApp.ViewModels"
 	xmlns:views="clr-namespace:WpfApp.Views"
-	xmlns:userViews="clr-namespace:WpfApp.Views.User"
+	xmlns:userViews="clr-namespace:WpfApp.Views.UserViews"
     mc:Ignorable="d">
 	<UserControl.Resources>
 		<ResourceDictionary Source="/Resources/Dictionaries/User/HomeStrings.xaml" />
@@ -25,7 +24,7 @@
 			IsPaneToggleVisible="False"
 			PaneDisplayMode="LeftFluent">
 			<ui:NavigationView.MenuItems>
-				
+				<ui:NavigationViewItem />
 			</ui:NavigationView.MenuItems>
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem

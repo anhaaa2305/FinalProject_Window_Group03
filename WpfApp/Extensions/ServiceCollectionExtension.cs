@@ -5,8 +5,9 @@ using WpfApp.Models;
 using WpfApp.Services;
 using WpfApp.ViewModels;
 using WpfApp.Views;
-using WpfApp.Views.User;
 using StaffViews = WpfApp.Views.StaffViews;
+using UserViewModels = WpfApp.ViewModels.UserViewModels;
+using UserViews = WpfApp.Views.UserViews;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -38,13 +39,15 @@ public static class ServiceCollectionExtensions
 		return self
 			.AddSingleton<MainWindow>()
 			.AddTransient<LoginView>()
-			.AddTransient<HomeView>()
-			.AddTransient<AvailableVehicleView>()
-			.AddTransient<RentedVehicleView>()
-			.AddTransient<RentalLogView>()
-			.AddTransient<ReserveVehicleView>()
 			.AddTransient<SignOutView>()
 			.AddTransient<AccountView>()
+
+			.AddTransient<UserViews.HomeView>()
+			.AddTransient<UserViews.AvailableVehicleView>()
+			.AddTransient<UserViews.RentedVehicleView>()
+			.AddTransient<UserViews.RentalLogView>()
+			.AddTransient<UserViews.ReserveVehicleView>()
+
 			.AddTransient<StaffViews.HomeView>();
 	}
 
@@ -53,12 +56,14 @@ public static class ServiceCollectionExtensions
 		return self
 			.AddSingleton<MainWindowViewModel>()
 			.AddTransient<LoginViewModel>()
-			.AddTransient<HomeViewModel>()
-			.AddTransient<AvailableVehicleViewModel>()
-			.AddTransient<RentedVehicleViewModel>()
-			.AddTransient<RentalLogViewModel>()
-			.AddTransient<ReserveVehicleViewModel>()
 			.AddTransient<SignOutViewModel>()
-			.AddTransient<AccountViewModel>();
+			.AddTransient<AccountViewModel>()
+
+			.AddTransient<UserViewModels.HomeViewModel>()
+			.AddTransient<UserViewModels.AvailableVehicleViewModel>()
+			.AddTransient<UserViewModels.RentedVehicleViewModel>()
+			.AddTransient<UserViewModels.RentalLogViewModel>()
+			.AddTransient<UserViewModels.ReserveVehicleViewModel>();
+
 	}
 }
