@@ -6,43 +6,38 @@ namespace WpfApp.Services;
 
 public class SessionService : ISessionService
 {
-	private User? user;
-
-	public User? User => user;
+	public User? User { get; private set; }
 
 	public async Task LogInAsync(User user)
 	{
-		this.user = user;
+		User = user;
 		var store = IsolatedStorageFile.GetUserStoreForAssembly();
-		if (store.FileExists(".session"))
-		{
-			using var stream = new IsolatedStorageFileStream(".session", FileMode.Create, store);
-			using var writer = new StreamWriter(stream);
-			await writer.WriteAsync(user.Id.ToString()).ConfigureAwait(false);
-		}
+		using var stream = new IsolatedStorageFileStream("session.txt", FileMode.OpenOrCreate, store);
+		using var writer = new StreamWriter(stream);
+		await writer.WriteAsync(user.Id.ToString()).ConfigureAwait(false);
 	}
 
 	public void LogOut()
 	{
-		if (this.user is not null)
+		if (User is not null)
 		{
-			this.user = null;
+			User = null;
 		}
 		var store = IsolatedStorageFile.GetUserStoreForAssembly();
-		if (store.FileExists(".session"))
+		if (store.FileExists("session.txt"))
 		{
-			store.DeleteFile(".session");
+			store.DeleteFile("session.txt");
 		}
 	}
 
 	public async Task<int?> ReadFromStoreAsync()
 	{
 		var store = IsolatedStorageFile.GetUserStoreForAssembly();
-		if (!store.FileExists(".session"))
+		if (!store.FileExists("session.txt"))
 		{
 			return default;
 		}
-		using var stream = new IsolatedStorageFileStream(".session", FileMode.Open, store);
+		using var stream = new IsolatedStorageFileStream("session.txt", FileMode.Open, store);
 		using var reader = new StreamReader(stream);
 		var text = await reader.ReadToEndAsync().ConfigureAwait(false);
 		if (int.TryParse(text, out var id))
