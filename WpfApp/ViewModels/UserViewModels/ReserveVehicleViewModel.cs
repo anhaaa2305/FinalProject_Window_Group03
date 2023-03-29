@@ -177,6 +177,10 @@ public class ReserveVehicleViewModel : ObservableObject
 
 	private void OnDateChanged()
 	{
+		if ((StartDate - DateTime.Now).Days < 0)
+		{
+			StartDate = DateTime.Now;
+		}
 		if ((StartDate - EndDate).Days >= 1)
 		{
 			EndDate = StartDate;
