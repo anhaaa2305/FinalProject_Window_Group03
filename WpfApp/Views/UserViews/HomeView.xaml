@@ -52,7 +52,7 @@
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem
 					Content="{StaticResource Item_Account}"
-					TargetPageType="{x:Type userViews:AvailableVehicleView}">
+					TargetPageType="{x:Type views:AccountView}">
 					<ui:NavigationViewItem.Icon>
 						<ui:SymbolIcon Symbol="Person24" />
 					</ui:NavigationViewItem.Icon>
