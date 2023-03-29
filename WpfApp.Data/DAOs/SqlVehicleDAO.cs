@@ -352,4 +352,58 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
+
+	public async Task<IReadOnlyCollection<RentedVehicle>> GetAllRentedVehiclesAsync()
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return Array.Empty<RentedVehicle>();
+		}
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select * from RentedVehicles
+		";
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+
+		var vehicles = new LinkedList<RentedVehicle>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var rented = new RentedVehicle();
+			readerFactory.Create(reader)
+				.Read(rented)
+				.Read(rented.User)
+				.Read(rented.Vehicle);
+			vehicles.AddLast(rented);
+		}
+		return vehicles;
+	}
+
+	public async Task<IReadOnlyCollection<ReservedVehicle>> GetAllReservedVehiclesAsync()
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return Array.Empty<ReservedVehicle>();
+		}
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select * from ReservedVehicles
+		";
+		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+
+		var vehicles = new LinkedList<ReservedVehicle>();
+		while (await reader.ReadAsync().ConfigureAwait(false))
+		{
+			var reserved = new ReservedVehicle();
+			readerFactory.Create(reader)
+				.Read(reserved)
+				.Read(reserved.User)
+				.Read(reserved.Vehicle);
+			vehicles.AddLast(reserved);
+		}
+		return vehicles;
+	}
 }

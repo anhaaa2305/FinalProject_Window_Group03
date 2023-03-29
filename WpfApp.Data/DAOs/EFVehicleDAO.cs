@@ -137,4 +137,16 @@ public class EFVehicleDAO : IVehicleDAO
 			.ExecuteDeleteAsync()
 			.ConfigureAwait(false);
 	}
+
+	public async Task<IReadOnlyCollection<RentedVehicle>> GetAllRentedVehiclesAsync()
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.RentedVehicles.ToArrayAsync().ConfigureAwait(false);
+	}
+
+	public async Task<IReadOnlyCollection<ReservedVehicle>> GetAllReservedVehiclesAsync()
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.ReservedVehicles.ToArrayAsync().ConfigureAwait(false);
+	}
 }

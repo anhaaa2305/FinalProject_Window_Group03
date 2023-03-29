@@ -14,4 +14,6 @@ public interface IVehicleDAO : IDAO<Vehicle>
 	Task<int> AddRentedVehicleAsync(RentedVehicle rentedVehicle);
 	Task<int> DeleteReservedVehicleByVehicleIdAsync(int vehicleId);
 	Task<int> DeleteRentedVehicleByVehicleIdAsync(int vehicleId);
+	Task<IReadOnlyCollection<RentedVehicle>> GetAllRentedVehiclesAsync();
+	Task<IReadOnlyCollection<ReservedVehicle>> GetAllReservedVehiclesAsync();
 }
