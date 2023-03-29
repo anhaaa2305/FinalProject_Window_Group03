@@ -9,10 +9,10 @@
     xmlns:utils="clr-namespace:WpfApp.Utils"
 	xmlns:uc="clr-namespace:WpfApp.Views.Controls"
 	xmlns:views="clr-namespace:WpfApp.Views"
-	xmlns:userViews="clr-namespace:WpfApp.Views.UserViews"
+	xmlns:staffViews="clr-namespace:WpfApp.Views.StaffViews"
     mc:Ignorable="d">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/User/HomeStrings.xaml" />
+		<ResourceDictionary Source="/Resources/Dictionaries/Staff/HomeViewStrings.xaml" />
 	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -24,12 +24,18 @@
 			IsPaneToggleVisible="False"
 			PaneDisplayMode="LeftFluent">
 			<ui:NavigationView.MenuItems>
-				<ui:NavigationViewItem />
+				<ui:NavigationViewItem
+					Content="{StaticResource Item_ReservedVehicles}"
+					TargetPageType="{x:Type staffViews:ReservedVehiclesView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
 			</ui:NavigationView.MenuItems>
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem
 					Content="{StaticResource Item_Account}"
-					TargetPageType="{x:Type userViews:AvailableVehicleView}">
+					TargetPageType="{x:Type views:AccountView}">
 					<ui:NavigationViewItem.Icon>
 						<ui:SymbolIcon Symbol="Person24" />
 					</ui:NavigationViewItem.Icon>

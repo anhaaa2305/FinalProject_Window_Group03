@@ -5,6 +5,7 @@ using WpfApp.Models;
 using WpfApp.Services;
 using WpfApp.ViewModels;
 using WpfApp.Views;
+using StaffViewModels = WpfApp.ViewModels.StaffViewModels;
 using StaffViews = WpfApp.Views.StaffViews;
 using UserViewModels = WpfApp.ViewModels.UserViewModels;
 using UserViews = WpfApp.Views.UserViews;
@@ -48,7 +49,9 @@ public static class ServiceCollectionExtensions
 			.AddTransient<UserViews.RentalLogView>()
 			.AddTransient<UserViews.ReserveVehicleView>()
 
-			.AddTransient<StaffViews.HomeView>();
+			.AddTransient<StaffViews.HomeView>()
+			.AddTransient<StaffViews.ReservedVehiclesView>()
+		;
 	}
 
 	public static IServiceCollection RegisterViewModels(this IServiceCollection self)
@@ -63,7 +66,10 @@ public static class ServiceCollectionExtensions
 			.AddTransient<UserViewModels.AvailableVehicleViewModel>()
 			.AddTransient<UserViewModels.RentedVehicleViewModel>()
 			.AddTransient<UserViewModels.RentalLogViewModel>()
-			.AddTransient<UserViewModels.ReserveVehicleViewModel>();
+			.AddTransient<UserViewModels.ReserveVehicleViewModel>()
 
+			.AddTransient<StaffViewModels.HomeViewModel>()
+			.AddTransient<StaffViewModels.ReservedVehiclesViewModel>()
+		;
 	}
 }
