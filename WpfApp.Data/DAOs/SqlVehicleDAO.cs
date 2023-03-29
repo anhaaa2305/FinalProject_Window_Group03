@@ -318,4 +318,38 @@ public class SqlVehicleDAO : IVehicleDAO
 		}
 		return models;
 	}
+
+	public async Task<int> DeleteReservedVehicleByVehicleIdAsync(int vehicleId)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			delete top 1 from ReservedVehicles
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> DeleteRentedVehicleByVehicleIdAsync(int vehicleId)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			delete top 1 from RentedVehicles
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
 }

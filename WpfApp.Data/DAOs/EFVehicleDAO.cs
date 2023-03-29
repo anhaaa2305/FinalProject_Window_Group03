@@ -117,4 +117,24 @@ public class EFVehicleDAO : IVehicleDAO
 			.ToArrayAsync()
 			.ConfigureAwait(false);
 	}
+
+	public async Task<int> DeleteReservedVehicleByVehicleIdAsync(int vehicleId)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.ReservedVehicles
+			.Where(e => e.Vehicle.Id == vehicleId)
+			.Take(1)
+			.ExecuteDeleteAsync()
+			.ConfigureAwait(false);
+	}
+
+	public async Task<int> DeleteRentedVehicleByVehicleIdAsync(int vehicleId)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.RentedVehicles
+			.Where(e => e.Vehicle.Id == vehicleId)
+			.Take(1)
+			.ExecuteDeleteAsync()
+			.ConfigureAwait(false);
+	}
 }
