@@ -9,7 +9,9 @@ using StaffViews = WpfApp.Views.StaffViews;
 
 namespace WpfApp.ViewModels;
 
+using AsyncAwaitBestPractices;
 using BCrypt.Net;
+using WpfApp.Data.Models;
 
 public class LoginViewModel : ObservableObject
 {
@@ -62,6 +64,27 @@ public class LoginViewModel : ObservableObject
 		this.sessionService = sessionService;
 		this.userDAO = userDAO;
 		LoginCommand = new AsyncRelayCommand(LoginAsync, CanLogin);
+
+		Task.Run(async () =>
+		{
+			await Task.Delay(1000).ConfigureAwait(false);
+			TryAutoLoginAsync().SafeFireAndForget();
+		});
+	}
+
+	private async Task TryAutoLoginAsync()
+	{
+		var id = await sessionService.ReadFromStoreAsync().ConfigureAwait(false);
+		if (id is null)
+		{
+			return;
+		}
+		var user = await userDAO.GetByIdAsync((int)id).ConfigureAwait(false);
+		if (user is null)
+		{
+			return;
+		}
+		await LoginAsyncInternal(user).ConfigureAwait(false);
 	}
 
 	private async Task LoginAsync()
@@ -86,6 +109,11 @@ public class LoginViewModel : ObservableObject
 			return;
 		}
 
+		await LoginAsyncInternal(user).ConfigureAwait(false);
+	}
+
+	private async Task LoginAsyncInternal(User user)
+	{
 		user.Password = string.Empty;
 		await sessionService.LogInAsync(user).ConfigureAwait(false);
 
