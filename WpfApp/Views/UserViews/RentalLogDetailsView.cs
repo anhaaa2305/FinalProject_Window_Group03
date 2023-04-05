@@ -1,13 +1,13 @@
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using WpfApp.ViewModels.StaffViewModels;
+using WpfApp.ViewModels.UserViewModels;
 
-namespace WpfApp.Views.StaffViews;
+namespace WpfApp.Views.UserViews;
 
-public partial class RentedVehiclesView : UserControl
+public partial class RentalLogDetailsView : UserControl
 {
-	public RentedVehiclesView(RentedVehiclesViewModel vm)
+	public RentalLogDetailsView(RentalLogDetailsViewModel vm)
 	{
 		InitializeComponent();
 

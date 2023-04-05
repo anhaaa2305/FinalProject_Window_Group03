@@ -8,6 +8,7 @@ using WpfApp.Views;
 using StaffModels = WpfApp.Models.StaffModels;
 using StaffViewModels = WpfApp.ViewModels.StaffViewModels;
 using StaffViews = WpfApp.Views.StaffViews;
+using UserModels = WpfApp.Models.UserModels;
 using UserViewModels = WpfApp.ViewModels.UserViewModels;
 using UserViews = WpfApp.Views.UserViews;
 
@@ -27,6 +28,8 @@ public static class ServiceCollectionExtensions
 			.AddScoped<ReserveVehicleModel>()
 			.AddScoped<StaffModels.EditReservationModel>()
 			.AddScoped<StaffModels.EditRentalModel>()
+
+			.AddScoped<UserModels.RentalLogDetailsModel>()
 		;
 	}
 
@@ -52,6 +55,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<UserViews.RentedVehicleView>()
 			.AddTransient<UserViews.RentalLogView>()
 			.AddTransient<UserViews.ReserveVehicleView>()
+			.AddTransient<UserViews.RentalLogDetailsView>()
 
 			.AddTransient<StaffViews.HomeView>()
 			.AddTransient<StaffViews.ReservedVehiclesView>()
@@ -74,6 +78,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<UserViewModels.RentedVehicleViewModel>()
 			.AddTransient<UserViewModels.RentalLogViewModel>()
 			.AddTransient<UserViewModels.ReserveVehicleViewModel>()
+			.AddTransient<UserViewModels.RentalLogDetailsViewModel>()
 
 			.AddTransient<StaffViewModels.HomeViewModel>()
 			.AddTransient<StaffViewModels.ReservedVehiclesViewModel>()

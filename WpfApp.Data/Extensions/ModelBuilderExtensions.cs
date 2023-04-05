@@ -47,22 +47,24 @@ public static class ModelBuilderExtensions
 			entity.Property<int?>("VehicleId");
 			entity
 				.HasOne(e => e.User)
-				.WithOne()
-				.HasForeignKey<VehicleRentalLog>("UserId")
+				.WithMany()
+				.HasForeignKey("UserId")
 				.OnDelete(DeleteBehavior.SetNull);
 			entity
 				.Navigation(e => e.User)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 			entity
 				.HasOne(e => e.Vehicle)
-				.WithOne()
-				.HasForeignKey<VehicleRentalLog>("VehicleId")
+				.WithMany()
+				.HasForeignKey("VehicleId")
 				.OnDelete(DeleteBehavior.SetNull);
 			entity
 				.Navigation(e => e.Vehicle)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 			entity.Property(e => e.StartDate).IsRequired();
 			entity.Property(e => e.EndDate).IsRequired();
+			entity.Property(e => e.Rate);
+			entity.Property(e => e.Feedback);
 		});
 	}
 

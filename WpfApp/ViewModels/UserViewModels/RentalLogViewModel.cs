@@ -6,8 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using WpfApp.Data;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
+using WpfApp.Models;
+using WpfApp.Models.UserModels;
 using WpfApp.Services;
 using WpfApp.Views;
+using WpfApp.Views.UserViews;
 
 namespace WpfApp.ViewModels.UserViewModels;
 
@@ -15,6 +18,8 @@ public class RentalLogViewModel : ObservableObject
 {
 	private readonly IVehicleDAO vehicleDAO;
 	private readonly ISessionService sessionService;
+	private readonly IAppNavigationService navigator;
+	private readonly IServiceProvider provider;
 	private ObservableCollection<VehicleRentalLog>? logs;
 	private ViewState state;
 
@@ -32,10 +37,12 @@ public class RentalLogViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public RentalLogViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
+	public RentalLogViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService, IAppNavigationService navigator, IServiceProvider provider)
 	{
 		this.vehicleDAO = vehicleDAO;
 		this.sessionService = sessionService;
+		this.navigator = navigator;
+		this.provider = provider;
 		ViewItemDetailsCommand = new RelayCommand<VehicleRentalLog>(ViewItemDetails);
 
 		if (sessionService.User is null)
@@ -73,5 +80,7 @@ public class RentalLogViewModel : ObservableObject
 		{
 			return;
 		}
+		provider.GetRequiredService<RentalLogDetailsModel>().RentalLog = new ObservableVehicleRentalLog(model);
+		navigator.Navigate<RentalLogDetailsView>();
 	}
 }

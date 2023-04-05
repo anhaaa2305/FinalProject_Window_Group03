@@ -48,6 +48,9 @@
 				<ui:NavigationViewItem
 					Visibility="Collapsed"
 					TargetPageType="{x:Type userViews:ReserveVehicleView}" />
+				<ui:NavigationViewItem
+					Visibility="Collapsed"
+					TargetPageType="{x:Type userViews:RentalLogDetailsView}" />
 			</ui:NavigationView.MenuItems>
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem

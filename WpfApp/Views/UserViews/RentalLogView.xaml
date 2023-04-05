@@ -12,7 +12,7 @@
     mc:Ignorable="d"
 	Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/User/RentalLogStrings.xaml" />
+		<ResourceDictionary Source="/Resources/Dictionaries/User/RentalLogViewStrings.xaml" />
 	</UserControl.Resources>
 	<ContentControl>
 		<ContentControl.Resources>
@@ -60,13 +60,20 @@
 										HorizontalAlignment="Center"
 										RenderOptions.BitmapScalingMode="Fant" />
 								</ui:Card>
-								<StackPanel Grid.Column="1"
-									VerticalAlignment="Center">
+								<StackPanel
+									Grid.Column="1"
+									VerticalAlignment="Center"
+									utils:SpacingSetter.Spacing="0,3">
 									<TextBlock
 										Text="{Binding Vehicle.Name, Mode=OneWay}"
-										FontWeight="Bold"/>
-									<TextBlock>
-										<Run Text="{Binding LicensePlate}" />.
+										FontWeight="Bold" />
+									<TextBlock
+										Text="{Binding Vehicle.LicensePlate}"
+										FontWeight="Medium" />
+									<TextBlock
+										Foreground="{DynamicResource SystemFillColorCautionBrush}"
+										FontWeight="Medium">
+										<Run Text="{Binding EndDate, Mode=OneWay, StringFormat={StaticResource EndDateFormat}}" />.
 									</TextBlock>
 								</StackPanel>
 								<StackPanel Grid.Column="2"

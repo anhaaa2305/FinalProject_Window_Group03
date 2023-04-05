@@ -23,9 +23,9 @@ public class FluentDbReader : IFluentDbReader
 		user.FullName = reader.GetString(ordinal++);
 		user.PhoneNumber = reader.GetString(ordinal++);
 		user.IsMale = reader.GetBoolean(ordinal++);
-		user.Address = GetOrDefault<string>();
-		user.Email = GetOrDefault<string>();
-		user.DateOfBirth = GetOrDefault<DateTime>();
+		user.Address = GetOrDefault<string?>();
+		user.Email = GetOrDefault<string?>();
+		user.DateOfBirth = GetOrDefault<DateTime?>();
 		return this;
 	}
 
@@ -36,9 +36,9 @@ public class FluentDbReader : IFluentDbReader
 		vehicle.Brand = reader.GetString(ordinal++);
 		vehicle.Name = reader.GetString(ordinal++);
 		vehicle.PricePerDay = reader.GetInt32(ordinal++);
-		vehicle.Color = GetOrDefault<string>();
-		vehicle.ImageUrl = GetOrDefault<string>();
-		vehicle.Description = GetOrDefault<string>();
+		vehicle.Color = GetOrDefault<string?>();
+		vehicle.ImageUrl = GetOrDefault<string?>();
+		vehicle.Description = GetOrDefault<string?>();
 		return this;
 	}
 
@@ -48,8 +48,8 @@ public class FluentDbReader : IFluentDbReader
 		rentedVehicle.StartDate = reader.GetDateTime(ordinal++);
 		rentedVehicle.EndDate = reader.GetDateTime(ordinal++);
 		rentedVehicle.Deposit = reader.GetInt32(ordinal++);
-		rentedVehicle.MortgageNationalId = GetOrDefault<string>();
-		rentedVehicle.Note = GetOrDefault<string>();
+		rentedVehicle.MortgageNationalId = GetOrDefault<string?>();
+		rentedVehicle.Note = GetOrDefault<string?>();
 		return this;
 	}
 
@@ -59,8 +59,8 @@ public class FluentDbReader : IFluentDbReader
 		reservedVehicle.StartDate = reader.GetDateTime(ordinal++);
 		reservedVehicle.EndDate = reader.GetDateTime(ordinal++);
 		reservedVehicle.Deposit = reader.GetInt32(ordinal++);
-		reservedVehicle.MortgageNationalId = GetOrDefault<string>();
-		reservedVehicle.Note = GetOrDefault<string>();
+		reservedVehicle.MortgageNationalId = GetOrDefault<string?>();
+		reservedVehicle.Note = GetOrDefault<string?>();
 		return this;
 	}
 
@@ -70,6 +70,8 @@ public class FluentDbReader : IFluentDbReader
 		ordinal += 2;
 		log.StartDate = reader.GetDateTime(ordinal++);
 		log.EndDate = reader.GetDateTime(ordinal++);
+		log.Rate = GetOrDefault<int?>();
+		log.Feedback = GetOrDefault<string?>();
 		return this;
 	}
 

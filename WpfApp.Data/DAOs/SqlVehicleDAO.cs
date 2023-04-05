@@ -352,7 +352,7 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			delete top 1 from RentedVehicles
+			delete top (1) from RentedVehicles
 			where VehicleId = @VehicleId
 		";
 		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
@@ -480,13 +480,42 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			insert into VehicleRentalLogs (UserId, VehicleId, StartDate, EndDate)
-			values (@UserId, @VehicleId, @StartDate, @EndDate, @Deposit, @MortgageNationalId, @Note)
+			insert into VehicleRentalLogs (UserId, VehicleId, StartDate, EndDate, Rate, Feedback)
+			output Inserted.Id
+			values (@UserId, @VehicleId, @StartDate, @EndDate, @Rate, @Feedback)
 		";
 		cmd.Parameters.AddWithValue("@UserId", log.User?.Id ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@VehicleId", log.Vehicle?.Id ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@StartDate", log.StartDate);
 		cmd.Parameters.AddWithValue("@EndDate", log.EndDate);
+		cmd.Parameters.AddWithValue("@Rate", log.Rate ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Feedback", log.Feedback ?? (object)DBNull.Value);
+		return (int?)await cmd.ExecuteScalarAsync().ConfigureAwait(false) ?? 0;
+	}
+
+	public async Task<int> UpdateVehicleRentalLogByIdAsync(VehicleRentalLog log)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			update top (1) VehicleRentalLogs set
+				VehicleId = @VehicleId, UserId = @UserId, StartDate = @StartDate, EndDate = @EndDate,
+				Rate = @Rate, Feedback = @Feedback
+			where Id = @Id
+		";
+		cmd.Parameters.AddWithValue("@VehicleId", log.Vehicle?.Id ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@UserId", log.User?.Id ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@StartDate", log.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", log.EndDate);
+		cmd.Parameters.AddWithValue("@Rate", log.Rate ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Feedback", log.Feedback ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Id", log.Id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 }
