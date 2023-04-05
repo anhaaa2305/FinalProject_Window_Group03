@@ -32,8 +32,18 @@
 					</ui:NavigationViewItem.Icon>
 				</ui:NavigationViewItem>
 				<ui:NavigationViewItem
+					Content="{StaticResource Item_RentedVehicles}"
+					TargetPageType="{x:Type staffViews:RentedVehiclesView}">
+					<ui:NavigationViewItem.Icon>
+						<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
+					</ui:NavigationViewItem.Icon>
+				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
 					Visibility="Collapsed"
 					TargetPageType="{x:Type staffViews:EditReservationView}" />
+				<ui:NavigationViewItem
+					Visibility="Collapsed"
+					TargetPageType="{x:Type staffViews:EditRentalView}" />
 			</ui:NavigationView.MenuItems>
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem

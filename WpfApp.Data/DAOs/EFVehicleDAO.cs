@@ -166,4 +166,28 @@ public class EFVehicleDAO : IVehicleDAO
 		ctx.ReservedVehicles.Update(reservedVehicle);
 		return await ctx.SaveChangesAsync().ConfigureAwait(false);
 	}
+
+	public async Task<int> UpdateRentedVehicleByVehicleIdAsync(RentedVehicle rentedVehicle)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		ctx.Users.Entry(rentedVehicle.User).State = EntityState.Unchanged;
+		ctx.Vehicles.Entry(rentedVehicle.Vehicle).State = EntityState.Unchanged;
+		ctx.RentedVehicles.Update(rentedVehicle);
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> AddVehicleRentalLogAsync(VehicleRentalLog log)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		if (log.User is not null)
+		{
+			ctx.Users.Entry(log.User).State = EntityState.Unchanged;
+		}
+		if (log.Vehicle is not null)
+		{
+			ctx.Vehicles.Entry(log.Vehicle).State = EntityState.Unchanged;
+		}
+		ctx.VehicleRentalLogs.Add(log);
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
+	}
 }

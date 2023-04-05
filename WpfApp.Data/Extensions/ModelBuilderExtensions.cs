@@ -41,9 +41,10 @@ public static class ModelBuilderExtensions
 	{
 		return self.Entity<VehicleRentalLog>(entity =>
 		{
+			entity.Property(e => e.Id).UseIdentityColumn();
+			entity.HasKey(e => e.Id);
 			entity.Property<int?>("UserId");
 			entity.Property<int?>("VehicleId");
-			entity.HasNoKey();
 			entity
 				.HasOne(e => e.User)
 				.WithOne()

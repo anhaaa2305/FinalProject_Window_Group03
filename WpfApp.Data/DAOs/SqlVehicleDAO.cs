@@ -442,4 +442,51 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@VehicleId", reservedVehicle.Vehicle.Id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
+
+	public async Task<int> UpdateRentedVehicleByVehicleIdAsync(RentedVehicle rentedVehicle)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			update top (1) RentedVehicles set
+				UserId = @UserId, StartDate = @StartDate, EndDate = @EndDate,
+				Deposit = @Deposit, MortgageNationalId = @MortgageNationalId, Note = @Note
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@UserId", rentedVehicle.User.Id);
+		cmd.Parameters.AddWithValue("@StartDate", rentedVehicle.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", rentedVehicle.EndDate);
+		cmd.Parameters.AddWithValue("@Deposit", rentedVehicle.Deposit);
+		cmd.Parameters.AddWithValue("@MortgageNationalId", rentedVehicle.MortgageNationalId ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Note", rentedVehicle.Note ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@VehicleId", rentedVehicle.Vehicle.Id);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
+
+	public async Task<int> AddVehicleRentalLogAsync(VehicleRentalLog log)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return 0;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			insert into VehicleRentalLogs (UserId, VehicleId, StartDate, EndDate)
+			values (@UserId, @VehicleId, @StartDate, @EndDate, @Deposit, @MortgageNationalId, @Note)
+		";
+		cmd.Parameters.AddWithValue("@UserId", log.User?.Id ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@VehicleId", log.Vehicle?.Id ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@StartDate", log.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", log.EndDate);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+	}
 }

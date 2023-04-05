@@ -1,0 +1,27 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	<sys:String x:Key="LoadingText">Ứng dụng đang tải thông tin xe, vui lòng đợi.</sys:String>
+	<sys:String x:Key="EmptyText">Không có dữ liệu về xe.</sys:String>
+	<sys:String x:Key="ReserveButton_Content">Đặt xe</sys:String>
+	<sys:String x:Key="BackButton_ToolTipText">Quay lại cửa hàng</sys:String>
+	<sys:String x:Key="RentedBy_Text">Thuê bởi</sys:String>
+	<sys:String x:Key="Brand_Text">Thương hiệu</sys:String>
+	<sys:String x:Key="LicensePlate_Text">Biển số xe</sys:String>
+	<sys:String x:Key="StartDate_Text">Ngày nhận xe</sys:String>
+	<sys:String x:Key="StartDate_Format">{0:D}</sys:String>
+	<sys:String x:Key="EndDate_Text">Ngày trả xe</sys:String>
+	<sys:String x:Key="EndDate_Format">{0:D}</sys:String>
+	<sys:String x:Key="RentalTimeSpan_Text">Số ngày thuê</sys:String>
+	<sys:String x:Key="RentalTimeSpan_Format">{0:%d} ngày</sys:String>
+	<sys:String x:Key="TotalPrice_Text">Thành tiền</sys:String>
+	<sys:String x:Key="ConfirmReturnButton_Content">Xác nhận trả xe</sys:String>
+	<sys:String x:Key="SaveButton_Content">Lưu thông tin</sys:String>
+	<sys:String x:Key="Id_Text">Căn cước công dân</sys:String>
+	<sys:String x:Key="Id_PlaceholderText">Mã số CCCD</sys:String>
+	<sys:String x:Key="Cash_Text">Tiền mặt</sys:String>
+	<sys:String x:Key="Cash_PlaceholderText">Tiền mặt</sys:String>
+	<sys:String x:Key="Note_Text">Ghi chú</sys:String>
+	<sys:String x:Key="Note_PlaceholderText">Ghi chú (không bắt buộc)</sys:String>
+	<sys:String x:Key="InformationGroup_Text">Thông tin đặt cọc</sys:String>
+</ResourceDictionary>

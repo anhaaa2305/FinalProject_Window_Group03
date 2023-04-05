@@ -25,7 +25,9 @@ public static class ServiceCollectionExtensions
 	{
 		return self
 			.AddScoped<ReserveVehicleModel>()
-			.AddScoped<StaffModels.EditReservationModel>();
+			.AddScoped<StaffModels.EditReservationModel>()
+			.AddScoped<StaffModels.EditRentalModel>()
+		;
 	}
 
 	public static IServiceCollection RegisterServices(this IServiceCollection self)
@@ -54,6 +56,8 @@ public static class ServiceCollectionExtensions
 			.AddTransient<StaffViews.HomeView>()
 			.AddTransient<StaffViews.ReservedVehiclesView>()
 			.AddTransient<StaffViews.EditReservationView>()
+			.AddTransient<StaffViews.RentedVehiclesView>()
+			.AddTransient<StaffViews.EditRentalView>()
 		;
 	}
 
@@ -74,6 +78,8 @@ public static class ServiceCollectionExtensions
 			.AddTransient<StaffViewModels.HomeViewModel>()
 			.AddTransient<StaffViewModels.ReservedVehiclesViewModel>()
 			.AddTransient<StaffViewModels.EditReservationViewModel>()
+			.AddTransient<StaffViewModels.RentedVehiclesViewModel>()
+			.AddTransient<StaffViewModels.EditRentalViewModel>()
 		;
 	}
 }
