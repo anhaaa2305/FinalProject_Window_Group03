@@ -5,6 +5,7 @@ using WpfApp.Models;
 using WpfApp.Services;
 using WpfApp.ViewModels;
 using WpfApp.Views;
+using StaffModels = WpfApp.Models.StaffModels;
 using StaffViewModels = WpfApp.ViewModels.StaffViewModels;
 using StaffViews = WpfApp.Views.StaffViews;
 using UserViewModels = WpfApp.ViewModels.UserViewModels;
@@ -23,7 +24,8 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection RegisterModels(this IServiceCollection self)
 	{
 		return self
-			.AddScoped<ReserveVehicleModel>();
+			.AddScoped<ReserveVehicleModel>()
+			.AddScoped<StaffModels.EditReservationModel>();
 	}
 
 	public static IServiceCollection RegisterServices(this IServiceCollection self)
@@ -51,6 +53,7 @@ public static class ServiceCollectionExtensions
 
 			.AddTransient<StaffViews.HomeView>()
 			.AddTransient<StaffViews.ReservedVehiclesView>()
+			.AddTransient<StaffViews.EditReservationView>()
 		;
 	}
 
@@ -70,6 +73,7 @@ public static class ServiceCollectionExtensions
 
 			.AddTransient<StaffViewModels.HomeViewModel>()
 			.AddTransient<StaffViewModels.ReservedVehiclesViewModel>()
+			.AddTransient<StaffViewModels.EditReservationViewModel>()
 		;
 	}
 }

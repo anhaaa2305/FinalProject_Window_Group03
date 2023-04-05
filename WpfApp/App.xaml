@@ -6,6 +6,7 @@
 	xmlns:local="clr-namespace:WpfApp">
 	<Application.Resources>
 		<ResourceDictionary>
+			<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 			<ResourceDictionary.MergedDictionaries>
 				<ui:ThemesDictionary Theme="Light" />
 				<ui:ControlsDictionary />

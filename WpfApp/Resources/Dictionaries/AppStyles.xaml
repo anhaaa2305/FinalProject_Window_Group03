@@ -8,4 +8,11 @@
 	<Style TargetType="{x:Type TextBlock}">
 		<Setter Property="TextWrapping" Value="Wrap" />
 	</Style>
+	<Style TargetType="{x:Type Panel}">
+		<Setter Property="Focusable" Value="False" />
+	</Style>
+	<Style TargetType="{x:Type ContentControl}">
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="IsTabStop" Value="False" />
+	</Style>
 </ResourceDictionary>

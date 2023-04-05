@@ -60,7 +60,7 @@ public class SqlUserDAO : IUserDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			update top 1 Users set
+			update top (1) Users set
 				NationalId = @NationalId, Password = @Password, FullName = @FullName,
 				PhoneNumber = @PhoneNumber, IsMale = @IsMale, Address = @Address,
 				Email = @Email, DateOfBirth = @DateOfBirth
@@ -106,7 +106,7 @@ public class SqlUserDAO : IUserDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			delete top 1 from Users
+			delete top (1) from Users
 			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@Id", id);

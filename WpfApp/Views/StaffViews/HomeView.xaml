@@ -31,6 +31,9 @@
 						<ui:SymbolIcon Symbol="TextBulletListSquareClock20" />
 					</ui:NavigationViewItem.Icon>
 				</ui:NavigationViewItem>
+				<ui:NavigationViewItem
+					Visibility="Collapsed"
+					TargetPageType="{x:Type staffViews:EditReservationView}" />
 			</ui:NavigationView.MenuItems>
 			<ui:NavigationView.FooterMenuItems>
 				<ui:NavigationViewItem

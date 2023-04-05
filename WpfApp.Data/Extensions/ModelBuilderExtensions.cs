@@ -90,6 +90,9 @@ public static class ModelBuilderExtensions
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 			entity.Property(e => e.StartDate).IsRequired();
 			entity.Property(e => e.EndDate).IsRequired();
+			entity.Property(e => e.Deposit).IsRequired().HasDefaultValue(0);
+			entity.Property(e => e.Note);
+			entity.Property(e => e.MortgageNationalId);
 		});
 	}
 
@@ -118,6 +121,9 @@ public static class ModelBuilderExtensions
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 			entity.Property(e => e.StartDate).IsRequired();
 			entity.Property(e => e.EndDate).IsRequired();
+			entity.Property(e => e.Deposit).IsRequired().HasDefaultValue(0);
+			entity.Property(e => e.Note);
+			entity.Property(e => e.MortgageNationalId);
 		});
 	}
 

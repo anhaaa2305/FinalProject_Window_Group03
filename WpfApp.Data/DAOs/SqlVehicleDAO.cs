@@ -75,7 +75,7 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			update top 1 Vehicles set
+			update top (1) Vehicles set
 				LicensePlate = @LicensePlate, Brand = @Brand, Name = @Name,
 				PricePerDay = @PricePerDay, Color = @Color, ImageUrl = @ImageUrl,
 				Description = @Description
@@ -103,13 +103,16 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			insert into ReservedVehicles (UserId, VehicleId, StartDate, EndDate)
-			values (@UserId, @VehicleId, @StartDate, @EndDate)
+			insert into ReservedVehicles (UserId, VehicleId, StartDate, EndDate, Deposit, MortgageNationalId, Note)
+			values (@UserId, @VehicleId, @StartDate, @EndDate, @Deposit, @MortgageNationalId, @Note)
 		";
 		cmd.Parameters.AddWithValue("@UserId", reservedVehicle.User.Id);
 		cmd.Parameters.AddWithValue("@VehicleId", reservedVehicle.Vehicle.Id);
 		cmd.Parameters.AddWithValue("@StartDate", reservedVehicle.StartDate);
 		cmd.Parameters.AddWithValue("@EndDate", reservedVehicle.EndDate);
+		cmd.Parameters.AddWithValue("@Deposit", reservedVehicle.Deposit);
+		cmd.Parameters.AddWithValue("@MortgageNationalId", reservedVehicle.MortgageNationalId ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Note", reservedVehicle.Note ?? (object)DBNull.Value);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
@@ -124,13 +127,16 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			insert into ReservedVehicles (UserId, VehicleId, StartDate, EndDate)
-			values (@UserId, @VehicleId, @StartDate, @EndDate)
+			insert into RentedVehicles (UserId, VehicleId, StartDate, EndDate, Deposit, MortgageNationalId, Note)
+			values (@UserId, @VehicleId, @StartDate, @EndDate, @Deposit, @MortgageNationalId, @Note)
 		";
 		cmd.Parameters.AddWithValue("@UserId", rentedVehicle.User.Id);
 		cmd.Parameters.AddWithValue("@VehicleId", rentedVehicle.Vehicle.Id);
 		cmd.Parameters.AddWithValue("@StartDate", rentedVehicle.StartDate);
 		cmd.Parameters.AddWithValue("@EndDate", rentedVehicle.EndDate);
+		cmd.Parameters.AddWithValue("@Deposit", rentedVehicle.Deposit);
+		cmd.Parameters.AddWithValue("@MortgageNationalId", rentedVehicle.MortgageNationalId ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Note", rentedVehicle.Note ?? (object)DBNull.Value);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 
@@ -329,7 +335,7 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			delete top 1 from ReservedVehicles
+			delete top (1) from ReservedVehicles
 			where VehicleId = @VehicleId
 		";
 		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
@@ -364,6 +370,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.CommandText =
 		@"
 			select * from RentedVehicles
+				inner join Users on Users.Id = RentedVehicles.UserId
+				inner join Vehicles on Vehicles.Id = RentedVehicles.VehicleId
 		";
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 
@@ -391,6 +399,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.CommandText =
 		@"
 			select * from ReservedVehicles
+				inner join Users on Users.Id = ReservedVehicles.UserId
+				inner join Vehicles on Vehicles.Id = ReservedVehicles.VehicleId
 		";
 		using var reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 
@@ -405,5 +415,31 @@ public class SqlVehicleDAO : IVehicleDAO
 			vehicles.AddLast(reserved);
 		}
 		return vehicles;
+	}
+
+	public async Task<int> UpdateReservedVehicleByVehicleIdAsync(ReservedVehicle reservedVehicle)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			update top (1) ReservedVehicles set
+				UserId = @UserId, StartDate = @StartDate, EndDate = @EndDate,
+				Deposit = @Deposit, MortgageNationalId = @MortgageNationalId, Note = @Note
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@UserId", reservedVehicle.User.Id);
+		cmd.Parameters.AddWithValue("@StartDate", reservedVehicle.StartDate);
+		cmd.Parameters.AddWithValue("@EndDate", reservedVehicle.EndDate);
+		cmd.Parameters.AddWithValue("@Deposit", reservedVehicle.Deposit);
+		cmd.Parameters.AddWithValue("@MortgageNationalId", reservedVehicle.MortgageNationalId ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Note", reservedVehicle.Note ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@VehicleId", reservedVehicle.Vehicle.Id);
+		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
 }

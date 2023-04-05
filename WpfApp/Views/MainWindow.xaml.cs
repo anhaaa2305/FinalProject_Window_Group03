@@ -27,12 +27,12 @@ public partial class MainWindow : INavigationWindow
 
 	private static async Task EnsureDevelopmentDatabase(IUserDAO userDAO, IRoleDAO roleDAO, IVehicleDAO vehicleDAO)
 	{
-		await userDAO.AddAsync(new Data.Models.User
+		await userDAO.AddAsync(new User
 		{
 			FullName = "user",
 			Password = "user"
 		});
-		var id = await userDAO.AddAsync(new Data.Models.User
+		var id = await userDAO.AddAsync(new User
 		{
 			FullName = "staff",
 			Password = "staff"

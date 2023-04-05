@@ -47,6 +47,9 @@ public class FluentDbReader : IFluentDbReader
 		ordinal += 2;
 		rentedVehicle.StartDate = reader.GetDateTime(ordinal++);
 		rentedVehicle.EndDate = reader.GetDateTime(ordinal++);
+		rentedVehicle.Deposit = reader.GetInt32(ordinal++);
+		rentedVehicle.MortgageNationalId = GetOrDefault<string>();
+		rentedVehicle.Note = GetOrDefault<string>();
 		return this;
 	}
 
@@ -55,6 +58,9 @@ public class FluentDbReader : IFluentDbReader
 		ordinal += 2;
 		reservedVehicle.StartDate = reader.GetDateTime(ordinal++);
 		reservedVehicle.EndDate = reader.GetDateTime(ordinal++);
+		reservedVehicle.Deposit = reader.GetInt32(ordinal++);
+		reservedVehicle.MortgageNationalId = GetOrDefault<string>();
+		reservedVehicle.Note = GetOrDefault<string>();
 		return this;
 	}
 

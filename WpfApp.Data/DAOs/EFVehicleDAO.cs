@@ -141,12 +141,29 @@ public class EFVehicleDAO : IVehicleDAO
 	public async Task<IReadOnlyCollection<RentedVehicle>> GetAllRentedVehiclesAsync()
 	{
 		using var ctx = dbContextFactory.CreateDbContext();
-		return await ctx.RentedVehicles.ToArrayAsync().ConfigureAwait(false);
+		return await ctx.RentedVehicles
+			.Include(e => e.User)
+			.Include(e => e.Vehicle)
+			.ToArrayAsync()
+			.ConfigureAwait(false);
 	}
 
 	public async Task<IReadOnlyCollection<ReservedVehicle>> GetAllReservedVehiclesAsync()
 	{
 		using var ctx = dbContextFactory.CreateDbContext();
-		return await ctx.ReservedVehicles.ToArrayAsync().ConfigureAwait(false);
+		return await ctx.ReservedVehicles
+			.Include(e => e.User)
+			.Include(e => e.Vehicle)
+			.ToArrayAsync()
+			.ConfigureAwait(false);
+	}
+
+	public async Task<int> UpdateReservedVehicleByVehicleIdAsync(ReservedVehicle reservedVehicle)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		ctx.Users.Entry(reservedVehicle.User).State = EntityState.Unchanged;
+		ctx.Vehicles.Entry(reservedVehicle.Vehicle).State = EntityState.Unchanged;
+		ctx.ReservedVehicles.Update(reservedVehicle);
+		return await ctx.SaveChangesAsync().ConfigureAwait(false);
 	}
 }

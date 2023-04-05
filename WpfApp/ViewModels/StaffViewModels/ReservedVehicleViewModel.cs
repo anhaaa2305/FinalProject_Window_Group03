@@ -5,14 +5,19 @@ using Microsoft.Extensions.DependencyInjection;
 using WpfApp.Data;
 using WpfApp.Data.DAOs;
 using WpfApp.Data.Models;
+using WpfApp.Models;
+using WpfApp.Models.StaffModels;
 using WpfApp.Services;
 using WpfApp.Views;
+using WpfApp.Views.StaffViews;
 
 namespace WpfApp.ViewModels.StaffViewModels;
 
 public class ReservedVehiclesViewModel : ObservableObject
 {
 	private readonly IVehicleDAO vehicleDAO;
+	private readonly IServiceProvider provider;
+	private readonly IAppNavigationService navigator;
 	private IReadOnlyCollection<ReservedVehicle>? vehicles;
 	private ViewState state;
 
@@ -30,9 +35,11 @@ public class ReservedVehiclesViewModel : ObservableObject
 		set => SetProperty(ref state, value);
 	}
 
-	public ReservedVehiclesViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService)
+	public ReservedVehiclesViewModel(IVehicleDAO vehicleDAO, ISessionService sessionService, IServiceProvider provider, IAppNavigationService navigator)
 	{
 		this.vehicleDAO = vehicleDAO;
+		this.provider = provider;
+		this.navigator = navigator;
 		ViewItemDetailsCommand = new RelayCommand<ReservedVehicle>(ViewItemDetails);
 		EditItemCommand = new RelayCommand<ReservedVehicle>(EditItem);
 
@@ -74,11 +81,14 @@ public class ReservedVehiclesViewModel : ObservableObject
 			return;
 		}
 	}
+
 	private void EditItem(ReservedVehicle? model)
 	{
 		if (ReservedVehicles is null || model is null)
 		{
 			return;
 		}
+		provider.GetRequiredService<EditReservationModel>().ReservedVehicle = new ObservableReservedVehicle(model);
+		navigator.Navigate<EditReservationView>();
 	}
 }
