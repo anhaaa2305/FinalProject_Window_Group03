@@ -66,6 +66,7 @@ public class FluentDbReader : IFluentDbReader
 
 	public IFluentDbReader Read(VehicleRentalLog log)
 	{
+		log.Id = reader.GetInt32(ordinal++);
 		ordinal += 2;
 		log.StartDate = reader.GetDateTime(ordinal++);
 		log.EndDate = reader.GetDateTime(ordinal++);
