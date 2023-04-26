@@ -31,6 +31,8 @@ public static class ModelBuilderExtensions
 			entity.Property(e => e.Brand).IsRequired().HasMaxLength(32);
 			entity.Property(e => e.Name).IsRequired().HasMaxLength(64);
 			entity.Property(e => e.PricePerDay).IsRequired();
+			entity.Property(e => e.Fuel).IsRequired().HasConversion(v => (int)v, v => (VehicleFuel)v);
+			entity.Property(e => e.Category).IsRequired().HasConversion(v => (int)v, v => (VehicleCategory)v);
 			entity.Property(e => e.Color).HasMaxLength(32);
 			entity.Property(e => e.ImageUrl).HasMaxLength(128);
 			entity.Property(e => e.Description).HasMaxLength(512);
