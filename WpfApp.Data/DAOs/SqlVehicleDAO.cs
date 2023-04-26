@@ -518,4 +518,42 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@Id", log.Id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
+
+	public async Task<int> CountRentalAsync(int vehicleId)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select count(*)
+			from VehicleRentalLogs
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
+		return (int?)await cmd.ExecuteScalarAsync().ConfigureAwait(false) ?? 0;
+	}
+
+	public async Task<float> GetAverageRateAsync(int vehicleId)
+	{
+		await using var conn = await db.OpenAsync().ConfigureAwait(false);
+		if (conn is null)
+		{
+			return default;
+		}
+
+		using var cmd = conn.CreateCommand();
+		cmd.CommandText =
+		@"
+			select avg(Rate)
+			from VehicleRentalLogs
+			where VehicleId = @VehicleId
+		";
+		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
+		return (float?)await cmd.ExecuteScalarAsync().ConfigureAwait(false) ?? 0;
+	}
 }

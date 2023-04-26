@@ -207,4 +207,15 @@ public class EFVehicleDAO : IVehicleDAO
 		return await ctx.SaveChangesAsync().ConfigureAwait(false);
 	}
 
+	public async Task<int> CountRentalAsync(int vehicleId)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return await ctx.VehicleRentalLogs.CountAsync(e => e.Vehicle != null && e.Vehicle.Id == vehicleId);
+	}
+
+	public async Task<float> GetAverageRateAsync(int vehicleId)
+	{
+		using var ctx = dbContextFactory.CreateDbContext();
+		return (float?)await ctx.VehicleRentalLogs.Where(e => e.Vehicle != null && e.Vehicle.Id == vehicleId).AverageAsync(e => e.Rate!) ?? 0f;
+	}
 }
