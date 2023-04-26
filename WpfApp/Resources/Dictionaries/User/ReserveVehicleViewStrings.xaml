@@ -9,6 +9,11 @@
 	<sys:String x:Key="LicensePlate_Text">Biển số xe</sys:String>
 	<sys:String x:Key="Price_Text">Giá tiền</sys:String>
 	<sys:String x:Key="PerDay_Text">/ngày</sys:String>
+	<sys:String x:Key="AverageRate_Text">Đánh giá</sys:String>
+	<sys:String x:Key="AverageRate_Format">{0:F1}/5</sys:String>
+	<sys:String x:Key="RentalCount_Text">Lượt thuê</sys:String>
+	<sys:String x:Key="RentalCount_Format">{0}</sys:String>
+	<sys:String x:Key="RentalCount_SuffixText">lượt</sys:String>
 	<sys:String x:Key="StartDate_Label_Content">Ngày lấy xe</sys:String>
 	<sys:String x:Key="EndDate_Label_Content">Ngày trả xe</sys:String>
 	<sys:String x:Key="RentalTimeSpan_Text">Số ngày thuê</sys:String>

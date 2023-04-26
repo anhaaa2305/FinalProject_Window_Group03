@@ -144,6 +144,19 @@
 												Text="{Binding Vehicle.PricePerDay, Mode=OneWay, StringFormat=C}" />
 												<Run Text="{StaticResource PerDay_Text}" />.
 										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource AverageRate_Text}" />:
+											<Run
+												FontWeight="Bold"
+												Text="{Binding AverageRate, Mode=OneWay, StringFormat={StaticResource AverageRate_Format}}" />.
+										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource RentalCount_Text}" />:
+											<Run
+												FontWeight="Bold"
+												Text="{Binding RentalCount, Mode=OneWay, StringFormat={StaticResource RentalCount_Format}}" />
+											<Run Text="{StaticResource RentalCount_SuffixText}" />.
+										</TextBlock>
 										<TextBlock
 											Text="{Binding Vehicle.Description, Mode=OneWay}"
 											Visibility="{Binding Vehicle.Description, Converter={StaticResource StringToVisibilityConverter}}" />

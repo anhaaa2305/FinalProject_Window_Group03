@@ -27,6 +27,8 @@ public class ReserveVehicleViewModel : ObservableObject
 	private DateTime endDate = DateTime.Today.AddDays(1);
 	private int totalPrice;
 	private TimeSpan rentalTimeSpan = TimeSpan.Zero;
+	private float averageRate;
+	private int rentalCount;
 
 	public IRelayCommand ReserveCommand { get; }
 
@@ -80,6 +82,18 @@ public class ReserveVehicleViewModel : ObservableObject
 		}
 	}
 
+	public float AverageRate
+	{
+		get => averageRate;
+		set => SetProperty(ref averageRate, value);
+	}
+
+	public int RentalCount
+	{
+		get => rentalCount;
+		set => SetProperty(ref rentalCount, value);
+	}
+
 	public ReserveVehicleViewModel(ReserveVehicleModel model, IVehicleDAO vehicleDAO, ISessionService sessionService, IDialogService dialogService, IAppNavigationService navigator)
 	{
 		this.model = model;
@@ -88,13 +102,30 @@ public class ReserveVehicleViewModel : ObservableObject
 		this.dialogService = dialogService;
 		this.navigator = navigator;
 		ReserveCommand = new RelayCommand(Reserve);
-		GetVehicleAsync().SafeFireAndForget();
+
+		LoadDataAsync().SafeFireAndForget();
 	}
 
-	private async Task GetVehicleAsync()
+	private Task LoadDataAsync()
+	{
+		return Task.WhenAll(GetVehicleDataAsync(), GetRentalDataAsync());
+	}
+
+	private async Task GetRentalDataAsync()
+	{
+		var rentalCountTask = vehicleDAO.CountRentalAsync(model.Vehicle.Id);
+		var averageRateTask = vehicleDAO.GetAverageRateAsync(model.Vehicle.Id);
+		await Task.WhenAll(rentalCountTask, averageRateTask).ConfigureAwait(false);
+		App.Current.Dispatcher.Invoke(() =>
+		{
+			RentalCount = rentalCountTask.Result;
+			AverageRate = averageRateTask.Result;
+		});
+	}
+
+	private async Task GetVehicleDataAsync()
 	{
 		State = ViewState.Busy;
-		await Task.Delay(500);
 
 		var vehicle = await vehicleDAO
 			.GetByIdAsync(model.Vehicle.Id)
