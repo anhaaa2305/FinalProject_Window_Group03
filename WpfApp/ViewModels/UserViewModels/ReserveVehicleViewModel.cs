@@ -29,6 +29,7 @@ public class ReserveVehicleViewModel : ObservableObject
 	private TimeSpan rentalTimeSpan = TimeSpan.Zero;
 	private float averageRate;
 	private int rentalCount;
+	private LinkedList<VehicleRentalLog> rentalLogs;
 
 	public IRelayCommand ReserveCommand { get; }
 
@@ -94,6 +95,12 @@ public class ReserveVehicleViewModel : ObservableObject
 		set => SetProperty(ref rentalCount, value);
 	}
 
+	public LinkedList<VehicleRentalLog> RentalLogs
+	{
+		get => rentalLogs;
+		set => SetProperty(ref rentalLogs, value);
+	}
+
 	public ReserveVehicleViewModel(ReserveVehicleModel model, IVehicleDAO vehicleDAO, ISessionService sessionService, IDialogService dialogService, IAppNavigationService navigator)
 	{
 		this.model = model;
@@ -101,6 +108,7 @@ public class ReserveVehicleViewModel : ObservableObject
 		this.sessionService = sessionService;
 		this.dialogService = dialogService;
 		this.navigator = navigator;
+		rentalLogs = new();
 		ReserveCommand = new RelayCommand(Reserve);
 
 		LoadDataAsync().SafeFireAndForget();
@@ -114,12 +122,25 @@ public class ReserveVehicleViewModel : ObservableObject
 	private async Task GetRentalDataAsync()
 	{
 		var rentalCountTask = vehicleDAO.CountRentalAsync(model.Vehicle.Id);
-		var averageRateTask = vehicleDAO.GetAverageRateAsync(model.Vehicle.Id);
-		await Task.WhenAll(rentalCountTask, averageRateTask).ConfigureAwait(false);
+		var logsTask = vehicleDAO.GetRentalLogsByVehicleIdAsync(model.Vehicle.Id);
+		await Task.WhenAll(rentalCountTask, logsTask).ConfigureAwait(false);
+		var logs = new LinkedList<VehicleRentalLog>();
+		foreach (var log in logsTask.Result)
+		{
+			if (log.Rate is null || log.Feedback is null)
+			{
+				continue;
+			}
+			logs.AddLast(log);
+		}
 		App.Current.Dispatcher.Invoke(() =>
 		{
 			RentalCount = rentalCountTask.Result;
-			AverageRate = averageRateTask.Result;
+			if (logs.Count != 0)
+			{
+				AverageRate = (float)logs.Average(log => log.Rate ?? 0);
+			}
+			RentalLogs = logs;
 		});
 	}
 
