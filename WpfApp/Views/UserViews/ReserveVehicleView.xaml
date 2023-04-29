@@ -175,7 +175,7 @@
 							<ItemsControl ItemsSource="{Binding RentalLogs, Mode=OneWay}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<ui:Card Padding="8,4">
+										<ui:Card Padding="8,4" Margin="0,0,0,12">
 											<StackPanel utils:SpacingSetter.Spacing="0,3">
 												<TextBlock>
 													<Run Text="{Binding User.FullName}"
