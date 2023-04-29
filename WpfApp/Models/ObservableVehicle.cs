@@ -39,6 +39,18 @@ public class ObservableVehicle : ObservableObject
 		set => SetProperty(vehicle.PricePerDay, value, vehicle, (u, v) => u.PricePerDay = v);
 	}
 
+	public VehicleFuel Fuel
+	{
+		get => vehicle.Fuel;
+		set => SetProperty(vehicle.Fuel, value, vehicle, (u, v) => u.Fuel = v);
+	}
+
+	public VehicleCategory Category
+	{
+		get => vehicle.Category;
+		set => SetProperty(vehicle.Category, value, vehicle, (u, v) => u.Category = v);
+	}
+
 	public string? Color
 	{
 		get => vehicle.Color;
@@ -55,5 +67,22 @@ public class ObservableVehicle : ObservableObject
 	{
 		get => vehicle.Description;
 		set => SetProperty(vehicle.Description, value, vehicle, (u, v) => u.Description = v);
+	}
+
+	public Vehicle ToVehicle()
+	{
+		return new Vehicle
+		{
+			Id = Id,
+			LicensePlate = LicensePlate,
+			Brand = Brand,
+			Name = Name,
+			PricePerDay = PricePerDay,
+			Fuel = Fuel,
+			Category = Category,
+			Color = Color,
+			ImageUrl = ImageUrl,
+			Description = Description,
+		};
 	}
 }
