@@ -62,6 +62,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<StaffViews.EditReservationView>()
 			.AddTransient<StaffViews.RentedVehiclesView>()
 			.AddTransient<StaffViews.EditRentalView>()
+			.AddTransient<StaffViews.AddVehicleView>()
 		;
 	}
 
@@ -85,6 +86,7 @@ public static class ServiceCollectionExtensions
 			.AddTransient<StaffViewModels.EditReservationViewModel>()
 			.AddTransient<StaffViewModels.RentedVehiclesViewModel>()
 			.AddTransient<StaffViewModels.EditRentalViewModel>()
+			.AddScoped<StaffViewModels.AddVehicleViewModel>()
 		;
 	}
 }
