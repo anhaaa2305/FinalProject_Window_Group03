@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:sys="clr-namespace:System;assembly=mscorlib">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib">
 	<sys:String x:Key="LoadingText">Ứng dụng đang tải thông tin xe, vui lòng đợi.</sys:String>
 	<sys:String x:Key="EmptyText">Không có dữ liệu về xe.</sys:String>
 	<sys:String x:Key="ReserveButton_Content">Đặt xe</sys:String>
@@ -9,6 +9,8 @@
 	<sys:String x:Key="LicensePlate_Text">Biển số xe</sys:String>
 	<sys:String x:Key="Price_Text">Giá tiền</sys:String>
 	<sys:String x:Key="PerDay_Text">/ngày</sys:String>
+	<sys:String x:Key="Fuel_Text">Loại nhiên liệu</sys:String>
+	<sys:String x:Key="Category_Text">Loại phương tiện</sys:String>
 	<sys:String x:Key="AverageRate_Text">Đánh giá</sys:String>
 	<sys:String x:Key="AverageRate_Format">{0:F1}/5</sys:String>
 	<sys:String x:Key="RentalCount_Text">Lượt thuê</sys:String>
@@ -20,7 +22,8 @@
 	<sys:String x:Key="RentalTimeSpan_Format">{0:%d} ngày</sys:String>
 	<sys:String x:Key="TotalPrice_Text">Thành tiền</sys:String>
 	<sys:String x:Key="ReserveDialog_Title">Xác nhận đặt xe</sys:String>
-	<sys:String x:Key="ReserveDialog_Content">Khách hàng có đồng ý đặt xe {0} trong {1} ngày với giá tiền {2:C}?</sys:String>
+	<sys:String x:Key="ReserveDialog_Content">Khách hàng có đồng ý đặt xe {0} trong {1} ngày với giá
+		tiền {2:C}?</sys:String>
 	<sys:String x:Key="ReserveDialog_LeftButton">Đồng ý</sys:String>
 	<sys:String x:Key="ReserveDialog_RightButton">Hủy</sys:String>
 </ResourceDictionary>
