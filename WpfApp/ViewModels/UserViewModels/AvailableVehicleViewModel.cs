@@ -18,7 +18,6 @@ public class AvailableVehicleViewModel : ObservableObject
 	private ViewState state;
 
 	public IRelayCommand<Vehicle> ReserveCommand { get; }
-	public IRelayCommand<Vehicle> ViewItemDetailsCommand { get; }
 
 	public ObservableCollection<Vehicle>? Vehicles
 	{
@@ -39,7 +38,6 @@ public class AvailableVehicleViewModel : ObservableObject
 		this.navigator = navigator;
 		this.reserveVehicleModel = reserveVehicleModel;
 		ReserveCommand = new RelayCommand<Vehicle>(Reserve);
-		ViewItemDetailsCommand = new RelayCommand<Vehicle>(ViewItemDetails);
 
 		GetAvailableVehiclesAsync().SafeFireAndForget();
 	}
@@ -81,13 +79,5 @@ public class AvailableVehicleViewModel : ObservableObject
 
 		reserveVehicleModel.Vehicle = model;
 		navigator.Navigate<ReserveVehicleView>();
-	}
-
-	private void ViewItemDetails(Vehicle? model)
-	{
-		if (Vehicles is null || model is null)
-		{
-			return;
-		}
 	}
 }
