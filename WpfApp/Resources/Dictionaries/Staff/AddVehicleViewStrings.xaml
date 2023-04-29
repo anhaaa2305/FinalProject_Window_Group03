@@ -21,14 +21,8 @@
 	<sys:String x:Key="Price_Format">{0:C}</sys:String>
 
 	<sys:String x:Key="Fuel_Label">Loại nhiên liệu</sys:String>
-	<sys:String x:Key="FuelItem_None">Chưa xác định</sys:String>
-	<sys:String x:Key="FuelItem_Gasoline">Xăng</sys:String>
-	<sys:String x:Key="FuelItem_Electric">Điện</sys:String>
 
 	<sys:String x:Key="Category_Label">Loại phương tiện</sys:String>
-	<sys:String x:Key="CategoryItem_None">Chưa xác định</sys:String>
-	<sys:String x:Key="CategoryItem_TwoWheeled">2 bánh</sys:String>
-	<sys:String x:Key="CategoryItem_FourWheeled">4 bánh</sys:String>
 
 	<sys:String x:Key="AddVehicle_Content">Thêm xe</sys:String>
 </ResourceDictionary>

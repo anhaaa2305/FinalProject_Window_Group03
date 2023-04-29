@@ -14,7 +14,16 @@
 	HorizontalAlignment="Stretch"
 	Foreground="{DynamicResource TextFillColorPrimaryBrush}">
 	<UserControl.Resources>
-		<ResourceDictionary Source="/Resources/Dictionaries/Staff/AddVehicleViewStrings.xaml" />
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary
+					Source="/Resources/Dictionaries/Staff/AddVehicleViewStrings.xaml" />
+				<ResourceDictionary>
+					<utils:VehicleFuelConverter x:Key="VehicleFuelConverter" />
+					<utils:VehicleCategoryConverter x:Key="VehicleCategoryConverter" />
+				</ResourceDictionary>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</UserControl.Resources>
 	<ui:DynamicScrollViewer
 		Padding="15"
@@ -71,10 +80,14 @@
 					Content="{StaticResource Fuel_Label}" />
 				<ComboBox
 					x:Name="fuelComboBox"
-					Text="{Binding Fuel, Mode=TwoWay}">
-					<ComboBoxItem Content="{StaticResource FuelItem_None}" />
-					<ComboBoxItem Content="{StaticResource FuelItem_Gasoline}" IsSelected="True" />
-					<ComboBoxItem Content="{StaticResource FuelItem_Electric}" />
+					Text="{Binding Vehicle.Fuel, Mode=TwoWay, Converter={StaticResource VehicleFuelConverter}}">
+					<ComboBox.Resources>
+						<ResourceDictionary
+							Source="/Resources/Dictionaries/VehicleFuelStrings.xaml" />
+					</ComboBox.Resources>
+					<ComboBoxItem Content="{StaticResource None}" />
+					<ComboBoxItem Content="{StaticResource Gasoline}" IsSelected="True" />
+					<ComboBoxItem Content="{StaticResource Electric}" />
 				</ComboBox>
 			</StackPanel>
 			<StackPanel utils:SpacingSetter.Spacing="0,3">
@@ -83,11 +96,15 @@
 					Content="{StaticResource Category_Label}" />
 				<ComboBox
 					x:Name="categoryComboBox"
-					Text="{Binding Category, Mode=TwoWay}">
-					<ComboBoxItem Content="{StaticResource CategoryItem_None}" />
-					<ComboBoxItem Content="{StaticResource CategoryItem_TwoWheeled}"
+					Text="{Binding Vehicle.Category, Mode=TwoWay, Converter={StaticResource VehicleCategoryConverter}}">
+					<ComboBox.Resources>
+						<ResourceDictionary
+							Source="/Resources/Dictionaries/VehicleCategoryStrings.xaml" />
+					</ComboBox.Resources>
+					<ComboBoxItem Content="{StaticResource None}" />
+					<ComboBoxItem Content="{StaticResource TwoWheeled}"
 						IsSelected="True" />
-					<ComboBoxItem Content="{StaticResource CategoryItem_FourWheeled}" />
+					<ComboBoxItem Content="{StaticResource FourWheeled}" />
 				</ComboBox>
 			</StackPanel>
 			<ui:Button
