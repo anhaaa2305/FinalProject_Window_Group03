@@ -556,4 +556,15 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@VehicleId", vehicleId);
 		return (float?)await cmd.ExecuteScalarAsync().ConfigureAwait(false) ?? 0;
 	}
+
+	public Task<IReadOnlyCollection<VehicleRentalLog>> GetRentalLogsByVehicleIdAsync(int vehicleId)
+	{
+		return GetAllRentalRecordsAsync(
+		@"
+			select * from VehicleRentalLogs
+				inner join Users on Users.Id = VehicleRentalLogs.UserId
+				inner join Vehicles on Vehicles.Id = VehicleRentalLogs.VehicleId
+			where VehicleId = @VehicleId
+		", new SqlParameter("@VehicleId", vehicleId));
+	}
 }

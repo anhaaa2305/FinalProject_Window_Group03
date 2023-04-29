@@ -22,4 +22,5 @@ public interface IVehicleDAO : IDAO<Vehicle>
 	Task<int> UpdateVehicleRentalLogByIdAsync(VehicleRentalLog log);
 	Task<int> CountRentalAsync(int vehicleId);
 	Task<float> GetAverageRateAsync(int vehicleId);
+	Task<IReadOnlyCollection<VehicleRentalLog>> GetRentalLogsByVehicleIdAsync(int vehicleId);
 }
