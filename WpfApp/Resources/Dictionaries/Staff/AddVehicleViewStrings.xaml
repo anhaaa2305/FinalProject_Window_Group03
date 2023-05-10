@@ -1,13 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:sys="clr-namespace:System;assembly=mscorlib">
-	<sys:String x:Key="Name_Label">Tên phương tiện</sys:String>
+	<sys:String x:Key="Name_Label">Tên phương tiện (*)</sys:String>
 	<sys:String x:Key="Name_Placeholder">Nhập tên phương tiện</sys:String>
 
-	<sys:String x:Key="LicensePlate_Label">Biển số xe</sys:String>
+	<sys:String x:Key="LicensePlate_Label">Biển số xe (*)</sys:String>
 	<sys:String x:Key="LicensePlate_Placeholder">Nhập biển số xe</sys:String>
 
-	<sys:String x:Key="Brand_Label">Thương hiệu</sys:String>
+	<sys:String x:Key="Brand_Label">Thương hiệu (*)</sys:String>
 	<sys:String x:Key="BrandItem_None">None</sys:String>
 	<sys:String x:Key="BrandItem_Honda">Honda</sys:String>
 	<sys:String x:Key="BrandItem_Yamaha">Yamaha</sys:String>
@@ -16,13 +16,22 @@
 	<sys:String x:Key="BrandItem_Medley">Medley</sys:String>
 	<sys:String x:Key="BrandItem_Vespa">Vespa</sys:String>
 
-	<sys:String x:Key="Price_Label">Giá tiền</sys:String>
+	<sys:String x:Key="Price_Label">Giá tiền (*)</sys:String>
 	<sys:String x:Key="Price_Placeholder">Nhập giá tiền thuê mỗi ngày</sys:String>
 	<sys:String x:Key="Price_Format">{0:C}</sys:String>
 
-	<sys:String x:Key="Fuel_Label">Loại nhiên liệu</sys:String>
+	<sys:String x:Key="Fuel_Label">Loại nhiên liệu (*)</sys:String>
 
-	<sys:String x:Key="Category_Label">Loại phương tiện</sys:String>
+	<sys:String x:Key="Category_Label">Loại phương tiện (*)</sys:String>
+
+	<sys:String x:Key="ImageUrl_Label">Hình ảnh</sys:String>
+	<sys:String x:Key="ImageUrl_Placeholder">Dán đường dẫn hình ảnh</sys:String>
+
+	<sys:String x:Key="Color_Label">Màu sắc</sys:String>
+	<sys:String x:Key="Color_Placeholder">Nhập màu sắc</sys:String>
+
+	<sys:String x:Key="Description_Label">Mô tả</sys:String>
+	<sys:String x:Key="Description_Placeholder">Nhập mô tả</sys:String>
 
 	<sys:String x:Key="AddVehicle_Content">Thêm xe</sys:String>
 </ResourceDictionary>

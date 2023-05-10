@@ -107,6 +107,33 @@
 					<ComboBoxItem Content="{StaticResource FourWheeled}" />
 				</ComboBox>
 			</StackPanel>
+			<StackPanel utils:SpacingSetter.Spacing="0,3">
+				<Label
+					Target="imageUrlTextBox"
+					Content="{StaticResource ImageUrl_Label}" />
+				<ui:TextBox
+					x:Name="imageUrlTextBox"
+					PlaceholderText="{StaticResource ImageUrl_Placeholder}"
+					Text="{Binding Vehicle.ImageUrl, Mode=TwoWay}" />
+			</StackPanel>
+			<StackPanel utils:SpacingSetter.Spacing="0,3">
+				<Label
+					Target="colorTextBox"
+					Content="{StaticResource Color_Label}" />
+				<ui:TextBox
+					x:Name="colorTextBox"
+					PlaceholderText="{StaticResource Color_Placeholder}"
+					Text="{Binding Vehicle.Color, Mode=TwoWay}" />
+			</StackPanel>
+			<StackPanel utils:SpacingSetter.Spacing="0,3">
+				<Label
+					Target="descriptionTextBox"
+					Content="{StaticResource Description_Label}" />
+				<ui:TextBox
+					x:Name="descriptionTextBox"
+					PlaceholderText="{StaticResource Description_Placeholder}"
+					Text="{Binding Vehicle.Description, Mode=TwoWay}" />
+			</StackPanel>
 			<ui:Button
 				Content="{StaticResource AddVehicle_Content}"
 				Appearance="Primary"
