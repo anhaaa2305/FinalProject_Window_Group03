@@ -40,50 +40,75 @@
 				</StackPanel>
 			</ControlTemplate>
 			<ControlTemplate x:Key="MainTemplate">
-				<ListView ItemsSource="{Binding Vehicles, Mode=OneWay}">
-					<ListView.ItemTemplate>
-						<DataTemplate>
-							<Grid utils:MarginSetter.Margin="12,0">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto" />
-									<ColumnDefinition Width="*" />
-									<ColumnDefinition Width="Auto" />
-								</Grid.ColumnDefinitions>
-								<ui:Card
-									Background="{DynamicResource StripedBackgroundBrush}"
-									Padding="4"
-									VerticalAlignment="Center">
-									<Image
-										Source="{Binding ImageUrl, Mode=OneWay}"
-										MaxWidth="172"
-										Stretch="UniformToFill"
-										HorizontalAlignment="Center"
-										RenderOptions.BitmapScalingMode="Fant" />
-								</ui:Card>
-								<StackPanel Grid.Column="1"
-									VerticalAlignment="Center">
-									<TextBlock
-										Text="{Binding Name, Mode=OneWay}"
-										FontWeight="Bold" />
-									<TextBlock Text="{Binding LicensePlate}" />
-								</StackPanel>
-								<StackPanel Grid.Column="2"
-									utils:MarginSetter.Margin="6,0"
-									Orientation="Horizontal">
-									<ui:Button
-										VerticalAlignment="Center"
-										Padding="3"
-										Icon="Key32"
-										FontSize="24"
-										ToolTipService.ToolTip="{StaticResource ReserveButton_ToolTipText}"
-										ToolTipService.InitialShowDelay="400"
-										Command="{Binding DataContext.ReserveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
-										CommandParameter="{Binding}" />
-								</StackPanel>
-							</Grid>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
+				<Grid utils:SpacingSetter.Spacing="0,7" Margin="0,7">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+					<Grid
+						utils:SpacingSetter.Spacing="7,0"
+						VerticalAlignment="Center"
+						Margin="15,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="0.3*" />
+							<ColumnDefinition Width="0.7*" />
+						</Grid.ColumnDefinitions>
+						<ComboBox
+							SelectedItem="{Binding SelectedSortItem, Mode=OneWayToSource}">
+							<ComboBoxItem Content="Giá thấp" IsSelected="True"
+								Tag="{x:Static data:SortType.LowPrice}" />
+							<ComboBoxItem Content="Giá cao" Tag="{x:Static data:SortType.HighPrice}" />
+						</ComboBox>
+						<ui:TextBox
+							Grid.Column="1"
+							PlaceholderText="Tìm kiếm tên phương tiện..."
+							Text="{Binding NameFilter, Mode=OneWayToSource}" />
+					</Grid>
+					<ListView Grid.Row="1" ItemsSource="{Binding Vehicles, Mode=OneWay}">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<Grid utils:MarginSetter.Margin="12,0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<ui:Card
+										Background="{DynamicResource StripedBackgroundBrush}"
+										Padding="4"
+										VerticalAlignment="Center">
+										<Image
+											Source="{Binding ImageUrl, Mode=OneWay}"
+											MaxWidth="172"
+											Stretch="UniformToFill"
+											HorizontalAlignment="Center"
+											RenderOptions.BitmapScalingMode="Fant" />
+									</ui:Card>
+									<StackPanel Grid.Column="1"
+										VerticalAlignment="Center">
+										<TextBlock
+											Text="{Binding Name, Mode=OneWay}"
+											FontWeight="Bold" />
+										<TextBlock Text="{Binding LicensePlate}" />
+									</StackPanel>
+									<StackPanel Grid.Column="2"
+										utils:MarginSetter.Margin="6,0"
+										Orientation="Horizontal">
+										<ui:Button
+											VerticalAlignment="Center"
+											Padding="3"
+											Icon="Key32"
+											FontSize="24"
+											ToolTipService.ToolTip="{StaticResource ReserveButton_ToolTipText}"
+											ToolTipService.InitialShowDelay="400"
+											Command="{Binding DataContext.ReserveCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Mode=OneWay}"
+											CommandParameter="{Binding}" />
+									</StackPanel>
+								</Grid>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</Grid>
 			</ControlTemplate>
 		</ContentControl.Resources>
 		<ContentControl.Style>

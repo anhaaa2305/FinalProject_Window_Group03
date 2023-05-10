@@ -1,4 +1,5 @@
-using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Windows.Controls;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,20 +15,63 @@ namespace WpfApp.ViewModels.UserViewModels;
 public class AvailableVehicleViewModel : ObservableObject
 {
 	private readonly IVehicleDAO vehicleDAO;
-	private ObservableCollection<Vehicle>? vehicles;
+	private List<Vehicle>? displayVehicles;
+	private List<Vehicle>? vehicles;
 	private ViewState state;
+	private SortType sortType;
+	private object? selectedSortItem = null;
+	private string nameFilter = string.Empty;
 
 	public IRelayCommand<Vehicle> ReserveCommand { get; }
 
-	public ObservableCollection<Vehicle>? Vehicles
+	public List<Vehicle>? Vehicles
 	{
-		get => vehicles; set => SetProperty(ref vehicles, value);
+		get => displayVehicles; set => SetProperty(ref displayVehicles, value);
 	}
 
 	public ViewState State
 	{
 		get => state;
 		set => SetProperty(ref state, value);
+	}
+
+	public object? SelectedSortItem
+	{
+		get => selectedSortItem;
+		set
+		{
+			if (selectedSortItem != value)
+			{
+				selectedSortItem = value;
+				if (value is ComboBoxItem item && item.Tag is SortType type)
+				{
+					sortType = type;
+					ProcessDisplayVehicles();
+				}
+			}
+		}
+	}
+
+	public string NameFilter
+	{
+		get => nameFilter;
+		set
+		{
+			nameFilter = value;
+			ProcessDisplayVehicles();
+		}
+	}
+
+	private void ProcessDisplayVehicles()
+	{
+		if (vehicles is null)
+		{
+			return;
+		}
+		var enumerable = string.IsNullOrEmpty(nameFilter.Trim()) ? vehicles : vehicles.Where(v => v.Name.StartsWith(nameFilter, true, null));
+		Vehicles = sortType == SortType.LowPrice
+			? enumerable.OrderBy(v => v.PricePerDay).ToList()
+			: enumerable.OrderByDescending(v => v.PricePerDay).ToList();
 	}
 
 	private readonly IAppNavigationService navigator;
@@ -46,9 +90,9 @@ public class AvailableVehicleViewModel : ObservableObject
 	{
 		State = ViewState.Busy;
 
-		var vehicles = await vehicleDAO
+		vehicles = (await vehicleDAO
 			.GetAvailableVehicles()
-			.ConfigureAwait(false);
+			.ConfigureAwait(false)).ToList();
 		foreach (var vehicle in vehicles)
 		{
 			if (string.IsNullOrEmpty(vehicle.ImageUrl))
@@ -58,8 +102,8 @@ public class AvailableVehicleViewModel : ObservableObject
 		}
 		App.Current.Dispatcher.Invoke(() =>
 		{
-			Vehicles = new ObservableCollection<Vehicle>(vehicles);
-			if (Vehicles.Count == 0)
+			ProcessDisplayVehicles();
+			if (vehicles.Count == 0)
 			{
 				State = ViewState.Empty;
 			}
