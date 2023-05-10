@@ -1,15 +1,15 @@
 <UserControl
-    x:Class="WpfApp.Views.UserViews.RentalLogDetailsView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	x:Class="WpfApp.Views.UserViews.RentalLogDetailsView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:utils="clr-namespace:WpfApp.Utils"
-    xmlns:controls="clr-namespace:WpfApp.Views.Controls"
-    xmlns:data="clr-namespace:WpfApp.Data"
-    mc:Ignorable="d"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+	xmlns:utils="clr-namespace:WpfApp.Utils"
+	xmlns:controls="clr-namespace:WpfApp.Views.Controls"
+	xmlns:data="clr-namespace:WpfApp.Data"
+	mc:Ignorable="d"
 	VerticalAlignment="Stretch"
 	HorizontalAlignment="Stretch"
 	Foreground="{DynamicResource TextFillColorPrimaryBrush}">
@@ -81,44 +81,38 @@
 											Text="{Binding Model.RentalLog.Vehicle.Name, Mode=OneWay}"
 											FontWeight="Bold" />
 										<TextBlock>
-											<Run Text="{StaticResource Brand_Text}" />:
-											<Run
+											<Run Text="{StaticResource Brand_Text}" />: <Run
 												FontWeight="Bold"
-												Text="{Binding Model.RentalLog.Vehicle.Brand}" />.
+												Text="{Binding Model.RentalLog.Vehicle.Brand}" />. </TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource LicensePlate_Text}" />: <Run
+												FontWeight="Bold"
+												Text="{Binding Model.RentalLog.Vehicle.LicensePlate}" />
+											.
 										</TextBlock>
 										<TextBlock>
-											<Run Text="{StaticResource LicensePlate_Text}" />:
-											<Run
+											<Run Text="{StaticResource StartDate_Text}" />: <Run
 												FontWeight="Bold"
-												Text="{Binding Model.RentalLog.Vehicle.LicensePlate}" />.
+												Text="{Binding Model.RentalLog.StartDate, Mode=OneWay, StringFormat={StaticResource StartDate_Format}}" />
+											.
 										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource EndDate_Text}" />: <Run
+												FontWeight="Bold"
+												Text="{Binding Model.RentalLog.EndDate, Mode=OneWay, StringFormat={StaticResource EndDate_Format}}" />
+											.
+										</TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource RentalTimeSpan_Text}" />: <Run
+												Text="{Binding RentalTimeSpan, Mode=OneWay, StringFormat={StaticResource RentalTimeSpan_Format}}"
+												FontWeight="Bold" />. </TextBlock>
+										<TextBlock>
+											<Run Text="{StaticResource TotalPrice_Text}" />: <Run
+												Text="{Binding TotalPrice, Mode=OneWay, StringFormat=C}"
+												FontWeight="Bold" />. </TextBlock>
 										<TextBlock
 											Text="{Binding Model.RentalLog.Vehicle.Description, Mode=OneWay}"
 											Visibility="{Binding Model.RentalLog.Vehicle.Description, Converter={StaticResource StringToVisibilityConverter}}" />
-										<TextBlock>
-											<Run Text="{StaticResource StartDate_Text}" />:
-											<Run
-												FontWeight="Bold"
-												Text="{Binding Model.RentalLog.StartDate, Mode=OneWay, StringFormat={StaticResource StartDate_Format}}" />.
-										</TextBlock>
-										<TextBlock>
-											<Run Text="{StaticResource EndDate_Text}" />:
-											<Run
-												FontWeight="Bold"
-												Text="{Binding Model.RentalLog.EndDate, Mode=OneWay, StringFormat={StaticResource EndDate_Format}}" />.
-										</TextBlock>
-										<TextBlock>
-											<Run Text="{StaticResource RentalTimeSpan_Text}" />:
-											<Run
-												Text="{Binding RentalTimeSpan, Mode=OneWay, StringFormat={StaticResource RentalTimeSpan_Format}}"
-												FontWeight="Bold" />.
-										</TextBlock>
-										<TextBlock>
-											<Run Text="{StaticResource TotalPrice_Text}" />:
-											<Run
-												Text="{Binding TotalPrice, Mode=OneWay, StringFormat=C}"
-												FontWeight="Bold" />.
-										</TextBlock>
 									</StackPanel>
 								</Border>
 							</StackPanel>
@@ -145,14 +139,14 @@
 											<TextBlock
 												Grid.Column="1"
 												VerticalAlignment="Center"
-												Text="{Binding Model.RentalLog.Rate, Mode=OneWay, StringFormat={StaticResource Rate_Format}}"/>
+												Text="{Binding Model.RentalLog.Rate, Mode=OneWay, StringFormat={StaticResource Rate_Format}}" />
 										</Grid>
 									</StackPanel>
 									<StackPanel utils:SpacingSetter.Spacing="0,3">
 										<Label
 											Target="feedbackTextBox"
 											Content="{StaticResource Feedback_Text}" />
-										<ui:TextBox 
+										<ui:TextBox
 											x:Name="feedbackTextBox"
 											PlaceholderText="{StaticResource Feedback_PlaceholderText}"
 											AcceptsReturn="True"
@@ -175,20 +169,23 @@
 			<ContentControl.Style>
 				<Style TargetType="ContentControl">
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Present}">
+						<DataTrigger Binding="{Binding State, Mode=OneWay}"
+							Value="{x:Static data:ViewState.Present}">
 							<Setter Property="Template" Value="{StaticResource PresentTemplate}" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Busy}">
+						<DataTrigger Binding="{Binding State, Mode=OneWay}"
+							Value="{x:Static data:ViewState.Busy}">
 							<Setter Property="Template" Value="{StaticResource BusyTemplate}" />
 						</DataTrigger>
-						<DataTrigger Binding="{Binding State, Mode=OneWay}" Value="{x:Static data:ViewState.Empty}">
+						<DataTrigger Binding="{Binding State, Mode=OneWay}"
+							Value="{x:Static data:ViewState.Empty}">
 							<Setter Property="Template" Value="{StaticResource EmptyTemplate}" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>
 			</ContentControl.Style>
 		</ContentControl>
-		
+
 		<ui:Dialog x:Name="reserveDialog" />
 	</Grid>
 </UserControl>
