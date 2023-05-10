@@ -36,6 +36,8 @@ public class FluentDbReader : IFluentDbReader
 		vehicle.Brand = reader.GetString(ordinal++);
 		vehicle.Name = reader.GetString(ordinal++);
 		vehicle.PricePerDay = reader.GetInt32(ordinal++);
+		vehicle.Fuel = (VehicleFuel)reader.GetInt32(ordinal++);
+		vehicle.Category = (VehicleCategory)reader.GetInt32(ordinal++);
 		vehicle.Color = GetOrDefault<string?>();
 		vehicle.ImageUrl = GetOrDefault<string?>();
 		vehicle.Description = GetOrDefault<string?>();
