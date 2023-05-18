@@ -26,9 +26,9 @@ public class SqlVehicleDAO : IVehicleDAO
 		using var cmd = conn.CreateCommand();
 		cmd.CommandText =
 		@"
-			insert into Vehicles (LicensePlate, Brand, Name, PricePerDay, Color, ImageUrl, Description)
+			insert into Vehicles (LicensePlate, Brand, Name, PricePerDay, Color, ImageUrl, Description, Fuel, Category)
 			output Inserted.Id
-			values (@LicensePlate, @Brand, @Name, @PricePerDay, @Color, @ImageUrl, @Description)
+			values (@LicensePlate, @Brand, @Name, @PricePerDay, @Color, @ImageUrl, @Description, @Fuel, @Category)
 		";
 		cmd.Parameters.AddWithValue("@LicensePlate", model.LicensePlate);
 		cmd.Parameters.AddWithValue("@Brand", model.Brand);
@@ -37,6 +37,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@Color", model.Color ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@ImageUrl", model.ImageUrl ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@Description", model.Description ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Fuel", model.Fuel);
+		cmd.Parameters.AddWithValue("@Category", model.Category);
 		return (int)(await cmd.ExecuteScalarAsync().ConfigureAwait(false))!;
 	}
 
@@ -78,7 +80,7 @@ public class SqlVehicleDAO : IVehicleDAO
 			update top (1) Vehicles set
 				LicensePlate = @LicensePlate, Brand = @Brand, Name = @Name,
 				PricePerDay = @PricePerDay, Color = @Color, ImageUrl = @ImageUrl,
-				Description = @Description
+				Description = @Description, Fuel = @Fuel, Category = @Category
 			where Id = @Id
 		";
 		cmd.Parameters.AddWithValue("@LicensePlate", model.LicensePlate);
@@ -88,6 +90,8 @@ public class SqlVehicleDAO : IVehicleDAO
 		cmd.Parameters.AddWithValue("@Color", model.Color ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@ImageUrl", model.ImageUrl ?? (object)DBNull.Value);
 		cmd.Parameters.AddWithValue("@Description", model.Description ?? (object)DBNull.Value);
+		cmd.Parameters.AddWithValue("@Fuel", model.Fuel);
+		cmd.Parameters.AddWithValue("@Category", model.Category);
 		cmd.Parameters.AddWithValue("@Id", model.Id);
 		return await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
 	}
